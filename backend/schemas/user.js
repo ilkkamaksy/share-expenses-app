@@ -6,7 +6,6 @@ const config = require('../utils/config')
 
 const typeDef = `
     type User {
-        username: String
         firstname: String
 		lastname: String
 		email: String!
@@ -28,15 +27,11 @@ const resolvers = {
 
 			if ( args.id ) {
 				return User.findById({ _id: args.id })
-			} else if ( args.username ) {
-				return User.findOne({ username: args.username })
-			} else if ( args.email ) {
-				return User.findOne({ email: args.email })
 			}
 		}, 
 		// args: 
-		// username: String
-		getUserByUsername: async (root, args, context) => {
+		// email: String
+		getUserByEmail: async (root, args, context) => {
 
 			const currentUser = context.currentUser
 
@@ -44,8 +39,8 @@ const resolvers = {
 				throw new AuthenticationError('not authenticated')
 			}
 
-			if ( args.username ) {
-				return User.findOne({ username: args.username })
+			if ( args.email ) {
+				return User.findOne({ email: args.email })
 			} 
 		}, 
 		me: (root, args, context) => {
@@ -72,9 +67,18 @@ const resolvers = {
 					invalidArgs: args
 				})
 			} 
-            
-			return savedUser
-
+			
+			const token = jwt.sign(
+				{
+					id: savedUser.id,
+					email: savedUser.email,
+				},
+				config.JWT_SECRET
+			)
+			return {
+				token,
+				user: savedUser,
+			}
 		},
 		// args:
 		// id: String!
@@ -126,7 +130,7 @@ const resolvers = {
 			const token = jwt.sign(
 				{
 					id: user.id,
-					username: user.email,
+					email: user.email,
 				},
 				config.JWT_SECRET
 			)

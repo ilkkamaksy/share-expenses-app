@@ -86,7 +86,7 @@ describe('Login mutations', () => {
 				password: 'testpassword'
 			},
 		})
-		console.log(res)
+		
 		expect(res.errors[0].message).toEqual('Invalid Login')
 	})
 

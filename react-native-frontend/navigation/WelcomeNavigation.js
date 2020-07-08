@@ -3,8 +3,9 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { Platform } from 'react-native'
 
 import Colors from '../constants/Colors'
-import GroupsOverViewScreen from '../screens/group/GroupsOverviewScreen'
-import GroupDetailScreen from '../screens/group/GroupDetailScreen'
+import RegisterScreen from '../screens/user/RegisterScreen'
+import LoginScreen from '../screens/user/LoginScreen'
+import SplashScreen from '../screens/splash/SplashScreen'
 
 const Stack = createStackNavigator()
 
@@ -12,7 +13,7 @@ function GroupNavigation() {
 
 	return (
 		<Stack.Navigator
-			initialRouteName="GroupList"
+			initialRouteName="Splash"
 			headerMode="screen"
 			screenOptions={{
 				headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary,
@@ -23,17 +24,27 @@ function GroupNavigation() {
 		>
 
 			<Stack.Screen
-				name="GroupList"
-				component={GroupsOverViewScreen}
+				name="Splash"
+				component={SplashScreen}
 				options={{
-					title: 'My Groups',
+					title: 'Share Expenses app',
 				}}
 			/>
 
 			<Stack.Screen
-				name="GroupItem"
-				component={GroupDetailScreen}
-				options={({route}) => ({ title: route.params.title, id: route.params.id })}
+				name="Register"
+				component={RegisterScreen}
+				options={{
+					title: 'Sign up',
+				}}
+			/>
+
+			<Stack.Screen
+				name="Login"
+				component={LoginScreen}
+				options={{
+					title: 'Login',
+				}}
 			/>
             
 		</Stack.Navigator>

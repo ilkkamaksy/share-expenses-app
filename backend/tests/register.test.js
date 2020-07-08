@@ -13,8 +13,11 @@ const REGISTER = gql`
     	email: $email,
 		password: $password
 	) {
-		id
-		email
+		token
+		user {
+            id
+            email   
+        }
 	}
   }
 `
@@ -38,7 +41,8 @@ describe('Register mutations', () => {
 				password: 'password'
 			},
 		})
-		expect(res.data.register.email).toEqual('a@a.a')
+		console.log(res)
+		expect(res.data.register.user.email).toEqual('a@a.a')
 	})
 
 	it('user can not register without password', async () => {

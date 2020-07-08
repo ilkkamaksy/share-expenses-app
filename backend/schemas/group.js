@@ -15,31 +15,14 @@ const resolvers = {
 	Query: {
 		// args:
 		// userid: String 
-		// username: String 
-		// title: String 
-		// id: String
-		getGroups: async (root, args) => {
+		getGroupsByUserId: async (root, args) => {
 
-			if ( args.id ) {
-				return [Group.findById(args.id)
-					.populate('owner', { username: 1, firstname: 1, lastname: 1 })
-					.populate('users')
-					.populate('people')]
-			} else if ( args.userid ) {
+			if ( args.userid ) {
 				return Group.find({ users: { $in: [ args.userid ] } })
-					.populate('owner', { username: 1, firstname: 1, lastname: 1 })
+					.populate('owner', { email: 1, firstname: 1, lastname: 1 })
 					.populate('users')
 					.populate('people')
-			} else if ( args.title ) {
-				return Group.find({ title: args.title })
-					.populate('owner', { username: 1, firstname: 1, lastname: 1 })
-					.populate('users')
-					.populate('people')
-			}
-			return Group.find({})
-				.populate('owner', { username: 1, firstname: 1, lastname: 1 })
-				.populate('users')
-				.populate('people')
+			} 
 		},
 	},
 	Mutation: {
@@ -63,7 +46,7 @@ const resolvers = {
 				await newGroup.save()
 				
 				return Group.findById(newGroup._id)
-					.populate('owner', { username: 1, firstname: 1, lastname: 1 })
+					.populate('owner', { email: 1, firstname: 1, lastname: 1 })
 					.populate('users')
 					.populate('people')
 					
@@ -87,7 +70,7 @@ const resolvers = {
 				delete groupToUpdate.id
 				const savedGroup = await Group
 					.findByIdAndUpdate(args.id, groupToUpdate, { new: true })
-					.populate('owner', { username: 1, firstname: 1, lastname: 1 })
+					.populate('owner', { email: 1, firstname: 1, lastname: 1 })
 					.populate('users')
 					.populate('people')
 				return savedGroup
@@ -103,7 +86,7 @@ const resolvers = {
 			try {
 				return await Group
 					.findByIdAndDelete(args.id)
-					.populate('owner', { username: 1, firstname: 1, lastname: 1 })
+					.populate('owner', { email: 1, firstname: 1, lastname: 1 })
 					.populate('users')
 					.populate('people')
 			} catch (error) {
@@ -123,7 +106,7 @@ const resolvers = {
 						{ $addToSet: { users: args.userid }}, 
 						{ new: true }
 					)
-					.populate('owner', { username: 1, firstname: 1, lastname: 1 })
+					.populate('owner', { email: 1, firstname: 1, lastname: 1 })
 					.populate('users')
 					.populate('people')
 				return savedGroup
@@ -144,7 +127,7 @@ const resolvers = {
 						{ $pull: { users: args.userid } },
 						{ new: true }
 					) 
-					.populate('owner', { username: 1, firstname: 1, lastname: 1 })
+					.populate('owner', { email: 1, firstname: 1, lastname: 1 })
 					.populate('users')
 					.populate('people')
 				return savedGroup

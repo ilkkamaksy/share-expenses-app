@@ -3,12 +3,14 @@ import userActions from '../actions/user'
 export const { registerUser, loginUser, logoutUser, authenticationCheck } = userActions
 
 const initialState = {
-	username: '',
+	email: '',
 	password: '',
-	user: null,
-	error: null,
-	fetching: false,
-	loginout: false
+	userdata: null,
+	fetching: true,
+	loginout: false,
+	error: '',
+	loginFail: false,
+	registerFail: false
 }
 
 const userReducer = (state = initialState, action) => {
@@ -16,7 +18,7 @@ const userReducer = (state = initialState, action) => {
 	case 'SET_USERNAME' :
 		return {
 			...state,
-			username: action.username
+			email: action.email
 		}
 	case 'SET_PASSWORD' :
 		return {
@@ -26,54 +28,63 @@ const userReducer = (state = initialState, action) => {
 	case 'INIT_REGISTER' :
 		return {
 			...state,
-			fetching: true
+			fetching: true,
+			registerFail: false,
+			error: ''
 		}
 	case 'REGISTER_SUCCESS' :
 		return {
 			...state,
-			user: action.user,
-			error: null,
+			userdata: action.userdata,
+			registerFail: false,
+			error: '',
 			fetching: false
 		}
 	case 'REGISTER_FAIL' :
 		return {
 			...state,
+			registerFail: true,
 			error: action.response,
 			fetching: false
 		}
 	case 'INIT_LOGIN' :
 		return {
 			...state,
-			fetching: true
+			fetching: true,
+			loginFail: false,
+			error: ''
+            
 		}
 	case 'LOGIN_SUCCESS' :
 		return {
 			...state,
-			user: action.user,
-			error: null,
+			userdata: action.userdata,
+			loginFail: false,
+			error: '',
 			fetching: false
 		}
 	case 'LOGIN_FAIL' :
 		return {
 			...state,
+			loginFail: true,
 			error: action.response,
 			fetching: false
 		}
 	case 'CHECK_IF_ALREADY_AUTHENTICATED' :
 		return {
 			...state,
-			user: action.user ? action.user : null,
 			fetching: true
 		}
 	case 'AUTHENTICATION_CHECK_DONE' :
 		return {
 			...state,
+			userdata: action.userdata ? action.userdata : null,
 			fetching: false
 		}
 	case 'LOGGING_OUT' :
 		return {
 			...state,
-			user: null,
+			userdata: null,
 			loginout: true
 		}
 	case 'LOGOUT_DONE' :

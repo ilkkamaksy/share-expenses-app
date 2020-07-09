@@ -17,11 +17,10 @@ const registerUser = (credentials = null) =>  {
 			})
 		}
         
-		window.localStorage.setItem('loggedAppUser', JSON.stringify(response.data.data.register))
 		appService.setToken(response.data.data.register.token)
 		dispatch({
 			type: 'REGISTER_SUCCESS',
-			user: response.data.data.register
+			userdata: response.data.data.register
 		})
 	}
 }
@@ -43,11 +42,10 @@ const loginUser = (credentials = null) =>  {
 			})
 		}
         
-		window.localStorage.setItem('loggedAppUser', JSON.stringify(response.data.data.login))
 		appService.setToken(response.data.data.login.token)
 		dispatch({
 			type: 'LOGIN_SUCCESS',
-			user: response.data.data.login
+			userdata: response.data.data.login
 		})
 	}
 }
@@ -70,27 +68,29 @@ const setPassword = (e) => {
 	}
 }
 
-const authenticationCheck = () => {
+const authenticationCheck = (loggedInUser = '') => {
 	return async dispatch => {
-		const loggedInUserJSON = await window.localStorage.getItem('loggedAppUser')
-		let userdata = null
-		if (loggedInUserJSON) {
-			userdata = JSON.parse(loggedInUserJSON)
-			appService.setToken(userdata.token)
-		}
+        
 		dispatch({
 			type: 'CHECK_IF_ALREADY_AUTHENTICATED',
-			user: userdata
 		})
+        
+		let userdata = null
+        
+		if (loggedInUser) {
+			userdata = JSON.parse(loggedInUser)
+			appService.setToken(userdata.token)
+		}
+		
 		dispatch({
 			type: 'AUTHENTICATION_CHECK_DONE',
+			userdata: userdata
 		})
 	}
 }
 
 const logoutUser = () => {
 	return async dispatch => {
-		await window.localStorage.removeItem('loggedAppUser')
 		appService.setToken('')
 		dispatch({
 			type: 'LOGGING_OUT'

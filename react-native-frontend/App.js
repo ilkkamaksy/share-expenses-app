@@ -1,35 +1,17 @@
 import React from 'react'
-import { createStore, applyMiddleware, combineReducers } from 'redux'
-import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
-import { NavigationContainer } from '@react-navigation/native'
 
-import GroupNavigator from './navigation/GroupNavigation'
-import WelcomeNavigator from './navigation/WelcomeNavigation'
-import groupsReducer from './store/reducers/groups'
-import userReducer from './store/reducers/user'
+import configureStore from './store/store'
+import AppNavigation from './components/navigation/AppNavigation'
 
-const rootReducer = combineReducers({
-	groups: groupsReducer,
-	user: userReducer
-})
 
-const store = createStore(rootReducer, applyMiddleware(thunk))
+const store = configureStore()
 
 export default function App() {
-  
-	const storeState = store.getState()
 
 	return (
 		<Provider store={store}>
-			<NavigationContainer>
-				{storeState.user.user === null ? (
-					<WelcomeNavigator />
-				) : (
-					<GroupNavigator />
-				) 
-				} 
-			</NavigationContainer>
+			<AppNavigation />
 		</Provider>
 	)
 }

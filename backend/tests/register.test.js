@@ -41,7 +41,7 @@ describe('Register mutations', () => {
 				password: 'password'
 			},
 		})
-		console.log(res)
+		
 		expect(res.data.register.user.email).toEqual('a@a.a')
 	})
 
@@ -92,7 +92,7 @@ describe('Register mutations', () => {
 			},
 		})
 		
-		expect(res.errors[0].message).toEqual('User validation failed: email: Path `email` is required.')
+		expect(res.errors[0].message).toEqual('Please add a valid email address.')
 	})
 
 	it('user can not register with an email address length < 4', async () => {

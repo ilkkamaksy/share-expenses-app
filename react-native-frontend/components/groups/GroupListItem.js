@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native'
 import Colors from '../../constants/Colors'
 
@@ -44,5 +45,12 @@ const styles = StyleSheet.create({
 		margin: 10
 	}
 })
+
+GroupListItem.propTypes = {
+	title: PropTypes.string,
+	id: PropTypes.string,
+	ownerId: PropTypes.string,
+	onViewDetail: PropTypes.func
+}
 
 export default GroupListItem

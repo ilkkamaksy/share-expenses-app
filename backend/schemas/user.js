@@ -52,14 +52,22 @@ const resolvers = {
 		// email: String!
 		// password: String!
 		register: async (root, args) => {
-            
+			
+			if (!args.password || args.password.trim().length < 4) {
+				throw new UserInputError('Please add a password that is at least 4 characters long.')
+			}
+			
+			if (!args.email || args.email.trim().length < 3) {
+				throw new UserInputError('Please add a valid email address.')
+			}
+
 			const hashedPassword = await bcrypt.hash(args.password, 10)
             
 			let user = new User({
 				email: args.email,
 				password: hashedPassword
 			})
-            
+			
 			const savedUser = await user.save()
 
 			if (!savedUser) {
@@ -118,13 +126,13 @@ const resolvers = {
 			const user = await User.findOne({ email: args.email })
 
 			if ( !user || !args.password ) {
-				throw new Error('Invalid Login')
+				throw new Error('Invalid username or password')
 			}
 
 			const passwordMatch = await bcrypt.compare(args.password, user.password)
 
 			if (!passwordMatch) {
-				throw new Error('Invalid Login')
+				throw new Error('Invalid username or password')
 			}
 
 			const token = jwt.sign(

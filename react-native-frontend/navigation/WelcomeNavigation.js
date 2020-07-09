@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { createStackNavigator } from '@react-navigation/stack'
 import { Platform } from 'react-native'
 
@@ -7,13 +8,13 @@ import RegisterScreen from '../screens/user/RegisterScreen'
 import LoginScreen from '../screens/user/LoginScreen'
 import SplashScreen from '../screens/splash/SplashScreen'
 
-const Stack = createStackNavigator()
+const WelcomeStack = createStackNavigator()
 
-function GroupNavigation() {
+const WelcomeNavigator = ({ activeScreen = 'Splash' }) => {
 
 	return (
-		<Stack.Navigator
-			initialRouteName="Splash"
+		<WelcomeStack.Navigator
+			initialRouteName={activeScreen}
 			headerMode="screen"
 			screenOptions={{
 				headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary,
@@ -23,7 +24,7 @@ function GroupNavigation() {
 			}}
 		>
 
-			<Stack.Screen
+			<WelcomeStack.Screen
 				name="Splash"
 				component={SplashScreen}
 				options={{
@@ -31,7 +32,7 @@ function GroupNavigation() {
 				}}
 			/>
 
-			<Stack.Screen
+			<WelcomeStack.Screen
 				name="Register"
 				component={RegisterScreen}
 				options={{
@@ -39,16 +40,20 @@ function GroupNavigation() {
 				}}
 			/>
 
-			<Stack.Screen
+			<WelcomeStack.Screen
 				name="Login"
 				component={LoginScreen}
 				options={{
-					title: 'Login',
+					title: 'Login to your account',
 				}}
 			/>
             
-		</Stack.Navigator>
+		</WelcomeStack.Navigator>
 	)
 }
-  
-export default GroupNavigation
+
+WelcomeNavigator.propTypes = {
+	activeScreen: PropTypes.string
+}
+
+export default WelcomeNavigator

@@ -1,20 +1,36 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
+import { createDrawerNavigator } from '@react-navigation/drawer'
+import { useNavigation, DrawerActions } from '@react-navigation/native'
 import { Platform } from 'react-native'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 import Colors from '../constants/Colors'
 import GroupsOverViewScreen from '../screens/group/GroupsOverviewScreen'
 import GroupDetailScreen from '../screens/group/GroupDetailScreen'
+import Logout from '../components/navigation/Logout'
 
-const Stack = createStackNavigator()
+const HeaderRight = () => {
 
-function GroupNavigation() {
+	const navigation = useNavigation()
+    
+	return (
+		<Icon 
+			onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+			name='md-menu' 
+			size={23} 
+			color={Platform.OS === 'android' ? 'white' : Colors.primary} />
+	)
+}
+
+const GroupStack = createStackNavigator()
+
+function GroupNavigator() {
 
 	return (
-		<Stack.Navigator
-			initialRouteName="GroupList"
+		<GroupStack.Navigator initialRouteName="GroupList"
 			headerMode="screen"
-			screenOptions={{
+			defaultNavigationOptions={{
 				headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary,
 				headerStyle: { 
 					backgroundColor: Platform.OS === 'android' ? Colors.primary : '' 
@@ -22,22 +38,38 @@ function GroupNavigation() {
 			}}
 		>
 
-			<Stack.Screen
+			<GroupStack.Screen
 				name="GroupList"
 				component={GroupsOverViewScreen}
 				options={{
 					title: 'My Groups',
+					headerRight: ({}) => <HeaderRight />,
 				}}
+                
 			/>
 
-			<Stack.Screen
+			<GroupStack.Screen
 				name="GroupItem"
 				component={GroupDetailScreen}
-				options={({route}) => ({ title: route.params.title, id: route.params.id })}
+				options={{
+					navigation: ({route}) => ({ title: route.params.title, id: route.params.id }),
+					headerRight: ({}) => <HeaderRight />
+				}}
 			/>
             
-		</Stack.Navigator>
+		</GroupStack.Navigator>
 	)
 }
-  
-export default GroupNavigation
+
+const Drawer = createDrawerNavigator()
+
+function DrawerNavigator() {
+	return (
+		<Drawer.Navigator>
+			<Drawer.Screen name="My Groups" component={GroupNavigator} />
+			<Drawer.Screen name="Logout" component={Logout} />
+		</Drawer.Navigator>
+	)
+}
+
+export default DrawerNavigator

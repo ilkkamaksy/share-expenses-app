@@ -69,7 +69,7 @@ describe('Login mutations', () => {
 				password: 'wrongpass'
 			},
 		})
-		expect(res.errors[0].message).toEqual('Invalid Login')
+		expect(res.errors[0].message).toEqual('Invalid username or password')
 	})
     
 	it('user can not login without a valid email', async () => {
@@ -87,7 +87,7 @@ describe('Login mutations', () => {
 			},
 		})
 		
-		expect(res.errors[0].message).toEqual('Invalid Login')
+		expect(res.errors[0].message).toEqual('Invalid username or password')
 	})
 
 	it('user can not login with empty password and email', async () => {
@@ -105,7 +105,7 @@ describe('Login mutations', () => {
 			},
 		})
 		
-		expect(res.errors[0].message).toEqual('Invalid Login')
+		expect(res.errors[0].message).toEqual('Invalid username or password')
 	})
 })
 

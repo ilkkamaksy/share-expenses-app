@@ -1,6 +1,6 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { View, Text, StyleSheet } from 'react-native'
-import Colors from '../../constants/Colors'
 
 const Group = ({ title, id, ownerId }) => {
 	return (
@@ -33,5 +33,12 @@ const styles = StyleSheet.create({
 		marginBottom: 8
 	},
 })
+
+Group.propTypes = {
+	title: PropTypes.string,
+	id: PropTypes.string,
+	ownerId: PropTypes.string,
+	onViewDetail: PropTypes.func
+}
 
 export default Group

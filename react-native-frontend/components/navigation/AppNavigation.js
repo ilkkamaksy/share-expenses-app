@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { AsyncStorage } from 'react-native'
+// import { AsyncStorage } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { ActivityIndicator } from 'react-native-paper'
 
@@ -21,8 +21,6 @@ const AppNavigation = props => {
 		props.authenticationCheck()
 	}, [])
 
-	console.log(props)
-    
 	if (props.loading) {
 		return (
 			<ActivityIndicator animating={true} color={Colors.primary} />

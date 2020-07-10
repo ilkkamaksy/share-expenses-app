@@ -6,8 +6,6 @@ import { connect } from 'react-redux'
 
 const Home = props => {
 
-	console.log(props)
-
 	const registerButtonHandler = () => {
 		props.navigation.navigate('Register', {})
 	}

@@ -1,29 +1,29 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { ScrollView, View, Text, StyleSheet } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import { connect } from 'react-redux'
-import { registerUser } from '../../store/reducers/user'
+import { registerUser, setEmail, setPassword } from '../../store/reducers/user'
 
 const RegisterForm = props => {
 
-	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
-
+	const { email, password, setEmail, setPassword, registerUser, error } = props
+	
 	const submitHandler = () => {
-		props.registerUser({email, password})
+		registerUser({email, password})
 	}
 
 	return (
 		<ScrollView>
 
 			<View>
-				<Text>{props.error}</Text>
+				<Text>{error}</Text>
 			</View>
 
 			<View style={styles.form}>
 				<View style={styles.formControl}>
 					<TextInput 
+						accessibilityLabel="Email"
 						label="Email" 
 						style={styles.input} 
 						value={email}
@@ -32,6 +32,7 @@ const RegisterForm = props => {
 				</View>
 				<View style={styles.formControl}>
 					<TextInput 
+						accessibilityLabel="Password"
 						label="password" 
 						secureTextEntry={true}
 						style={styles.input} 
@@ -56,24 +57,32 @@ const styles = StyleSheet.create({
 
 RegisterForm.propTypes = {
 	user: PropTypes.object,
+	email: PropTypes.string,
+	password: PropTypes.string,
 	fetching: PropTypes.bool,
 	error: PropTypes.string,
 	registerFail: PropTypes.bool,
-	registerUser: PropTypes.func
+	registerUser: PropTypes.func,
+	setEmail: PropTypes.func,
+	setPassword: PropTypes.func
 }
 
 const mapStateToProps = (state) => {
 	return {
 		user: state.user.user,
 		fetching: state.user.fetching,
-		error: state.user.error
+		error: state.user.error,
+		email: state.user.email,
+		password: state.user.password
 	}
 }
 
 const connectedRegisterForm = connect(
 	mapStateToProps,
 	{
-		registerUser
+		registerUser,
+		setEmail,
+		setPassword
 	}
 )(RegisterForm)
 

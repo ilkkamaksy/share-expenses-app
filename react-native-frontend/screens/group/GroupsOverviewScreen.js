@@ -1,29 +1,16 @@
 import React from 'react'
-import { FlatList, Text, Button } from 'react-native'
-import { useSelector } from 'react-redux'
-import GroupListItem from '../../components/groups/GroupListItem'
-import { ScrollView } from 'react-native-gesture-handler'
+import PropTypes from 'prop-types'
+import GroupList from '../../components/groups/GroupList'
 
-const GroupsOverViewScreen = props => {
-	const groups = useSelector(state => state.groups.userGroups)
+const GroupsOverViewScreen = ({navigation}) => {
+	
 	return (
-		<ScrollView>
-			<FlatList 
-				data={groups} 
-				renderItem={itemData => <GroupListItem 
-					title={itemData.item.title} 
-					id={itemData.item.id}
-					ownerId={itemData.item.ownerId}
-					onViewDetail={() => {
-						props.navigation.navigate('GroupItem', {
-							title: itemData.item.title,
-							id: itemData.item.id
-						})
-					}}
-				/>} 
-			/>
-		</ScrollView>
+		<GroupList navigation={navigation} />
 	) 
+}
+
+GroupsOverViewScreen.propTypes = {
+	navigation: PropTypes.object
 }
 
 export default GroupsOverViewScreen

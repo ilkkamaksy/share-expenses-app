@@ -1,5 +1,6 @@
 import React from 'react'
-import { ScrollView, View, Text, Button, StyleSheet } from 'react-native'
+import PropTypes from 'prop-types'
+import { ScrollView } from 'react-native'
 import { useSelector } from 'react-redux'
 import Group from '../../components/groups/Group'
 
@@ -20,6 +21,8 @@ const GroupDetailScreen = props => {
 	)
 }
 
-const styles = StyleSheet.create({})
+GroupDetailScreen.propTypes = {
+	route: PropTypes.object
+}
 
 export default GroupDetailScreen

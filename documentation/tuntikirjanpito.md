@@ -6,4 +6,5 @@
 | 7.7. |   8  | Lisätty rekisteröinnin ja kirjautumisen testejä backendiin, React Native -frontendin skeleton-mallin rakennus |
 | 8.7. |   7  | Rekisteröityminen ja kirjautuminen lisätty frontendiin |
 | 9.7. |   7  | Kirjautumisen, rekisteröinnin ja navigaation testejä lisätty frontendiin |
-| yht   | 30   | | 
+| 10.7. |   8  | Lisää kirjautumisen, rekisteröinnin, navigaation ja komponenttien testejä frontendiin |
+| yht   | 38   | | 

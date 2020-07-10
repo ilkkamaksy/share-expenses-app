@@ -43,7 +43,8 @@ function GroupNavigator() {
 				component={GroupsOverViewScreen}
 				options={{
 					title: 'My Groups',
-					headerRight: ({}) => <HeaderRight />,
+					// eslint-disable-next-line react/display-name
+					headerRight: () => <HeaderRight />,
 				}}
                 
 			/>
@@ -53,7 +54,8 @@ function GroupNavigator() {
 				component={GroupDetailScreen}
 				options={{
 					navigation: ({route}) => ({ title: route.params.title, id: route.params.id }),
-					headerRight: ({}) => <HeaderRight />
+					// eslint-disable-next-line react/display-name
+					headerRight: () => <HeaderRight />
 				}}
 			/>
             

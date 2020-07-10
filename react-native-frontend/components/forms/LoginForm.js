@@ -1,31 +1,31 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
 import { ScrollView, View, Text, StyleSheet } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import { connect } from 'react-redux'
 
-import { loginUser } from '../../store/reducers/user'
+import { loginUser, setPassword, setEmail } from '../../store/reducers/user'
 
 const LoginForm = props => {
 
-	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
+	const { email, password, loginUser, setEmail, setPassword, error } = props
 
 	const submitHandler = () => {
-		props.loginUser({email, password})
+		loginUser({email, password})
 	}
 
 	return (
 		<ScrollView>
 
 			<View>
-				<Text>{props.error}</Text>
+				<Text>{error}</Text>
 			</View>
 			
 			<View style={styles.form}>
 				<View style={styles.formControl}>
 					<TextInput 
+						accessibilityLabel="Email"
 						label="Email" 
 						style={styles.input} 
 						value={email}
@@ -34,7 +34,8 @@ const LoginForm = props => {
 				</View>
 				<View style={styles.formControl}>
 					<TextInput 
-						label="password" 
+						accessibilityLabel="Password"
+						label="Password" 
 						secureTextEntry={true}
 						style={styles.input} 
 						value={password}
@@ -58,10 +59,14 @@ const styles = StyleSheet.create({
 
 LoginForm.propTypes = {
 	user: PropTypes.object,
+	email: PropTypes.string,
+	password: PropTypes.string,
 	fetching: PropTypes.bool,
 	error: PropTypes.string,
 	loginFail: PropTypes.bool,
-	loginUser: PropTypes.func
+	loginUser: PropTypes.func,
+	setEmail: PropTypes.func,
+	setPassword: PropTypes.func
 }
 
 const mapStateToProps = (state) => {
@@ -69,14 +74,18 @@ const mapStateToProps = (state) => {
 		user: state.user.user,
 		fetching: state.user.fetching,
 		error: state.user.error,
-		loginFail: state.user.loginFail
+		loginFail: state.user.loginFail,
+		email: state.user.email,
+		password: state.user.password
 	}
 }
 
 const connectedLoginForm = connect(
 	mapStateToProps,
 	{
-		loginUser
+		loginUser,
+		setPassword,
+		setEmail
 	}
 )(LoginForm)
 

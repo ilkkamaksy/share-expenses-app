@@ -7,7 +7,7 @@
     "start": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=dev nodemon index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand --collectCoverage",
-    "eslint": "eslint ."
+    "lint": "eslint ."
   },
   "author": "",
   "license": "ISC",

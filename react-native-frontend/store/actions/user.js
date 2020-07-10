@@ -50,20 +50,20 @@ const loginUser = (credentials = null) =>  {
 	}
 }
 
-const setUsername = (e) => {
+const setEmail = (email) => {
 	return dispatch => {
 		dispatch({
 			type: 'SET_USERNAME',
-			username: e.target.value
+			email
 		})
 	}
 }
 
-const setPassword = (e) => {
+const setPassword = (password) => {
 	return dispatch => {
 		dispatch({
 			type: 'SET_PASSWORD',
-			password: e.target.value
+			password
 		})
 	}
 }
@@ -107,5 +107,5 @@ export default {
 	logoutUser,
 	authenticationCheck,
 	setPassword,
-	setUsername
+	setEmail
 }

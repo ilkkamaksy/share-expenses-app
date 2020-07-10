@@ -1,6 +1,6 @@
 import userActions from '../actions/user'
 
-export const { registerUser, loginUser, logoutUser, authenticationCheck } = userActions
+export const { registerUser, loginUser, logoutUser, authenticationCheck, setEmail, setPassword } = userActions
 
 const initialState = {
 	email: '',
@@ -38,7 +38,9 @@ const userReducer = (state = initialState, action) => {
 			userdata: action.userdata,
 			registerFail: false,
 			error: '',
-			fetching: false
+			fetching: false,
+			password: '',
+			email: ''
 		}
 	case 'REGISTER_FAIL' :
 		return {
@@ -61,7 +63,9 @@ const userReducer = (state = initialState, action) => {
 			userdata: action.userdata,
 			loginFail: false,
 			error: '',
-			fetching: false
+			fetching: false,
+			password: '',
+			email: ''
 		}
 	case 'LOGIN_FAIL' :
 		return {

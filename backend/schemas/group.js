@@ -1,4 +1,4 @@
-const { UserInputError } = require('apollo-server')
+const { UserInputError, AuthenticationError } = require('apollo-server')
 const Group = require('../models/group')
 
 const typeDef = `
@@ -14,35 +14,48 @@ const typeDef = `
 const resolvers = {
 	Query: {
 		// args:
-		// userid: String 
-		getGroupsByUserId: async (root, args) => {
+		getGroups: async (root, args, context) => {
 
-			if ( args.userid ) {
-				return Group.find({ users: { $in: [ args.userid ] } })
-					.populate('owner', { email: 1, firstname: 1, lastname: 1 })
-					.populate('users')
-					.populate('people')
-			} 
+			const currentUser = context.currentUser
+			
+			if (!currentUser) {
+				throw new AuthenticationError('not authenticated')
+			}
+			
+			return Group.find({ users: { $in: [ currentUser._id ] } }, null, {sort: { lastUpdatedAt: -1 }})
+				.populate('owner', { email: 1, firstname: 1, lastname: 1 })
+				.populate('users')
+				.populate('people')
 		},
 	},
 	Mutation: {
 		// args:
 		// title: String!
-		// owner: String!
 		// users: [String!]
 		// people: [String!]
-		addGroup: async (root, args) => {
-            
+		saveGroup: async (root, args, context) => {
+			
+			const currentUser = context.currentUser
+
+			if (!currentUser) {
+				throw new AuthenticationError('not authenticated')
+			}
+
 			try {
 
 				let group = {
 					title: args.title,
-					owner: args.owner,
-					users: args.users ? args.users : [args.owner],
-					people: args.people ? args.people : []
+					owner: currentUser._id,
+					users: args.users.length > 0 ? args.users : [currentUser._id],
+					people: args.people ? args.people : [],
+					createdAt: Date.now(),
+					lastUpdatedAt: Date.now()
 				}
 				
 				let newGroup = new Group(group)
+				group.createdAt instanceof Date
+				group.lastUpdatedAt instanceof Date
+
 				await newGroup.save()
 				
 				return Group.findById(newGroup._id)

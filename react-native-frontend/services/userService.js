@@ -1,5 +1,7 @@
 import axios from 'axios'
-const apiUrl = 'http://localhost:4000/graphql'
+const apiUrl = 'http://192.168.1.17:4000/graphql'
+
+import util from './util' 
 
 const REGISTER = `
 	mutation register (
@@ -22,7 +24,7 @@ const LOGIN = `
 	mutation login (
 		$email: String!
 		$password: String!
-  ) {
+  	) {
 	  login (
     	email: $email,
 		password: $password
@@ -34,6 +36,14 @@ const LOGIN = `
         }
 	}
   }
+`
+const ME = `
+	query {
+		me {
+			email
+			id
+		}
+  	}
 `
 
 const register = async credentials => {
@@ -62,4 +72,16 @@ const login = async credentials => {
 	return response
 }
 
-export default { login, register }
+const me = async () => {
+
+	const config = {
+		headers: {
+			'Authorization': util.token
+		}
+	}
+	const response = await axios.post(apiUrl, { query: ME }, config)
+
+	return response
+}
+
+export default { login, register, me }

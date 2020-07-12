@@ -1,14 +1,15 @@
 import * as React from 'react'
+import PropTypes from 'prop-types'
 import { StyleSheet } from 'react-native'
 import { FAB } from 'react-native-paper'
 import Colors from '../../constants/Colors'
 
-const FloatingActionButton = () => (
+const FloatingActionButton = props => (
 	<FAB
 		style={styles.fab}
 		small
 		icon="plus"
-		onPress={() => console.log('Pressed')}
+		onPress={() => props.onPress()}
 	/>
 )
 
@@ -21,5 +22,9 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.primary
 	},
 })
+
+FloatingActionButton.propTypes = {
+	onPress: PropTypes.func
+}
 
 export default FloatingActionButton

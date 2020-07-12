@@ -6,6 +6,7 @@ import { TextInput, Button } from 'react-native-paper'
 import { connect } from 'react-redux'
 
 import { loginUser, setPassword, setEmail } from '../../store/reducers/user'
+import Colors from '../../constants/Colors'
 
 const LoginForm = props => {
 
@@ -27,23 +28,25 @@ const LoginForm = props => {
 					<TextInput 
 						accessibilityLabel="Email"
 						label="Email" 
-						style={styles.input} 
+						autoCapitalize="none"
+						style={styles.emailField}
 						value={email}
 						onChangeText={text => setEmail(text)}
 					/>
 				</View>
 				<View style={styles.formControl}>
 					<TextInput 
+						style={styles.textField} 
 						accessibilityLabel="Password"
 						label="Password" 
+						autoCapitalize="none"
 						secureTextEntry={true}
-						style={styles.input} 
 						value={password}
 						onChangeText={text => setPassword(text)}
 					/>
 				</View>
 				<View style={styles.formControl}>
-					<Button mode="contained" onPress={submitHandler}>
+					<Button mode="contained" onPress={submitHandler} color={Colors.primary}>
                         Login
 					</Button>
 				</View>
@@ -54,7 +57,12 @@ const LoginForm = props => {
 }
 
 const styles = StyleSheet.create({
+	emailField: {
+		
+	},
+	textField: {
 
+	}
 })
 
 LoginForm.propTypes = {

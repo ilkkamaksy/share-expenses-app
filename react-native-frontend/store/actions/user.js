@@ -1,5 +1,7 @@
+import { AsyncStorage } from 'react-native'
+	
 import userService from '../../services/userService'
-import appService from '../../services/appService'
+import util from '../../services/util'
 
 const registerUser = (credentials = null) =>  {
 	return async dispatch => {
@@ -16,8 +18,11 @@ const registerUser = (credentials = null) =>  {
 				response: response.data.errors[0].message
 			})
 		}
-        
-		appService.setToken(response.data.data.register.token)
+		
+	
+		await AsyncStorage.setItem('loggedAppUser', JSON.stringify(response.data.data.register))
+	
+		util.setToken(response.data.data.register.token)
 		dispatch({
 			type: 'REGISTER_SUCCESS',
 			userdata: response.data.data.register
@@ -41,8 +46,11 @@ const loginUser = (credentials = null) =>  {
 				response: response.data.errors[0].message
 			})
 		}
-        
-		appService.setToken(response.data.data.login.token)
+	
+	
+		await AsyncStorage.setItem('loggedAppUser', JSON.stringify(response.data.data.login))
+	
+		util.setToken(response.data.data.login.token)
 		dispatch({
 			type: 'LOGIN_SUCCESS',
 			userdata: response.data.data.login
@@ -68,7 +76,7 @@ const setPassword = (password) => {
 	}
 }
 
-const authenticationCheck = (loggedInUser = '') => {
+const authenticationCheck = () => {
 	return async dispatch => {
         
 		dispatch({
@@ -76,10 +84,12 @@ const authenticationCheck = (loggedInUser = '') => {
 		})
         
 		let userdata = null
-        
+		
+		const loggedInUser = await AsyncStorage.getItem('loggedAppUser')
+
 		if (loggedInUser) {
 			userdata = JSON.parse(loggedInUser)
-			appService.setToken(userdata.token)
+			util.setToken(userdata.token)
 		}
 		
 		dispatch({
@@ -91,10 +101,13 @@ const authenticationCheck = (loggedInUser = '') => {
 
 const logoutUser = () => {
 	return async dispatch => {
-		appService.setToken('')
+		util.setToken('')
 		dispatch({
 			type: 'LOGGING_OUT'
 		})
+		
+		await window.localStorage.removeItem('loggedAppUser')
+		
 		dispatch({
 			type: 'LOGOUT_DONE'
 		})

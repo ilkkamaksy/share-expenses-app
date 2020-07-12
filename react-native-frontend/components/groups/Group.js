@@ -2,31 +2,35 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { View, Text, StyleSheet } from 'react-native'
 
+import FloatingActionButton from '../UI/FloatingActionButton'
+
 const Group = ({ title, id, ownerId }) => {
 	return (
-		<View style={styles.group}>
-			<View style={styles.textContainer}>
-				<Text style={styles.title}>{title}</Text>
-				<Text>{id}</Text>
-				<Text>{ownerId}</Text>
+		<View style={styles.container}>
+			<View style={styles.group}>
+				<View style={styles.textContainer}>
+					<Text style={styles.title}>{title}</Text>
+					<Text>{id}</Text>
+					<Text>{ownerId}</Text>
+				</View>
 			</View>
+			<FloatingActionButton onPress={() => console.log('pressed')} />
 		</View>
 	)
 }
 
 const styles = StyleSheet.create({
+	container: {
+		flex: 1
+	},
 	group: {
-		shadowColor: 'black',
-		shadowOpacity: 0.2,
-		shadowOffset: {width: 0, height: 2},
-		shadowRadius: 8,
-		elevation: 5,
 		borderRadius: 4,
 		backgroundColor: 'white',
-		margin: 10
+		margin: 10,
 	},
 	textContainer: {
-		margin: 10
+		margin: 10,
+		textAlign: 'center'
 	},
 	title: {
 		fontSize: 18,

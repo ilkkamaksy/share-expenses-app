@@ -5,6 +5,8 @@ const schema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
+	createdAt: Date,
+	lastUpdatedAt: Date,
 	owner: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User'
@@ -18,6 +20,5 @@ const schema = new mongoose.Schema({
 		ref: 'Person'
 	}]
 })
-
     
 module.exports = mongoose.model('Group', schema)

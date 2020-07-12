@@ -7,4 +7,6 @@
 | 8.7. |   7  | Rekisteröityminen ja kirjautuminen lisätty frontendiin |
 | 9.7. |   7  | Kirjautumisen, rekisteröinnin ja navigaation testejä lisätty frontendiin |
 | 10.7. |   8  | Lisää kirjautumisen, rekisteröinnin, navigaation ja komponenttien testejä frontendiin |
-| yht   | 38   | | 
+| 11.7. |   4  | Ryhmien lisäys ja listaus frontendissa, tallennus backendissä |
+| 12.7. |   6  | Jatkettu CRUD-operaatioita ryhmille, datePicker-moduulin implementointia |
+| yht   | 48   | | 

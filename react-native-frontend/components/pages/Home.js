@@ -4,6 +4,8 @@ import { ScrollView, View, StyleSheet } from 'react-native'
 import { Button } from 'react-native-paper'
 import { connect } from 'react-redux'
 
+import Colors from '../../constants/Colors'
+
 const Home = props => {
 
 	const registerButtonHandler = () => {
@@ -17,10 +19,10 @@ const Home = props => {
 	return (
 		<ScrollView>
 			<View style={styles.container}>
-				<Button mode="contained" onPress={loginButtonHandler}>
+				<Button mode="contained" onPress={loginButtonHandler} color={Colors.primary}>
                     Login
 				</Button>
-				<Button mode="outlined" onPress={registerButtonHandler}>
+				<Button mode="outlined" onPress={registerButtonHandler} color={Colors.primary}>
                     Register
 				</Button>
 			</View>

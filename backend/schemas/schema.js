@@ -7,7 +7,7 @@ const group = require('./group')
 
 const Query = `
         type Query {
-            getGroupsByUserId(userid: String): [Group!]!
+            getGroups: [Group]
             getUserById(id: String): User!
             getUserByEmail(email: String): User!
             getPeople(id: String, name: String): [Person!]
@@ -37,9 +37,8 @@ const Mutation = `
             removeUser (
                 id: String!
             ): User
-            addGroup(
+            saveGroup(
                 title: String!
-                owner: String!
                 users: [String]
                 people: [String]
             ): Group

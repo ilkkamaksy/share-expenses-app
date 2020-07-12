@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-// import { AsyncStorage } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { ActivityIndicator } from 'react-native-paper'
 
@@ -11,11 +10,6 @@ import AppNavigator from '../../navigation/GroupNavigation'
 import Colors from '../../constants/Colors'
 
 const AppNavigation = props => {
-
-	// const loggedInUserJSON = await AsyncStorage.getItem('loggedAppUser')
-	// await AsyncStorage.setItem('loggedAppUser', JSON.stringify(response.data.data.register))
-	// await AsyncStorage.setItem('loggedAppUser', JSON.stringify(response.data.data.login))
-	// await window.localStorage.removeItem('loggedAppUser')
 
 	useEffect(() => {
 		props.authenticationCheck()
@@ -45,7 +39,7 @@ AppNavigation.propTypes = {
 	userdata: PropTypes.object,
 	loading: PropTypes.bool,
 	authenticationCheck: PropTypes.func,
-	error: PropTypes.object,
+	error: PropTypes.string,
 	loginFail: PropTypes.bool,
 	registerFail: PropTypes.bool
 }

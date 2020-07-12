@@ -1,41 +1,125 @@
 import axios from 'axios'
-const baseUrl = '/api/blogs'
+const apiUrl = 'http://192.168.1.17:4000/graphql'
 
-let token = null
+import util from './util' 
 
-const setToken = newToken => {
-	token = `bearer ${newToken}`
-}
+const SAVE_GROUP = `
+	mutation saveGroup(
+		$title: String!
+		$users: [String]
+		$people: [String]
+	) {
+		saveGroup(
+			title: $title
+			users: $users
+			people: $people
+		) {
+			title
+			owner {
+				email
+				id
+			}
+			users {
+				email
+				id
+			}
+			people {
+				id
+				name
+			}
+		}
+	}
+`
 
-const getAll = async () => {
-	const results = await axios.get(baseUrl)
-	return results.data
-}
+const GET_GROUPS = `
+	query {
+		getGroups {
+			title
+			id
+			owner {
+				id
+			}
+		}
+	}
+`
 
-const create = async newObject => {
-	const config = {
-		headers: { Authorization: token },
+const REMOVE_GROUP = `
+	mutation removeGroup(
+		$id: String!
+	) {
+		removeGroup(
+			id: $id
+		) {
+			title
+			owner {
+				email
+				id
+			}
+			users {
+				email
+				id
+			}
+			people {
+				id
+				name
+			}
+		}
+	}
+`
+
+const saveGroup = async (args) => {
+	const variables = { 
+		title: args.title,
+		users: args.users,
+		people: args.people
 	}
 
-	const response = await axios.post(baseUrl, newObject, config)
-	return response.data
-}
-
-const update = async (id, newObject) => {
-	const config = {
-		headers: { Authorization: token }
+	const data = {
+		query: SAVE_GROUP,
+		variables: variables
 	}
 
-	const response = await axios.put(`${baseUrl}/${id}`, newObject, config)
-	return response.data
-}
-
-const remove = async id => {
 	const config = {
-		headers: { Authorization: token }
+		headers: {
+			'Authorization': util.token
+		}
 	}
 
-	await axios.delete(`${baseUrl}/${id}`, config)
+	return await axios.post(apiUrl, data, config)
 }
 
-export default { getAll, create, update, remove, setToken }
+const getGroups = async () => {
+	
+	const data = {
+		query: GET_GROUPS
+	}
+
+	const config = {
+		headers: {
+			'Authorization': util.token
+		}
+	}
+
+	return await axios.post(apiUrl, data, config)
+}
+
+const removeGroup = async id => {
+	const variables = { 
+		id: id
+	}
+
+	const data = {
+		query: REMOVE_GROUP,
+		variables: variables
+	}
+
+	const config = {
+		headers: {
+			'Authorization': util.token
+		}
+	}
+
+	return await axios.post(apiUrl, data, config)
+}
+
+export default { saveGroup, getGroups, removeGroup }

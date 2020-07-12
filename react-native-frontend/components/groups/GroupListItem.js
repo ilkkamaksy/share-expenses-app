@@ -3,17 +3,18 @@ import PropTypes from 'prop-types'
 import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native'
 import Colors from '../../constants/Colors'
 
-const GroupListItem = ({ title, id, ownerId, onViewDetail }) => {
+const GroupListItem = ({ item, onViewDetail, removeGroup }) => {
 	return (
-		<TouchableOpacity onPress={onViewDetail}>
+		<TouchableOpacity onPress={onViewDetail} style={styles.groupContainer}>
 			<View style={styles.group}>
 				<View style={styles.textContainer}>
-					<Text style={styles.title}>{title}</Text>
-					<Text>{id}</Text>
-					<Text>{ownerId}</Text>
+					<Text style={styles.title}>{item.title}</Text>
+					<Text>{`Group id ${item.id}`}</Text>
+					<Text>{`Group owner id ${item.owner.id}`}</Text>
 				</View>
 				<View style={styles.actions}>
 					<Button color={Colors.primary} title="view" onPress={onViewDetail} />
+					<Button color={Colors.accent} title="remove" onPress={() => removeGroup(item.id)} />
 				</View>
 			</View>
 		</TouchableOpacity>
@@ -21,15 +22,15 @@ const GroupListItem = ({ title, id, ownerId, onViewDetail }) => {
 }
 
 const styles = StyleSheet.create({
+	groupContainer: {
+		display: 'flex',
+		alignItems: 'center'
+	},
 	group: {
-		shadowColor: 'black',
-		shadowOpacity: 0.2,
-		shadowOffset: {width: 0, height: 2},
-		shadowRadius: 8,
-		elevation: 5,
 		borderRadius: 4,
 		backgroundColor: 'white',
-		margin: 10
+		margin: 10,
+		width: '80%'
 	},
 	textContainer: {
 		margin: 10
@@ -47,10 +48,9 @@ const styles = StyleSheet.create({
 })
 
 GroupListItem.propTypes = {
-	title: PropTypes.string,
-	id: PropTypes.string,
-	ownerId: PropTypes.string,
-	onViewDetail: PropTypes.func
+	item: PropTypes.object,
+	onViewDetail: PropTypes.func,
+	removeGroup: PropTypes.func
 }
 
 export default GroupListItem

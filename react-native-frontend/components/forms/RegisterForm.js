@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 import { ScrollView, View, Text, StyleSheet } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import { connect } from 'react-redux'
+
 import { registerUser, setEmail, setPassword } from '../../store/reducers/user'
+import Colors from '../../constants/Colors'
 
 const RegisterForm = props => {
 
@@ -41,7 +43,7 @@ const RegisterForm = props => {
 					/>
 				</View>
 				<View style={styles.formControl}>
-					<Button mode="contained" onPress={submitHandler}>
+					<Button mode="contained" onPress={submitHandler} color={Colors.primary}>
                         Sign up!
 					</Button>
 				</View>

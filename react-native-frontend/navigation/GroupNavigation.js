@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import Colors from '../constants/Colors'
 import GroupsOverViewScreen from '../screens/group/GroupsOverviewScreen'
 import GroupDetailScreen from '../screens/group/GroupDetailScreen'
+import EditGroupScreen from '../screens/group/EditGroupScreen'
 import Logout from '../components/navigation/Logout'
 
 const HeaderRight = () => {
@@ -28,7 +29,8 @@ const GroupStack = createStackNavigator()
 function GroupNavigator() {
 
 	return (
-		<GroupStack.Navigator initialRouteName="GroupList"
+		<GroupStack.Navigator 
+			initialRouteName="GroupList"
 			headerMode="screen"
 			defaultNavigationOptions={{
 				headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary,
@@ -53,6 +55,17 @@ function GroupNavigator() {
 				name="GroupItem"
 				component={GroupDetailScreen}
 				options={{
+					navigation: ({route}) => ({ title: route.params.title, id: route.params.id }),
+					// eslint-disable-next-line react/display-name
+					headerRight: () => <HeaderRight />
+				}}
+			/>
+
+			<GroupStack.Screen
+				name="EditGroup"
+				component={EditGroupScreen}
+				options={{
+					title: 'Add a new group',
 					navigation: ({route}) => ({ title: route.params.title, id: route.params.id }),
 					// eslint-disable-next-line react/display-name
 					headerRight: () => <HeaderRight />

@@ -8,7 +8,8 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import Colors from '../constants/Colors'
 import GroupsOverViewScreen from '../screens/group/GroupsOverviewScreen'
 import GroupDetailScreen from '../screens/group/GroupDetailScreen'
-import EditGroupScreen from '../screens/group/EditGroupScreen'
+import EditGroupInfoScreen from '../screens/group/EditGroupInfoScreen'
+import EditGroupPeopleScreen from '../screens/group/EditGroupPeopleScreen'
 import Logout from '../components/navigation/Logout'
 
 const HeaderRight = () => {
@@ -62,11 +63,21 @@ function GroupNavigator() {
 			/>
 
 			<GroupStack.Screen
-				name="EditGroup"
-				component={EditGroupScreen}
+				name="EditGroupInfo"
+				component={EditGroupInfoScreen}
 				options={{
 					title: 'Add a new group',
 					navigation: ({route}) => ({ title: route.params.title, id: route.params.id }),
+					// eslint-disable-next-line react/display-name
+					headerRight: () => <HeaderRight />
+				}}
+			/>
+
+			<GroupStack.Screen
+				name="EditGroupPeople"
+				component={EditGroupPeopleScreen}
+				options={{
+					title: 'Add group members',
 					// eslint-disable-next-line react/display-name
 					headerRight: () => <HeaderRight />
 				}}

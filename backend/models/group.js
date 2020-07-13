@@ -5,6 +5,13 @@ const schema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
+	date: {
+		type: Date,
+		required: true
+	},
+	location: {
+		type: String
+	},
 	createdAt: Date,
 	lastUpdatedAt: Date,
 	owner: {

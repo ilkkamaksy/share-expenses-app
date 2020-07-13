@@ -39,6 +39,8 @@ const Mutation = `
             ): User
             saveGroup(
                 title: String!
+                date: String!
+                location: String
                 users: [String]
                 people: [String]
             ): Group

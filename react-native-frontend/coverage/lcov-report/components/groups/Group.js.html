@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">80% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>4/5</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>1/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">80% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>4/5</span>
             </div>
         
             
@@ -100,24 +100,32 @@
 <a name='L41'></a><a href='#L41'>41</a>
 <a name='L42'></a><a href='#L42'>42</a>
 <a name='L43'></a><a href='#L43'>43</a>
-<a name='L44'></a><a href='#L44'>44</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -147,31 +155,35 @@
 import PropTypes from 'prop-types'
 import { View, Text, StyleSheet } from 'react-native'
 &nbsp;
+import FloatingActionButton from '../UI/FloatingActionButton'
+&nbsp;
 const Group = ({ title, id, ownerId }) =&gt; {
 	return (
-		&lt;View style={styles.group}&gt;
-			&lt;View style={styles.textContainer}&gt;
-				&lt;Text style={styles.title}&gt;{title}&lt;/Text&gt;
-				&lt;Text&gt;{id}&lt;/Text&gt;
-				&lt;Text&gt;{ownerId}&lt;/Text&gt;
+		&lt;View style={styles.container}&gt;
+			&lt;View style={styles.group}&gt;
+				&lt;View style={styles.textContainer}&gt;
+					&lt;Text style={styles.title}&gt;{title}&lt;/Text&gt;
+					&lt;Text&gt;{id}&lt;/Text&gt;
+					&lt;Text&gt;{ownerId}&lt;/Text&gt;
+				&lt;/View&gt;
 			&lt;/View&gt;
+			&lt;FloatingActionButton onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >console.log('pressed')}</span> /&gt;
 		&lt;/View&gt;
 	)
 }
 &nbsp;
 const styles = StyleSheet.create({
+	container: {
+		flex: 1
+	},
 	group: {
-		shadowColor: 'black',
-		shadowOpacity: 0.2,
-		shadowOffset: {width: 0, height: 2},
-		shadowRadius: 8,
-		elevation: 5,
 		borderRadius: 4,
 		backgroundColor: 'white',
-		margin: 10
+		margin: 10,
 	},
 	textContainer: {
-		margin: 10
+		margin: 10,
+		textAlign: 'center'
 	},
 	title: {
 		fontSize: 18,
@@ -193,7 +205,7 @@ export default Group</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri Jul 10 2020 18:47:41 GMT+0300 (GMT+03:00)
+                at Mon Jul 13 2020 17:12:40 GMT+0300 (GMT+03:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>

@@ -4,11 +4,11 @@ import { ScrollView, View, Text, StyleSheet } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import { connect } from 'react-redux'
 
+import { setTitle, saveGroup } from '../../store/reducers/groups'
+
 const EditGroupForm = props => {
 
-	const { error, selectedGroup, editedGroupTitle, setTitle, saveGroup } = props
-
-	console.log(props)
+	const { error, editedGroupTitle, setTitle, saveGroup } = props
 
 	const submitHandler = () => {
 		saveGroup({title: editedGroupTitle, users: [], people: []})	

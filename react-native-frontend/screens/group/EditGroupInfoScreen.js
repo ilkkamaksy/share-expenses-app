@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import EditGroupInfo from '../../components/forms/EditGroupInfo'
 
-const EditGroupScreen = props => {
+const EditGroupInfoScreen = props => {
 
 	const groupId = props.route.params.id
 	const selectedGroup = useSelector(state => 
@@ -14,9 +14,9 @@ const EditGroupScreen = props => {
 	)
 }
 
-EditGroupScreen.propTypes = {
+EditGroupInfoScreen.propTypes = {
 	navigation: PropTypes.object,
 	route: PropTypes.object
 }
 
-export default EditGroupScreen
+export default EditGroupInfoScreen

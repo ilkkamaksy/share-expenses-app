@@ -6,15 +6,22 @@ import util from './util'
 const SAVE_GROUP = `
 	mutation saveGroup(
 		$title: String!
+		$date: String!
+		$location: String
 		$users: [String]
 		$people: [String]
 	) {
 		saveGroup(
 			title: $title
+			date: $date
+			location: $location
 			users: $users
 			people: $people
 		) {
 			title
+			id
+			date
+			location
 			owner {
 				email
 				id
@@ -34,10 +41,20 @@ const SAVE_GROUP = `
 const GET_GROUPS = `
 	query {
 		getGroups {
-			title
 			id
+			title
+			date
+			location
 			owner {
 				id
+			}
+			users {
+				id
+				email
+			}
+			people {
+				id
+				name
 			}
 		}
 	}
@@ -67,11 +84,13 @@ const REMOVE_GROUP = `
 	}
 `
 
-const saveGroup = async (args) => {
+const saveGroup = async (group) => {
 	const variables = { 
-		title: args.title,
-		users: args.users,
-		people: args.people
+		title: group.title,
+		date: group.date,
+		location: group.location,
+		users: group.users,
+		people: group.people
 	}
 
 	const data = {

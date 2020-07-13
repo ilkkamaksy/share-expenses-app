@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { FlatList, StyleSheet, View } from 'react-native'
 import GroupListItem from './GroupListItem'
-import { ScrollView } from 'react-native-gesture-handler'
 import { ActivityIndicator } from 'react-native-paper'
 
 import { getGroups, removeGroup } from '../../store/reducers/groups'
@@ -27,25 +26,23 @@ const GroupList = props => {
 
 	return (
 		<View style={styles.container}>
-			<ScrollView>
-				<FlatList 
-					keyExtractor={item=> item.id}
-					data={userGroups} 
-					renderItem={itemData => <GroupListItem 
-						item={itemData.item} 
-						removeGroup={removeGroup}
-						onViewDetail={() => {
-							navigation.navigate('GroupItem', {
-								title: itemData.item.title,
-								id: itemData.item.id
-							})
-						}}
-					/>} 
-				/>
 			
-			</ScrollView>
-
-			<FloatingActionButton onPress={() => navigation.navigate('EditGroup', {
+			<FlatList 
+				keyExtractor={item=> item.id}
+				data={userGroups} 
+				renderItem={itemData => <GroupListItem 
+					item={itemData.item} 
+					removeGroup={removeGroup}
+					onViewDetail={() => {
+						navigation.navigate('GroupItem', {
+							title: itemData.item.title,
+							id: itemData.item.id
+						})
+					}}
+				/>} 
+			/>
+			
+			<FloatingActionButton onPress={() => navigation.navigate('EditGroupInfo', {
 				title: '',
 				id: ''
 			})

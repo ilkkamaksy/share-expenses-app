@@ -1,5 +1,4 @@
 import appService from '../../services/appService'
-import userService from '../../services/userService'
 
 const setTitle = (title) => {
 	return async dispatch => {
@@ -10,15 +9,60 @@ const setTitle = (title) => {
 	}
 }
 
-const saveGroup = (args = {}) =>  {
+const setDate = (date) => {
+	return async dispatch => {
+		dispatch({
+			type: 'SET_DATE',
+			date
+		})
+	}
+}
+
+const setLocation = (location) => {
+	return async dispatch => {
+		dispatch({
+			type: 'SET_LOCATION',
+			location
+		})
+	}
+}
+
+const setCurrentPerson = (person) => {
+	return async dispatch => {
+		dispatch({
+			type: 'SET_CURRENT_PERSON',
+			person
+		})
+	}
+}
+
+const addPersonToGroup = (person) => {
+	return async dispatch => {
+		dispatch({
+			type: 'ADD_PERSON',
+			person
+		})
+	}
+}
+
+const removePerson = (person) => {
+	return async dispatch => {
+		dispatch({
+			type: 'REMOVE_PERSON',
+			person
+		})
+	}
+}
+
+const saveGroup = (group) =>  {
 	return async dispatch => {
 
 		dispatch({
 			type: 'INIT_SAVE_GROUP',
 		})
 
-		const response = await appService.saveGroup(args)
-				
+		const response = await appService.saveGroup(group)
+					
 		if (response.data.data.saveGroup === null || response === null) {
 			return dispatch({
 				type: 'SAVE_GROUP_FAIL',
@@ -81,7 +125,12 @@ const removeGroup = id =>  {
 
 export default {
 	setTitle,
+	setDate,
+	setLocation,
+	setCurrentPerson,
+	addPersonToGroup,
+	removePerson,
 	saveGroup,
 	getGroups,
-	removeGroup
+	removeGroup,
 }

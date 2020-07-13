@@ -1,9 +1,12 @@
 const { UserInputError, AuthenticationError } = require('apollo-server')
 const Group = require('../models/group')
+const Person = require('../models/person')
 
 const typeDef = `
     type Group {
-        title: String!
+		title: String!
+		date: String
+		location: String
         owner: User!
 		users: [User!]
 		people: [Person!]
@@ -45,20 +48,34 @@ const resolvers = {
 
 				let group = {
 					title: args.title,
+					date: args.date,
+					location: args.location,
 					owner: currentUser._id,
 					users: args.users.length > 0 ? args.users : [currentUser._id],
-					people: args.people ? args.people : [],
+					people: [],
 					createdAt: Date.now(),
 					lastUpdatedAt: Date.now()
 				}
-				
+
 				let newGroup = new Group(group)
+				group.date instanceof Date
 				group.createdAt instanceof Date
 				group.lastUpdatedAt instanceof Date
 
 				await newGroup.save()
+
+				args.people.forEach(async (name) => {
+					
+					const person = new Person({
+						name,
+						group: newGroup._id
+					})	
+
+					const newPerson = await person.save()
+					await newGroup.update({ $addToSet: { people: newPerson._id }})
+				})
 				
-				return Group.findById(newGroup._id)
+				return await Group.findOne({ _id: newGroup._id })
 					.populate('owner', { email: 1, firstname: 1, lastname: 1 })
 					.populate('users')
 					.populate('people')

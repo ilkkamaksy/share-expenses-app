@@ -1,9 +1,25 @@
 import actions from '../actions/groups'
 
-export const { setTitle, saveGroup, getGroups, removeGroup } = actions
+export const { 
+	setTitle, 
+	setDate, 
+	setLocation, 
+	setCurrentPerson, 
+	addPersonToGroup,
+	removePerson, 
+	saveGroup, 
+	getGroups, 
+	removeGroup } = actions
 
 const initialState = {
-	editedGroupTitle: '',
+	groupToEdit: {
+		title: '',
+		date: new Date(Date.now()),
+		location: '',
+		people: [],
+		users: []
+	},
+	currentPerson: '',
 	userGroups: [],
 	fetching: true,
 	error: '',
@@ -16,7 +32,32 @@ const groupReducer = (state = initialState, action) => {
 	case 'SET_TITLE' : 
 		return {
 			...state,
-			editedGroupTitle: action.title
+			groupToEdit: {...state.groupToEdit, title: action.title}
+		}
+	case 'SET_DATE' : 
+		return {
+			...state,
+			groupToEdit: {...state.groupToEdit, date: action.date}
+		}
+	case 'SET_LOCATION' : 
+		return {
+			...state,
+			groupToEdit: {...state.groupToEdit, location: action.location}
+		}
+	case 'SET_CURRENT_PERSON' : 
+		return {
+			...state,
+			currentPerson: action.person
+		}
+	case 'ADD_PERSON' : 
+		return {
+			...state,
+			groupToEdit: {...state.groupToEdit, people: [...state.groupToEdit.people, action.person]}
+		}
+	case 'REMOVE_PERSON' : 
+		return {
+			...state,
+			groupToEdit: {...state.groupToEdit, people: state.groupToEdit.people.filter(person => person !== action.person)}
 		}
 	case 'INIT_SAVE_GROUP' :
 		return {
@@ -26,7 +67,6 @@ const groupReducer = (state = initialState, action) => {
 			error: ''
 		}
 	case 'SAVE_GROUP_SUCCESS' :
-		console.log(action.group)
 		return {
 			...state,
 			userGroups: [action.group, ...state.userGroups],

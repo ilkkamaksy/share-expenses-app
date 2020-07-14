@@ -3,17 +3,13 @@ const mongoose = require('mongoose')
 const schema = new mongoose.Schema({
 	title: {
 		type: String,
-		required: true
-	},
-	date: {
-		type: Date,
-		required: true
+		required: true,
+		minlength: 1
 	},
 	location: {
-		type: String
+		type: String,
+		minlength: 1
 	},
-	createdAt: Date,
-	lastUpdatedAt: Date,
 	owner: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User'
@@ -25,7 +21,9 @@ const schema = new mongoose.Schema({
 	people: [{
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Person'
-	}]
+	}],
+	createdAt: Date,
+	lastUpdatedAt: Date
 })
     
 module.exports = mongoose.model('Group', schema)

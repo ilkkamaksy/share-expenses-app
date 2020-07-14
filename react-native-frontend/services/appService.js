@@ -3,24 +3,21 @@ const apiUrl = 'http://192.168.1.17:4000/graphql'
 
 import util from './util' 
 
-const SAVE_GROUP = `
-	mutation saveGroup(
+const CREATE_GROUP = `
+	mutation createGroup(
 		$title: String!
-		$date: String!
 		$location: String
 		$users: [String]
 		$people: [String]
 	) {
-		saveGroup(
+		createGroup(
 			title: $title
-			date: $date
 			location: $location
 			users: $users
 			people: $people
 		) {
 			title
 			id
-			date
 			location
 			owner {
 				email
@@ -37,13 +34,47 @@ const SAVE_GROUP = `
 		}
 	}
 `
+const UPDATE_GROUP = `
+	mutation updateGroup(
+		$id: String!
+		$title: String
+		$location: String
+		$users: [String]
+		$people: [String]
+		$owner: String
+	) {
+		updateGroup(
+			id: $id
+			title: $title
+			location: $location
+			users: $users
+			people: $people
+			owner: $owner
+		) {
+			id
+			title
+			location
+			users {
+				email
+				id
+			}
+			people {
+				id
+				name
+			}
+			owner {
+				email
+				id
+			}
+		}
+	}
+`
 
 const GET_GROUPS = `
 	query {
 		getGroups {
 			id
 			title
-			date
 			location
 			owner {
 				id
@@ -83,18 +114,72 @@ const REMOVE_GROUP = `
 		}
 	}
 `
+const ADD_PERSON_TO_GROUP = `
+	mutation addPersonToGroup(
+		$groupid: String!
+		$name: String!
+	) {
+		addPersonToGroup(
+			groupid: $groupid
+			name: $name
+		) {
+			id
+			name
+		}
+	}
+`
+
+const REMOVE_PERSON = `
+	mutation removePerson(
+		$id: String!
+	) {
+		removePerson(
+			id: $id
+		) {
+			id
+			name
+		}
+	}
+`
 
 const saveGroup = async (group) => {
+	
 	const variables = { 
 		title: group.title,
-		date: group.date,
 		location: group.location,
 		users: group.users,
 		people: group.people
 	}
 
 	const data = {
-		query: SAVE_GROUP,
+		query: CREATE_GROUP,
+		variables: variables
+	}
+
+	const config = {
+		headers: {
+			'Authorization': util.token
+		}
+	}
+
+	return await axios.post(apiUrl, data, config)
+}
+
+const updateGroup = async (group) => {
+
+	console.log(group)
+	
+	const variables = { 
+		id: group.id,
+		title: group.title,
+		location: group.location,
+		users: group.users.map(user => user.id),
+		people: group.people.map(person => person.id),
+		owner: group.owner.id
+	}
+
+	const data = {
+		query: UPDATE_GROUP,
 		variables: variables
 	}
 
@@ -141,4 +226,44 @@ const removeGroup = async id => {
 	return await axios.post(apiUrl, data, config)
 }
 
-export default { saveGroup, getGroups, removeGroup }
+
+const addPersonToGroup = async (args) => {
+	const variables = { 
+		name: args.name,
+		groupid: args.groupid
+	}
+
+	const data = {
+		query: ADD_PERSON_TO_GROUP,
+		variables: variables
+	}
+
+	const config = {
+		headers: {
+			'Authorization': util.token
+		}
+	}
+
+	return await axios.post(apiUrl, data, config)
+}
+
+const removePerson = async id => {
+	const variables = { 
+		id
+	}
+
+	const data = {
+		query: REMOVE_PERSON,
+		variables: variables
+	}
+
+	const config = {
+		headers: {
+			'Authorization': util.token
+		}
+	}
+
+	return await axios.post(apiUrl, data, config)
+}
+
+export default { saveGroup, updateGroup, getGroups, removeGroup, addPersonToGroup, removePerson }

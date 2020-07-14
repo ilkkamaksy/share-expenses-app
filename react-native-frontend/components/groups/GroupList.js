@@ -24,26 +24,25 @@ const GroupList = props => {
 		)
 	}
 
+	console.log('grouplist', userGroups)
 	return (
 		<View style={styles.container}>
 			
 			<FlatList 
-				keyExtractor={item=> item.id}
 				data={userGroups} 
+				keyExtractor={item=> item.id}
 				renderItem={itemData => <GroupListItem 
 					item={itemData.item} 
 					removeGroup={removeGroup}
 					onViewDetail={() => {
 						navigation.navigate('GroupItem', {
-							title: itemData.item.title,
-							id: itemData.item.id
+							group: itemData.item
 						})
 					}}
 				/>} 
 			/>
 			
 			<FloatingActionButton onPress={() => navigation.navigate('EditGroupInfo', {
-				title: '',
 				id: ''
 			})
 			} />

@@ -36,20 +36,25 @@ const setCurrentPerson = (person) => {
 	}
 }
 
-const addPersonToGroup = (person) => {
+const updateGroup = (group) =>  {
 	return async dispatch => {
-		dispatch({
-			type: 'ADD_PERSON',
-			person
-		})
-	}
-}
 
-const removePerson = (person) => {
-	return async dispatch => {
 		dispatch({
-			type: 'REMOVE_PERSON',
-			person
+			type: 'INIT_UPDATE_GROUP',
+		})
+
+		const response = await appService.updateGroup(group)
+		
+		if (response.data.data.updateGroup === null || response === null) {
+			return dispatch({
+				type: 'UPDATE_GROUP_FAIL',
+				response: response.data.errors[0].message
+			})
+		}
+
+		dispatch({
+			type: 'UPDATE_GROUP_SUCCESS',
+			group: response.data.data.updateGroup
 		})
 	}
 }
@@ -58,21 +63,21 @@ const saveGroup = (group) =>  {
 	return async dispatch => {
 
 		dispatch({
-			type: 'INIT_SAVE_GROUP',
+			type: 'INIT_CREATE_GROUP',
 		})
 
 		const response = await appService.saveGroup(group)
-					
-		if (response.data.data.saveGroup === null || response === null) {
+		
+		if (response.data.data.createGroup === null || response === null) {
 			return dispatch({
-				type: 'SAVE_GROUP_FAIL',
+				type: 'CREATE_GROUP_FAIL',
 				response: response.data.errors[0].message
 			})
 		}
 
 		dispatch({
-			type: 'SAVE_GROUP_SUCCESS',
-			group: response.data.data.saveGroup
+			type: 'CREATE_GROUP_SUCCESS',
+			group: response.data.data.createGroup
 		})
 	}
 }
@@ -123,14 +128,70 @@ const removeGroup = id =>  {
 	}
 }
 
+const addPersonToGroup = ({ name, groupid }) =>  {
+	return async dispatch => {
+
+		dispatch({
+			type: 'INIT_UPDATE_GROUP',
+		})
+
+		const response = await appService.addPersonToGroup({ name, groupid })
+		
+		if (response.data.data.addPersonToGroup === null || response === null) {
+			return dispatch({
+				type: 'UPDATE_GROUP_FAIL',
+				response: response.data.errors[0].message
+			})
+		}
+
+		dispatch({
+			type: 'ADD_PERSON_TO_GROUP_SUCCESS',
+			person: response.data.data.addPersonToGroup
+		})
+	}
+}
+
+const removePerson = id => {
+	return async dispatch => {
+
+		dispatch({
+			type: 'INIT_UPDATE_GROUP',
+		})
+
+		const response = await appService.removePerson(id)
+		
+		if (response.data.data.removePerson === null || response === null) {
+			return dispatch({
+				type: 'UPDATE_GROUP_FAIL',
+				response: response.data.errors[0].message
+			})
+		}
+
+		dispatch({
+			type: 'REMOVE_PERSON_SUCCESS',
+			id: response.data.data.removePerson.id
+		})
+	}
+}
+
+const doneEditing = () => {
+	return dispatch => {
+		dispatch({
+			type: 'DONE_EDITING_GROUP',
+		})
+	}
+}
+
 export default {
 	setTitle,
 	setDate,
 	setLocation,
 	setCurrentPerson,
-	addPersonToGroup,
-	removePerson,
 	saveGroup,
+	updateGroup,
 	getGroups,
 	removeGroup,
+	addPersonToGroup,
+	removePerson,
+	doneEditing
 }

@@ -1,11 +1,9 @@
 const { UserInputError, AuthenticationError } = require('apollo-server')
 const Group = require('../models/group')
-const Person = require('../models/person')
 
 const typeDef = `
     type Group {
 		title: String!
-		date: String
 		location: String
         owner: User!
 		users: [User!]
@@ -34,9 +32,10 @@ const resolvers = {
 	Mutation: {
 		// args:
 		// title: String!
+		// location: String
 		// users: [String!]
 		// people: [String!]
-		saveGroup: async (root, args, context) => {
+		createGroup: async (root, args, context) => {
 			
 			const currentUser = context.currentUser
 
@@ -46,15 +45,16 @@ const resolvers = {
 
 			try {
 
+				const now = Date.now()
+
 				let group = {
-					title: args.title,
-					date: args.date,
-					location: args.location,
+					title: args.title.trim(),
+					location: args.location.trim(),
 					owner: currentUser._id,
 					users: args.users.length > 0 ? args.users : [currentUser._id],
-					people: [],
-					createdAt: Date.now(),
-					lastUpdatedAt: Date.now()
+					people: args.people.length > 0 ? args.people : [],
+					createdAt: now,
+					lastUpdatedAt: now
 				}
 
 				let newGroup = new Group(group)
@@ -64,17 +64,6 @@ const resolvers = {
 
 				await newGroup.save()
 
-				args.people.forEach(async (name) => {
-					
-					const person = new Person({
-						name,
-						group: newGroup._id
-					})	
-
-					const newPerson = await person.save()
-					await newGroup.update({ $addToSet: { people: newPerson._id }})
-				})
-				
 				return await Group.findOne({ _id: newGroup._id })
 					.populate('owner', { email: 1, firstname: 1, lastname: 1 })
 					.populate('users')
@@ -88,22 +77,28 @@ const resolvers = {
 		},
 		// args
 		// id: String!
-		// owner: String
 		// title: String
+		// location: String
+		// owner: String
 		// people: [String]
-		editGroup: async (root, args) => {
+		// users: [String]
+		updateGroup: async (root, args) => {
 
 			try {
 				const groupToUpdate = {
-					...args
+					...args,
+					title: args.title.trim(),
+					location: args.location.trim(),
+					lastUpdatedAt: Date.now()
 				}
 				delete groupToUpdate.id
-				const savedGroup = await Group
+
+				return await Group
 					.findByIdAndUpdate(args.id, groupToUpdate, { new: true })
 					.populate('owner', { email: 1, firstname: 1, lastname: 1 })
 					.populate('users')
 					.populate('people')
-				return savedGroup
+
 			} catch (error) {
 				throw new UserInputError(error.message, {
 					invalidArgs: args

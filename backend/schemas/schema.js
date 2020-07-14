@@ -10,7 +10,8 @@ const Query = `
             getGroups: [Group]
             getUserById(id: String): User!
             getUserByEmail(email: String): User!
-            getPeople(id: String, name: String): [Person!]
+            getPeopleByGroupId(groupid: String): [Person!]
+            getPersonById(id: String): Person
             me: User
         }
     `
@@ -37,17 +38,19 @@ const Mutation = `
             removeUser (
                 id: String!
             ): User
-            saveGroup(
+            createGroup(
                 title: String!
-                date: String!
                 location: String
                 users: [String]
                 people: [String]
             ): Group
-            editGroup(
+            updateGroup(
                 id: String!
-                owner: String
                 title: String
+                location: String
+                owner: String
+                users: [String]
+                people: [String]
             ): Group
             removeGroup(
                 id: String!
@@ -60,7 +63,7 @@ const Mutation = `
                 groupid: String!
                 userid: String!
             ): Group
-            addPerson(
+            addPersonToGroup(
                 name: String!
                 groupid: String!
             ): Person

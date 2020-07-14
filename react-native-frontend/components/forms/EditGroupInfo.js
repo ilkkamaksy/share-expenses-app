@@ -1,38 +1,30 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { ScrollView, View, Text, StyleSheet } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import { connect } from 'react-redux'
-import DateTimePicker from '@react-native-community/datetimepicker'
 
-import { setTitle, setDate } from '../../store/reducers/groups'
+import { setTitle, setLocation, saveGroup, updateGroup } from '../../store/reducers/groups'
 
 const EditGroupInfo = props => {
 
-	const { error, groupToEdit, setTitle, setDate, navigation } = props
+	const { 
+		error, 
+		groupToEdit, 
+		setTitle, 
+		setLocation, 
+		saveGroup, 
+		updateGroup,
+		navigation } = props
    
-	useEffect(() =>{
-		setDate(new Date(Date.now()))
-	}, [])
-
-	const [showDatePicker, setShowDatePicker] = useState(false)
-	const [showTimePicker, setShowTimePicker] = useState(false)
-
-	const onChangeDate = (event, selectedDate) => {
-		const currentDate = selectedDate || groupToEdit.date
-		setShowDatePicker(false)
-		setDate(currentDate)
-		setShowTimePicker(true)
-	}
-
-	const onChangeTime = (event, selectedTime) => {
-		const currentTime = selectedTime || groupToEdit.date
-		setShowTimePicker(false)
-		setDate(currentTime)
-	}
-
-	const showDatepicker = () => {
-		setShowDatePicker(true)
+	const onSaveGroup = async () => {
+		if (!groupToEdit.id) {
+			await saveGroup(groupToEdit)
+		} else {
+			await updateGroup(groupToEdit)
+		}
+		
+		navigation.navigate('EditGroupPeople')
 	}
 
 	return (
@@ -54,47 +46,22 @@ const EditGroupInfo = props => {
 				</View>
 				
 				<View style={styles.formControl}>
-					<View style={styles.row}>
-						<View style={styles.rowItem}>
-							<Text>{`When: ${groupToEdit.date.toLocaleDateString()}, at ${groupToEdit.date.toLocaleTimeString()}`}</Text>
-						</View>
-						<View style={styles.rowItem}>
-							<Button style={styles.rowItem} compact={true} mode="text" uppercase={false} onPress={showDatepicker}>
-								(Change)
-							</Button> 
-						</View>
-					</View>
-					
-					{showDatePicker && (
-						<DateTimePicker
-							testID="dateTimePicker"
-							value={groupToEdit.date}
-							mode="date"
-							is24Hour={true}
-							display="default"
-							onChange={onChangeDate}
-						/>
-					)}
-					{showTimePicker && (
-						<DateTimePicker
-							testID="dateTimePicker"
-							value={groupToEdit.date}
-							mode="time"
-							is24Hour={false}
-							display="default"
-							onChange={onChangeTime}
-						/>
-					)}
+					<TextInput 
+						accessibilityLabel="Location"
+						label="Location (optional)" 
+						style={styles.input} 
+						value={groupToEdit.location}
+						onChangeText={text => setLocation(text)}
+					/>
 				</View>
-
-
+			
 				<View style={styles.formControl}>
 					<Button 
 						disabled={groupToEdit.title.length > 0 ? false : true} 
 						mode="contained" 
-						onPress={() => navigation.navigate('EditGroupPeople')}
+						onPress={onSaveGroup}
 					>
-                        Next
+						{!groupToEdit.id ? 'Save & start adding people' : 'Ok, let\'s edit group members'}
 					</Button>
 				</View>
                 
@@ -123,7 +90,9 @@ EditGroupInfo.propTypes = {
 	error: PropTypes.string,
 	groupToEdit: PropTypes.object,
 	setTitle: PropTypes.func,
-	setDate: PropTypes.func
+	setLocation: PropTypes.func,
+	saveGroup: PropTypes.func,
+	updateGroup: PropTypes.func
 }
 
 const mapStateToProps = (state) => {
@@ -139,7 +108,9 @@ const connectedEditGroupInfo = connect(
 	mapStateToProps,
 	{
 		setTitle,
-		setDate
+		setLocation,
+		saveGroup,
+		updateGroup
 	}
 )(EditGroupInfo)
 

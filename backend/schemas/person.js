@@ -1,4 +1,4 @@
-const { UserInputError } = require('apollo-server')
+const { UserInputError, AuthenticationError } = require('apollo-server')
 const Person = require('../models/person')
 const Group = require('../models/group')
 
@@ -13,29 +13,47 @@ const typeDef = `
 const resolvers = {
 	Query: {
 		// args: 
-		// id: String
-		// groupid: String 
-		// username: String
-		getPeople: async (root, args) => {
-			if ( args.id ) {
-				return [Person.findById(args.id).populate('group')]
-			} else if ( args.name ) {
-				return [Person.findOne({ name: args.name }).populate('group')]
-			} else if ( args.groupid ) {
-				return Person.find({ people: { $in: [ args.groupid ] } })
-					.populate( 'group' )
+		// groupid: String! 
+		getPeopleByGroupId: async (root, args, context) => {
+
+			const currentUser = context.currentUser
+			
+			if (!currentUser) {
+				throw new AuthenticationError('not authenticated')
 			}
-			return Person.find({}).populate('group')
+
+			return await Person
+				.find({ people: { $in: [ args.groupid ] } })
+				.populate( 'group' )
+		}, 
+		// args: 
+		// id: String! 
+		getPersonById: async (root, args, context) => {
+
+			const currentUser = context.currentUser
+			
+			if (!currentUser) {
+				throw new AuthenticationError('not authenticated')
+			}
+
+			return await Person.findById(args.id).populate('group')
 		}, 
 	},
 	Mutation: {
 		// args:
 		// groupid: String!
 		// name: String!
-		addPerson: async (root, args) => {
+		addPersonToGroup: async (root, args, context) => {
+
+			const currentUser = context.currentUser
+			
+			if (!currentUser) {
+				throw new AuthenticationError('not authenticated')
+			}
+			
 			try {
 				let person = new Person({
-					name: args.name,
+					name: args.name.trim(),
 					group: args.groupid
 				})
 				const newPerson = await person.save()
@@ -48,13 +66,11 @@ const resolvers = {
 					.populate('users')
 					.populate('people')
 
-				const result = {
+				return {
 					name: newPerson.name,
 					id: newPerson._id,
 					group: group
 				}
-
-				return result
                     
 			} catch (error) {
 				throw new UserInputError(error.message, {

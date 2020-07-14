@@ -56,7 +56,7 @@ function GroupNavigator() {
 				name="GroupItem"
 				component={GroupDetailScreen}
 				options={{
-					navigation: ({route}) => ({ title: route.params.title, id: route.params.id }),
+					navigation: ({route}) => ({ group: route.params.group }),
 					// eslint-disable-next-line react/display-name
 					headerRight: () => <HeaderRight />
 				}}
@@ -67,10 +67,11 @@ function GroupNavigator() {
 				component={EditGroupInfoScreen}
 				options={{
 					title: 'Add a new group',
-					navigation: ({route}) => ({ title: route.params.title, id: route.params.id }),
+					navigation: ({route}) => ({ id: route.params.id }),
 					// eslint-disable-next-line react/display-name
-					headerRight: () => <HeaderRight />
+					headerRight: () => <HeaderRight />,
 				}}
+				
 			/>
 
 			<GroupStack.Screen

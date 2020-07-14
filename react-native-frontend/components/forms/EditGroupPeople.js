@@ -4,7 +4,7 @@ import { ScrollView, View, Text, StyleSheet } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import { connect } from 'react-redux'
 
-import { saveGroup, setCurrentPerson, addPersonToGroup, removePerson } from '../../store/reducers/groups'
+import { setCurrentPerson, addPersonToGroup, removePerson, doneEditing } from '../../store/reducers/groups'
 import contactsService from '../../services/contactsService'
 
 const EditGroupPeople = props => {
@@ -16,33 +16,34 @@ const EditGroupPeople = props => {
 		setCurrentPerson, 
 		addPersonToGroup, 
 		removePerson,
-		saveGroup, 
+		doneEditing,
 		navigation } = props
 
 	const [contactList, setContactList] = useState({})
 
-	useEffect(() => {
-		(async () => {
-			const data = await contactsService.getContactsFromDevice()
-			if (data.length > 0) {
-				setContactList(data.filter(contact => contact.name.length > 0))
-			}
-		})()
+	// useEffect(() => {
+	// 	(async () => {
+	// 		const data = await contactsService.getContactsFromDevice()
+	// 		if (data.length > 0) {
+	// 			setContactList(data.filter(contact => contact.name.length > 0))
+	// 		}
+	// 	})()
         
-	}, [])
+	// }, [])
     
 
-	const onSaveGroup = () => {
-		saveGroup(groupToEdit)	
-	}
-    
 	const onAddPersonToGroup = () => {
-		if (!groupToEdit.people.includes(currentPerson)) {
-			addPersonToGroup(currentPerson)
+		if (!groupToEdit.people.includes(currentPerson) && currentPerson.trim().length > 0) {
+			addPersonToGroup({ name: currentPerson.trim(), groupid: groupToEdit.id })
+			setCurrentPerson('')
 		}
-		setCurrentPerson('')
 	}
     
+	const onDoneEditingGroup = () => {
+		doneEditing()
+		navigation.navigate('GroupList')
+	}
+   
 	return (
 		<ScrollView>
 
@@ -52,29 +53,43 @@ const EditGroupPeople = props => {
 			
 			<View style={styles.form}>
 				<View style={styles.formControl}>
-					<TextInput 
-						accessibilityLabel="Name"
-						label="Name" 
-						style={styles.input} 
-						value={currentPerson}
-						onChangeText={text => setCurrentPerson(text)}
-					/>
-
-					{currentPerson.length > 0 && 
-                        <Button mode="outlined" onPress={() => onAddPersonToGroup()}>
+					<View style={styles.row}>
+						<View style={styles.column}>
+							<TextInput 
+								accessibilityLabel="Name"
+								label="Name" 
+								style={styles.input} 
+								value={currentPerson}
+								onChangeText={text => setCurrentPerson(text)}
+							/>
+						</View>
+						<View style={styles.column}>
+                        
+							<Button 
+								disabled={currentPerson.length === 0 ? true : false} 
+								mode="outlined" 
+								onPress={() => onAddPersonToGroup()}
+							>
                             Add to group
-                        </Button>
-					}
+							</Button>
+					
+						</View>
+					</View>
 				</View>
 				
 				<View style={styles.formControl}>
 					{groupToEdit.people.map(person => { return (
-						<View key={person} style={styles.row}>
-							<View style={styles.rowItem}>
-								<Text>{person}</Text>
+						<View key={person.id} style={styles.row}>
+							<View style={styles.column}>
+								<Text>{person.name}</Text>
 							</View>
-							<View style={styles.rowItem}>
-								<Button style={styles.rowItem} compact={true} mode="text" uppercase={false} onPress={() => removePerson(person)}>
+							<View style={styles.column}>
+								<Button 
+									style={styles.column} 
+									compact={true} 
+									mode="text" 
+									uppercase={false} 
+									onPress={() => removePerson(person.id)}>
 								(Remove)
 								</Button> 
 							</View>
@@ -83,8 +98,8 @@ const EditGroupPeople = props => {
 				</View>
 
 				<View style={styles.formControl}>
-					<Button mode="contained" onPress={onSaveGroup}>
-                        Save group
+					<Button mode="contained" onPress={onDoneEditingGroup}>
+                        Done
 					</Button>
 				</View>
                 
@@ -104,8 +119,11 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		flexWrap: 'nowrap'
 	}, 
-	rowItem: {
-		flex: 0
+	column: {
+		flex: 1
+	},
+	input: {
+		width: '100%'
 	}
 })
 
@@ -116,7 +134,7 @@ EditGroupPeople.propTypes = {
 	error: PropTypes.string,
 	groupToEdit: PropTypes.object,
 	currentPerson: PropTypes.string,
-	saveGroup: PropTypes.func,
+	doneEditing: PropTypes.func,
 	setCurrentPerson: PropTypes.func,
 	addPersonToGroup: PropTypes.func,
 	removePerson: PropTypes.func
@@ -135,7 +153,7 @@ const mapStateToProps = (state) => {
 const connectedEditGroupPeople = connect(
 	mapStateToProps,
 	{
-		saveGroup,
+		doneEditing,
 		setCurrentPerson,
 		addPersonToGroup,
 		removePerson

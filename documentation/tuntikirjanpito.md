@@ -11,4 +11,5 @@
 | 12.7. |   6  | Jatkettu CRUD-operaatioita ryhmille, datePicker-moduulin implementointia |
 | 13.7. |   8  | Ajankohdan ja jäsenien lisääminen ryhmään |
 | 14.7. |   5  | Ryhmän jäsenien muokkaus ja tallennus |
-| yht   | 61   | | 
+| 21.7. |   7  | Ryhmän muokkaaminen frontendissä, screen-titlen määrittely dynaamisesti ja group-testejä backendiin |
+| yht   | 68   | | 

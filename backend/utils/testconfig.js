@@ -9,11 +9,11 @@ const {
 /**
  * Integration testing utils
  */
-const constructTestServer = () => {
+const constructTestServer = (context = null) => {
     
 	const server = new ApolloServer({ 
 		schema: schema,
-		context: async ({req}) => {
+		context: context ? context : async ({req}) => {
 			const auth = req ? req.headers.authorization : null
 			if ( auth && auth.toLowerCase().startsWith('bearer') ) {
 				const decodedToken = jwt.verify(

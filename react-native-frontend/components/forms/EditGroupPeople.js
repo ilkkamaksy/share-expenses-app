@@ -9,6 +9,7 @@ import contactsService from '../../services/contactsService'
 
 const EditGroupPeople = props => {
 
+	console.log('editgrouppeople component', props.groupToEdit)
 	const { 
 		error, 
 		groupToEdit, 
@@ -40,7 +41,7 @@ const EditGroupPeople = props => {
 	}
     
 	const onDoneEditingGroup = () => {
-		doneEditing()
+		doneEditing(groupToEdit)
 		navigation.navigate('GroupList')
 	}
    

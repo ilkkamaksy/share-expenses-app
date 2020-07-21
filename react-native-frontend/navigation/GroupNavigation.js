@@ -67,7 +67,6 @@ function GroupNavigator() {
 				component={EditGroupInfoScreen}
 				options={{
 					title: 'Add a new group',
-					navigation: ({route}) => ({ id: route.params.id }),
 					// eslint-disable-next-line react/display-name
 					headerRight: () => <HeaderRight />,
 				}}
@@ -78,7 +77,7 @@ function GroupNavigator() {
 				name="EditGroupPeople"
 				component={EditGroupPeopleScreen}
 				options={{
-					title: 'Add group members',
+					title: 'Manage group members',
 					// eslint-disable-next-line react/display-name
 					headerRight: () => <HeaderRight />
 				}}

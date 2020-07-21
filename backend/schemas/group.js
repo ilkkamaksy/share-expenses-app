@@ -82,9 +82,22 @@ const resolvers = {
 		// owner: String
 		// people: [String]
 		// users: [String]
-		updateGroup: async (root, args) => {
+		updateGroup: async (root, args, context) => {
+
+			const currentUser = context.currentUser
+
+			if (!currentUser) {
+				throw new AuthenticationError('not authenticated')
+			}
 
 			try {
+
+				let groupInDB = await Group.findById({ _id: args.id })
+
+				if (!groupInDB.users.includes(currentUser._id)) {
+					throw new AuthenticationError('user is not a member of the group')
+				}
+
 				const groupToUpdate = {
 					...args,
 					title: args.title.trim(),
@@ -107,8 +120,22 @@ const resolvers = {
 		},
 		// args:
 		// id: String!
-		removeGroup: async (root, args) => {
+		removeGroup: async (root, args, context) => {
+
+			const currentUser = context.currentUser
+
+			if (!currentUser) {
+				throw new AuthenticationError('not authenticated')
+			}
+
 			try {
+
+				let groupInDB = await Group.findById({ _id: args.id })
+
+				if (!groupInDB.users.includes(currentUser._id)) {
+					throw new AuthenticationError('user is not a member of the group')
+				}
+
 				return await Group
 					.findByIdAndDelete(args.id)
 					.populate('owner', { email: 1, firstname: 1, lastname: 1 })
@@ -123,8 +150,22 @@ const resolvers = {
 		// args
 		// groupid: String!
 		// userid: String!
-		addGroupUser: async (root, args) => {
+		addGroupUser: async (root, args, context) => {
+
+			const currentUser = context.currentUser
+
+			if (!currentUser) {
+				throw new AuthenticationError('not authenticated')
+			}
+
 			try {
+
+				let groupInDB = await Group.findById({ _id: args.groupid })
+
+				if (!groupInDB.users.includes(currentUser._id)) {
+					throw new AuthenticationError('user is not a member of the group')
+				}
+
 				const savedGroup = await Group
 					.findByIdAndUpdate(
 						args.groupid, 
@@ -144,8 +185,22 @@ const resolvers = {
 		// args
 		// groupid: String!
 		// userid: String!
-		removeGroupUser: async (root, args) => {
+		removeGroupUser: async (root, args, context) => {
+
+			const currentUser = context.currentUser
+
+			if (!currentUser) {
+				throw new AuthenticationError('not authenticated')
+			}
+
 			try {
+
+				let groupInDB = await Group.findById({ _id: args.groupid })
+
+				if (!groupInDB.users.includes(currentUser._id)) {
+					throw new AuthenticationError('user is not a member of the group')
+				}
+
 				const savedGroup = await Group
 					.findByIdAndUpdate(
 						args.groupid, 

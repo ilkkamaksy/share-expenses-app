@@ -4,19 +4,21 @@ import { ScrollView, View, Text, StyleSheet } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import { connect } from 'react-redux'
 
-import { setTitle, setLocation, saveGroup, updateGroup } from '../../store/reducers/groups'
+import { setGroupTitle, setGroupLocation, saveGroup, updateGroup } from '../../store/reducers/groups'
 
 const EditGroupInfo = props => {
 
 	const { 
 		error, 
 		groupToEdit, 
-		setTitle, 
-		setLocation, 
+		setGroupTitle, 
+		setGroupLocation, 
 		saveGroup, 
 		updateGroup,
 		navigation } = props
-   
+
+	console.log('editgroupinfo component', props.groupToEdit)
+
 	const onSaveGroup = async () => {
 		if (!groupToEdit.id) {
 			await saveGroup(groupToEdit)
@@ -41,7 +43,7 @@ const EditGroupInfo = props => {
 						label="Title" 
 						style={styles.input} 
 						value={groupToEdit.title}
-						onChangeText={text => setTitle(text)}
+						onChangeText={text => setGroupTitle(text)}
 					/>
 				</View>
 				
@@ -51,7 +53,7 @@ const EditGroupInfo = props => {
 						label="Location (optional)" 
 						style={styles.input} 
 						value={groupToEdit.location}
-						onChangeText={text => setLocation(text)}
+						onChangeText={text => setGroupLocation(text)}
 					/>
 				</View>
 			
@@ -89,10 +91,11 @@ EditGroupInfo.propTypes = {
 	fetching: PropTypes.bool,
 	error: PropTypes.string,
 	groupToEdit: PropTypes.object,
-	setTitle: PropTypes.func,
-	setLocation: PropTypes.func,
+	setGroupTitle: PropTypes.func,
+	setGroupLocation: PropTypes.func,
 	saveGroup: PropTypes.func,
-	updateGroup: PropTypes.func
+	updateGroup: PropTypes.func,
+	setGroupToEdit: PropTypes.func
 }
 
 const mapStateToProps = (state) => {
@@ -107,8 +110,8 @@ const mapStateToProps = (state) => {
 const connectedEditGroupInfo = connect(
 	mapStateToProps,
 	{
-		setTitle,
-		setLocation,
+		setGroupTitle,
+		setGroupLocation,
 		saveGroup,
 		updateGroup
 	}

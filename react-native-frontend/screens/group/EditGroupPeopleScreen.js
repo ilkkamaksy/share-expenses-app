@@ -3,15 +3,14 @@ import PropTypes from 'prop-types'
 import EditGroupPeople from '../../components/forms/EditGroupPeople'
 
 const EditGroupPeopleScreen = props => {
-    
+	
 	return (
 		<EditGroupPeople navigation={props.navigation} />
 	)
 }
 
 EditGroupPeopleScreen.propTypes = {
-	navigation: PropTypes.object,
-	route: PropTypes.object
+	navigation: PropTypes.object
 }
 
 export default EditGroupPeopleScreen

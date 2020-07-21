@@ -1,9 +1,10 @@
 import actions from '../actions/groups'
 
 export const { 
-	setTitle, 
+	setGroupToEdit,
+	setGroupTitle, 
 	setDate, 
-	setLocation, 
+	setGroupLocation, 
 	setCurrentPerson, 
 	saveGroup, 
 	updateGroup,
@@ -32,6 +33,11 @@ const initialState = {
 
 const groupReducer = (state = initialState, action) => {
 	switch (action.type) {
+	case 'SET_GROUP_TO_EDIT' : 
+		return {
+			...state,
+			groupToEdit: action.group ? action.group : initialState.groupToEdit
+		}
 	case 'SET_TITLE' : 
 		return {
 			...state,
@@ -141,7 +147,8 @@ const groupReducer = (state = initialState, action) => {
 	case 'DONE_EDITING_GROUP' : 
 		return {
 			...state,
-			groupToEdit: initialState.groupToEdit
+			groupToEdit: initialState.groupToEdit,
+			userGroups: state.userGroups.map(group => group.id === action.group.id ? action.group : group)
 		}
 	default: return state
 	}

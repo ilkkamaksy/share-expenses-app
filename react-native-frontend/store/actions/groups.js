@@ -1,6 +1,15 @@
 import appService from '../../services/appService'
 
-const setTitle = (title) => {
+const setGroupToEdit = group => {
+	return dispatch => {
+		dispatch({
+			type: 'SET_GROUP_TO_EDIT',
+			group
+		})
+	}
+}
+
+const setGroupTitle = (title) => {
 	return async dispatch => {
 		dispatch({
 			type: 'SET_TITLE',
@@ -18,7 +27,7 @@ const setDate = (date) => {
 	}
 }
 
-const setLocation = (location) => {
+const setGroupLocation = (location) => {
 	return async dispatch => {
 		dispatch({
 			type: 'SET_LOCATION',
@@ -174,18 +183,20 @@ const removePerson = id => {
 	}
 }
 
-const doneEditing = () => {
+const doneEditing = group => {
 	return dispatch => {
 		dispatch({
 			type: 'DONE_EDITING_GROUP',
+			group
 		})
 	}
 }
 
 export default {
-	setTitle,
+	setGroupToEdit,
+	setGroupTitle,
 	setDate,
-	setLocation,
+	setGroupLocation,
 	setCurrentPerson,
 	saveGroup,
 	updateGroup,

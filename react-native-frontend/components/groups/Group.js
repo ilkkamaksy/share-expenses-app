@@ -1,14 +1,20 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { View, Text, StyleSheet } from 'react-native'
 import { Button } from 'react-native-paper'
 
+import { setGroupToEdit } from '../../store/reducers/groups'
+
 import FloatingActionButton from '../UI/FloatingActionButton'
 
-const Group = ({ group, navigation }) => {
+const Group = ({ group, navigation, setGroupToEdit }) => {
 
-	const onEditGroup = () => {
-		navigation.navigate('EditGroupInfo', { id: group.id } )
+	console.log('group component', group)
+
+	const onEditGroup = () => {	
+		setGroupToEdit(group)
+		navigation.navigate('EditGroupInfo')
 	}
 
 	return (
@@ -53,7 +59,19 @@ const styles = StyleSheet.create({
 Group.propTypes = {
 	group: PropTypes.object,
 	onViewDetail: PropTypes.func,
-	navigation: PropTypes.object
+	navigation: PropTypes.object,
+	groupToEdit: PropTypes.object,
+	setGroupToEdit: PropTypes.func
 }
 
-export default Group
+const mapStateToProps = state => {
+	return {
+		groupToEdit: state.groups.groupToEdit
+	}
+}
+
+const connectedGroup = connect(mapStateToProps, {
+	setGroupToEdit
+})(Group)
+
+export default connectedGroup

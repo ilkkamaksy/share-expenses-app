@@ -5,18 +5,23 @@ import { FlatList, StyleSheet, View } from 'react-native'
 import GroupListItem from './GroupListItem'
 import { ActivityIndicator } from 'react-native-paper'
 
-import { getGroups, removeGroup } from '../../store/reducers/groups'
+import { getGroups, removeGroup, setGroupToEdit } from '../../store/reducers/groups'
 
 import FloatingActionButton from '../UI/FloatingActionButton'
 import Colors from '../../constants/Colors'
 
 const GroupList = props => {
 	
-	const { getGroups, removeGroup, navigation, fetching, userGroups } = props
+	const { setGroupToEdit, getGroups, removeGroup, navigation, fetching, userGroups } = props
 
 	useEffect(() => {
 		getGroups()
 	}, [])
+
+	const createNewGroup = () => {
+		setGroupToEdit(null)
+		navigation.navigate('EditGroupInfo')
+	}
 
 	if (fetching) {
 		return (
@@ -42,10 +47,7 @@ const GroupList = props => {
 				/>} 
 			/>
 			
-			<FloatingActionButton onPress={() => navigation.navigate('EditGroupInfo', {
-				id: ''
-			})
-			} />
+			<FloatingActionButton onPress={createNewGroup} />
 		</View>
 		
 	) 
@@ -60,6 +62,7 @@ const styles = StyleSheet.create({
 GroupList.propTypes = {
 	navigation: PropTypes.object,
 	getGroups: PropTypes.func,
+	setGroupToEdit: PropTypes.func,
 	removeGroup: PropTypes.func,
 	fetching: PropTypes.bool,
 	userGroups: PropTypes.array
@@ -79,7 +82,8 @@ const connectedGroupList = connect(
 	mapStateToProps, 
 	{
 		getGroups,
-		removeGroup
+		removeGroup,
+		setGroupToEdit
 	}
 )(GroupList)
 

@@ -40,9 +40,7 @@ describe('Login mutations', () => {
 
 	it('user can login with valid email and password', async () => {
 		
-		const { server } = constructTestServer({
-			context: () => {},
-		})
+		const { server } = constructTestServer()
 
 		const { mutate } = createTestClient(server)
 		const res = await mutate({
@@ -57,9 +55,7 @@ describe('Login mutations', () => {
 
 	it('user can not login without a valid password', async () => {
 		
-		const { server } = constructTestServer({
-			context: () => {},
-		})
+		const { server } = constructTestServer()
 
 		const { mutate } = createTestClient(server)
 		const res = await mutate({
@@ -74,9 +70,7 @@ describe('Login mutations', () => {
     
 	it('user can not login without a valid email', async () => {
 		
-		const { server } = constructTestServer({
-			context: () => {},
-		})
+		const { server } = constructTestServer()
 
 		const { mutate } = createTestClient(server)
 		const res = await mutate({
@@ -92,9 +86,7 @@ describe('Login mutations', () => {
 
 	it('user can not login with empty password and email', async () => {
 		
-		const { server } = constructTestServer({
-			context: () => {},
-		})
+		const { server } = constructTestServer()
 
 		const { mutate } = createTestClient(server)
 		const res = await mutate({

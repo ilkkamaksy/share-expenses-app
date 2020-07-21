@@ -1,14 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-// import { useSelector } from 'react-redux'
+
 import EditGroupInfo from '../../components/forms/EditGroupInfo'
 
 const EditGroupInfoScreen = props => {
-
-	const groupId = props.route.params.id
-	// const selectedGroup = useSelector(state => 
-	// 	state.groups.userGroups.find(group => group.id === groupId))
-        
+		
+	useEffect(() => {
+		if (props.groupToEdit.id) {
+			props.navigation.setOptions({title: 'Edit group'})
+		}
+	}, [])
+	
 	return (
 		<EditGroupInfo navigation={props.navigation} />
 	)
@@ -16,7 +19,15 @@ const EditGroupInfoScreen = props => {
 
 EditGroupInfoScreen.propTypes = {
 	navigation: PropTypes.object,
-	route: PropTypes.object
+	groupToEdit: PropTypes.object
 }
 
-export default EditGroupInfoScreen
+const mapStateToProps = state => {
+	return {
+		groupToEdit: state.groups.groupToEdit
+	}
+}
+
+const ConnectedEditGroupInfoScreen = connect(mapStateToProps, {})(EditGroupInfoScreen)
+
+export default ConnectedEditGroupInfoScreen

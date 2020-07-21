@@ -29,9 +29,7 @@ describe('Register mutations', () => {
 
 	it('user can register with valid email and password', async () => {
 		
-		const { server } = constructTestServer({
-			context: () => {},
-		})
+		const { server } = constructTestServer()
 
 		const { mutate } = createTestClient(server)
 		const res = await mutate({
@@ -47,9 +45,7 @@ describe('Register mutations', () => {
 
 	it('user can not register without password', async () => {
 		
-		const { server } = constructTestServer({
-			context: () => {},
-		})
+		const { server } = constructTestServer()
 
 		const { mutate } = createTestClient(server)
 		const res = await mutate({
@@ -63,9 +59,7 @@ describe('Register mutations', () => {
 
 	it('user can not register without an email address', async () => {
 		
-		const { server } = constructTestServer({
-			context: () => {},
-		})
+		const { server } = constructTestServer()
 
 		const { mutate } = createTestClient(server)
 		const res = await mutate({
@@ -79,9 +73,7 @@ describe('Register mutations', () => {
 
 	it('user can not register with empty email address', async () => {
 		
-		const { server } = constructTestServer({
-			context: () => {},
-		})
+		const { server } = constructTestServer()
 
 		const { mutate } = createTestClient(server)
 		const res = await mutate({
@@ -97,9 +89,7 @@ describe('Register mutations', () => {
 
 	it('user can not register with an email address length < 4', async () => {
 		
-		const { server } = constructTestServer({
-			context: () => {},
-		})
+		const { server } = constructTestServer()
 
 		const { mutate } = createTestClient(server)
 		const res = await mutate({

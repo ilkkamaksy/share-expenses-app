@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   node: circleci/node@1.1.6
+  codecov: codecov/codecov@1.0.2
 jobs:
   build-and-test:
     executor:
@@ -11,6 +12,8 @@ jobs:
           steps:
             - run: cd backend && npm install
             - run: cd backend && npm run test
+            - codecov/upload:
+                file: {{ /home/circleci/project/backend/coverage }}
 workflows:
     build-and-test:
       jobs:

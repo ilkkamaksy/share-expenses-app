@@ -12,4 +12,5 @@
 | 13.7. |   8  | Ajankohdan ja jäsenien lisääminen ryhmään |
 | 14.7. |   5  | Ryhmän jäsenien muokkaus ja tallennus |
 | 21.7. |   7  | Ryhmän muokkaaminen frontendissä, screen-titlen määrittely dynaamisesti ja group-testejä backendiin |
-| yht   | 68   | | 
+| 22.7. |   8  | Kattavammin testejä backendiin ja frontendiin + circleci ja codecov-konffaus |
+| yht   | 76   | | 

@@ -52,10 +52,18 @@ const resolvers = {
 			}
 			
 			try {
+
+				let groupInDB = await Group.findById({ _id: args.groupid })
+
+				if (!groupInDB.users.includes(currentUser._id)) {
+					throw new AuthenticationError('user is not a member of the group')
+				}
+
 				let person = new Person({
 					name: args.name.trim(),
 					group: args.groupid
 				})
+
 				const newPerson = await person.save()
 				const group = await Group
 					.findByIdAndUpdate(
@@ -81,18 +89,31 @@ const resolvers = {
 		// args:
 		// id: String!
 		// name: String
-		editPerson: async (root, args) => {
+		editPerson: async (root, args, context) => {
+
+			const currentUser = context.currentUser
+			
+			if (!currentUser) {
+				throw new AuthenticationError('not authenticated')
+			}
+
 			try {
+
+				let personInDb = await Person.findById(args.id).populate('group')
+				
+				if (!personInDb.group.users.includes(currentUser._id)) {
+					throw new AuthenticationError('user is not a member of the group')
+				}
 
 				let personToUpdate = {
 					...args
 				}
-				
 				delete personToUpdate.id
-				const savedPerson = await Person
-					.findByIdAndUpdate(args.id, personToUpdate, { new: true })
-					.populate('group') 
-				return savedPerson
+
+				personInDb.name = args.name
+				
+				return await personInDb.save()
+				
 			} catch (error) {
 				throw new UserInputError(error.message, {
 					invalidArgs: args
@@ -101,11 +122,24 @@ const resolvers = {
 		},
 		// args:
 		// id: String!
-		removePerson: async (root, args) => {
+		removePerson: async (root, args, context) => {
+
+			const currentUser = context.currentUser
+			
+			if (!currentUser) {
+				throw new AuthenticationError('not authenticated')
+			}
+
 			try {
-				return await Person
-					.findByIdAndDelete(args.id)
-					.populate('group')
+
+				let personInDb = await Person.findById(args.id).populate('group')
+				
+				if (!personInDb.group.users.includes(currentUser._id)) {
+					throw new AuthenticationError('user is not a member of the group')
+				}
+
+				return await personInDb.deleteOne()
+				
 			} catch (error) {
 				throw new UserInputError(error.message, {
 					invalidArgs: args

@@ -29,7 +29,6 @@ const GroupList = props => {
 		)
 	}
 
-	console.log('grouplist', userGroups)
 	return (
 		<View style={styles.container}>
 			
@@ -47,7 +46,7 @@ const GroupList = props => {
 				/>} 
 			/>
 			
-			<FloatingActionButton onPress={createNewGroup} />
+			<FloatingActionButton onPress={createNewGroup} labelText="Add a new group" />
 		</View>
 		
 	) 

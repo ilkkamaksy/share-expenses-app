@@ -17,8 +17,6 @@ const EditGroupInfo = props => {
 		updateGroup,
 		navigation } = props
 
-	console.log('editgroupinfo component', props.groupToEdit)
-
 	const onSaveGroup = async () => {
 		if (!groupToEdit.id) {
 			await saveGroup(groupToEdit)

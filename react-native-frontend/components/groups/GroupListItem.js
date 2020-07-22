@@ -13,7 +13,6 @@ const GroupListItem = ({ item, onViewDetail, removeGroup }) => {
 					<Text>{`Group owner id ${item.owner.id}`}</Text>
 				</View>
 				<View style={styles.actions}>
-					<Button color={Colors.primary} title="view" onPress={onViewDetail} />
 					<Button color={Colors.accent} title="remove" onPress={() => removeGroup(item.id)} />
 				</View>
 			</View>

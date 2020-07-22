@@ -6,6 +6,9 @@ import thunk from 'redux-thunk'
 
 import GroupListItem from './GroupListItem'
 
+jest.mock('react-native-paper')
+jest.mock('react-native-vector-icons')
+
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
 

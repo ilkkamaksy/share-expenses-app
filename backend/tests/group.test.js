@@ -187,9 +187,7 @@ describe('Group mutations', () => {
 
 		const variables = { 
 			title: 'test group',
-			location: 'test location',
-			users: [],
-			people: []
+			location: 'test location'
 		}
 
 		const res = await mutate({
@@ -479,6 +477,78 @@ describe('Group mutations', () => {
 		expect(res.data.removeGroupUser.users.length).toEqual(0)
 		
 	})
+
+	it('A logged in user can add a group with only a title', async () => {
+		
+		const { server } = constructTestServer({
+			currentUser: { 
+				_id: userA.id, 
+				email: userA.email
+			} 
+		})
+
+		const { mutate } = createTestClient(server)
+
+		const variables = { 
+			title: 'group title'
+		}
+
+		const res = await mutate({
+			mutation: CREATE_GROUP,
+			variables
+		})
+		
+		expect(res.data.createGroup.title).toEqual('group title')
+	})
+
+	it('The context user is assigned as the group owner', async () => {
+		
+		const { server } = constructTestServer({
+			currentUser: { 
+				_id: userA.id, 
+				email: userA.email
+			} 
+		})
+
+		const { mutate } = createTestClient(server)
+
+		const variables = { 
+			title: 'group title'
+		}
+
+		const res = await mutate({
+			mutation: CREATE_GROUP,
+			variables
+		})
+		
+		
+		expect(res.data.createGroup.owner.id).toEqual(userA.id)
+	})
+
+	it('The context user is added to the group users by default', async () => {
+		
+		const { server } = constructTestServer({
+			currentUser: { 
+				_id: userA.id, 
+				email: userA.email
+			} 
+		})
+
+		const { mutate } = createTestClient(server)
+
+		const variables = { 
+			title: 'group title'
+		}
+
+		const res = await mutate({
+			mutation: CREATE_GROUP,
+			variables
+		})
+		
+		const expected = [{id: userA.id, email: userA.email}]
+		expect(res.data.createGroup.users).toEqual(expect.arrayContaining(expected))
+	})
+
 })
 
 describe('Group queries', () => {
@@ -548,7 +618,6 @@ describe('Group queries', () => {
 			query: GET_GROUPS
 		})
 		
-		console.log(res)
 		expect(res.data.getGroups.length).toEqual(1)
 		expect(res.data.getGroups[0].title).toEqual(defaultGroup.title)
 	})

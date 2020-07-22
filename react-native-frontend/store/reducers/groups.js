@@ -17,7 +17,6 @@ export const {
 const initialState = {
 	groupToEdit: {
 		title: '',
-		date: new Date(Date.now()),
 		location: '',
 		people: [],
 		users: [],

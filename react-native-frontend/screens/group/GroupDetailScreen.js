@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { ScrollView } from 'react-native'
 import Group from '../../components/groups/Group'
 
 const GroupDetailScreen = props => {
+
+	useEffect(() => {
+		props.navigation.setOptions({title: props.route.params.group.title})
+	}, [])
 	
 	return (
 		<ScrollView>

@@ -4,14 +4,18 @@ import { StyleSheet } from 'react-native'
 import { FAB } from 'react-native-paper'
 import Colors from '../../constants/Colors'
 
-const FloatingActionButton = props => (
-	<FAB
-		style={styles.fab}
-		small
-		icon="plus"
-		onPress={() => props.onPress()}
-	/>
-)
+const FloatingActionButton = props => {
+
+	return (
+		<FAB
+			style={styles.fab}
+			small
+			icon="plus"
+			onPress={() => props.onPress()}
+			accessibilityLabel={props.labelText ? props.labelText : 'FAB'}
+		/>
+	)
+} 
 
 const styles = StyleSheet.create({
 	fab: {
@@ -24,7 +28,8 @@ const styles = StyleSheet.create({
 })
 
 FloatingActionButton.propTypes = {
-	onPress: PropTypes.func
+	onPress: PropTypes.func,
+	labelText: PropTypes.string
 }
 
 export default FloatingActionButton

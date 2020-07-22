@@ -6,6 +6,9 @@ import thunk from 'redux-thunk'
 
 import Group from './Group'
 
+jest.mock('react-native-paper')
+jest.mock('react-native-vector-icons')
+
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
 
@@ -16,18 +19,34 @@ describe('Group test', () => {
 
 	beforeEach(() => {
 		store = mockStore({
-			userGroups: [
-				{
-					title: 'some group',
-					id: 'g1',
-					ownerId: 'u1'
+			groups: {
+				userGroups: [
+					{
+						title: 'some group',
+						id: 'g1',
+						owner: {
+							id: 'u1'
+						} 
+					}
+				],
+				groupToEdit: {
+					title: '',
+					date: new Date(Date.now()),
+					location: '',
+					people: [],
+					users: [],
+					id: null
 				}
-			]
+			}
 		})
         
 		component = (
 			<Provider store={store}>
-				<Group title="some group" ownerId="u1" id="g1" />
+				<Group group={{
+					title: 'some group',
+					id: 'g1'
+				}} 
+				/>
 			</Provider>
 		)
 	})

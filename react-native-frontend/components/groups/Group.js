@@ -1,16 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, FlatList } from 'react-native'
 import { Button } from 'react-native-paper'
 
 import { setGroupToEdit } from '../../store/reducers/groups'
 
 import FloatingActionButton from '../UI/FloatingActionButton'
+import PersonListItem from './PersonListItem'
 
 const Group = ({ group, navigation, setGroupToEdit }) => {
-
-	console.log('group component', group)
 
 	const onEditGroup = () => {	
 		setGroupToEdit(group)
@@ -25,6 +24,13 @@ const Group = ({ group, navigation, setGroupToEdit }) => {
 					<Text>{group.location}</Text>
 				</View>
 			</View>
+			<FlatList 
+				data={group.people} 
+				keyExtractor={item=> item.id}
+				renderItem={itemData => <PersonListItem 
+					person={itemData.item} 
+				/>} 
+			/>
 			<Button 
 				mode="contained" 
 				onPress={onEditGroup}

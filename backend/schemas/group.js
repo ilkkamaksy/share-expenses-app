@@ -49,12 +49,15 @@ const resolvers = {
 
 				let group = {
 					title: args.title.trim(),
-					location: args.location.trim(),
 					owner: currentUser._id,
-					users: args.users.length > 0 ? args.users : [currentUser._id],
-					people: args.people.length > 0 ? args.people : [],
+					users: args.users && args.users.length > 0 ? args.users : [currentUser._id],
+					people: args.people && args.people.length > 0 ? args.people : [],
 					createdAt: now,
 					lastUpdatedAt: now
+				}
+
+				if (args.location) {
+					group.location = args.location.trim()
 				}
 
 				let newGroup = new Group(group)
@@ -98,12 +101,19 @@ const resolvers = {
 					throw new AuthenticationError('user is not a member of the group')
 				}
 
-				const groupToUpdate = {
+				let groupToUpdate = {
 					...args,
-					title: args.title.trim(),
-					location: args.location.trim(),
 					lastUpdatedAt: Date.now()
 				}
+
+				if (args.title) {
+					groupToUpdate.title = args.title.trim()
+				}
+
+				if (args.location) {
+					groupToUpdate.location = args.location.trim()
+				}
+				
 				delete groupToUpdate.id
 
 				return await Group

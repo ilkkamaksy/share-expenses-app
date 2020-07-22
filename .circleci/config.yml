@@ -11,7 +11,7 @@ jobs:
           steps:
             - run: cd backend && npm install
             - run: cd backend && npm run test
-            - codecov
+            - run: codecov
 workflows:
     build-and-test:
       jobs:

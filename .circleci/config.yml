@@ -12,7 +12,7 @@ jobs:
             - run: cd backend && npm install && npm install --save-dev codecov
             - run: cd backend && npm run citest
             - run: cd react-native-frontend && npm install && npm install --save-dev codecov
-            - run: cd backend && npm run citest
+            - run: cd react-native-frontend && npm run citest
 workflows:
     build-and-test:
       jobs:

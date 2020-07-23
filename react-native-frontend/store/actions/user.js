@@ -2,6 +2,7 @@ import { AsyncStorage } from 'react-native'
 	
 import userService from '../../services/userService'
 import util from '../../services/util'
+// import { emailValidator, passwordValidator } from '../../utils/validate'
 
 const registerUser = (credentials = null) =>  {
 	return async dispatch => {
@@ -60,6 +61,8 @@ const loginUser = (credentials = null) =>  {
 
 const setEmail = (email) => {
 	return dispatch => {
+
+		
 		dispatch({
 			type: 'SET_USERNAME',
 			email

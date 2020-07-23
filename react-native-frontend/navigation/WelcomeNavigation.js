@@ -15,12 +15,8 @@ const WelcomeNavigator = ({ activeScreen = 'Splash' }) => {
 	return (
 		<WelcomeStack.Navigator
 			initialRouteName={activeScreen}
-			headerMode="screen"
 			screenOptions={{
-				headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary,
-				headerStyle: { 
-					backgroundColor: Platform.OS === 'android' ? Colors.primary : '' 
-				},
+				headerShown: false
 			}}
 		>
 

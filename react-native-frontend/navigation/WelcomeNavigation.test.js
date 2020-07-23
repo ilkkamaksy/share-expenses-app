@@ -45,7 +45,7 @@ describe('Testing Welcome navigation', () => {
 
 		const { findByText } = render(component)
 
-		const header = await findByText('Share Expenses app')
+		const header = await findByText('Welcome to ShareExpenses')
 		const register = await findByText('Register')
 		const login = await findByText('Login')
         
@@ -72,7 +72,7 @@ describe('Testing Welcome navigation', () => {
 		const toClick = await findByText('Login')
 
 		fireEvent(toClick, 'press')
-		const newHeader = await findByText('Login to your account')
+		const newHeader = await findByText('Welcome back')
 
 		expect(newHeader).toBeTruthy()
 	})
@@ -101,7 +101,7 @@ describe('Testing Welcome navigation', () => {
 		)
         
 		const { findByText } = render(component)
-		const header = await findByText('Login to your account')
+		const header = await findByText('Welcome back')
 
 		expect(header).toBeTruthy()
 	})

@@ -6,7 +6,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "test": "jest --verbose --runInBand --collectCoverage",
+    "test": "jest --verbose --runInBand --collectCoverage --detectOpenHandles",
     "citest": "eslint . && jest --verbose --runInBand --collectCoverage && codecov",
     "lint": "eslint ."
   },

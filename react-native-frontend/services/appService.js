@@ -167,8 +167,6 @@ const saveGroup = async (group) => {
 
 const updateGroup = async (group) => {
 
-	console.log(group)
-	
 	const variables = { 
 		id: group.id,
 		title: group.title,

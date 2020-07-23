@@ -13,4 +13,5 @@
 | 14.7. |   5  | Ryhmän jäsenien muokkaus ja tallennus |
 | 21.7. |   7  | Ryhmän muokkaaminen frontendissä, screen-titlen määrittely dynaamisesti ja group-testejä backendiin |
 | 22.7. |   8  | Kattavammin testejä backendiin ja frontendiin + circleci ja codecov-konffaus |
-| yht   | 76   | | 
+| 23.7. |   6  | Leiskan suunnittelua, kirjautumisen ja rekisteröinnin visuaalisen ilmeen rakennusta |
+| yht   | 82   | | 

@@ -1,9 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { ScrollView, View, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { Button } from 'react-native-paper'
 import { connect } from 'react-redux'
 
+import Logo from '../common/Logo'
+import Background from '../common/Background'
+import Paragraph from '../common/Paragraph'
+import Header from '../common/Header'
 import Colors from '../../constants/Colors'
 
 const Home = props => {
@@ -17,26 +21,59 @@ const Home = props => {
 	}
 
 	return (
-		<ScrollView>
+		<Background>
+			<Logo />
+			<Header>Welcome to ShareExpenses</Header>
+			<Paragraph>
+				An easy way to track shared expenses with your friends and family.
+			</Paragraph>
 			<View style={styles.container}>
-				<Button mode="contained" onPress={loginButtonHandler} color={Colors.primary}>
+				<Button 
+					mode="contained"
+					style={[
+						styles.button,
+						{color: Colors.white}
+					]}
+					onPress={loginButtonHandler} 
+					color={Colors.accent}
+				>
                     Login
 				</Button>
-				<Button mode="outlined" onPress={registerButtonHandler} color={Colors.primary}>
+				<Button
+					mode="outlined"
+					style={styles.button}
+					onPress={registerButtonHandler} 
+					color={Colors.accent}
+				>
                     Register
 				</Button>
 			</View>
-		</ScrollView>
+		</Background>
 	)
 }
 
 const styles = StyleSheet.create({
-	container: {
+	button: {
+		width: '100%',
+		marginVertical: 10,
+	},
+	
+	forgotPassword: {
+		width: '100%',
+		alignItems: 'flex-end',
+		marginBottom: 24,
+	},
+	row: {
 		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		margin: 10
-	}
+		marginTop: 4,
+	},
+	label: {
+		color: Colors.primary,
+	},
+	link: {
+		fontWeight: 'bold',
+		color: Colors.primary,
+	},
 })
 
 Home.propTypes = {

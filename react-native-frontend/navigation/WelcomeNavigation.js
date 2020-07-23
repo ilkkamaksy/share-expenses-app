@@ -1,9 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { createStackNavigator } from '@react-navigation/stack'
-import { Platform } from 'react-native'
 
-import Colors from '../constants/Colors'
 import RegisterScreen from '../screens/user/RegisterScreen'
 import LoginScreen from '../screens/user/LoginScreen'
 import SplashScreen from '../screens/splash/SplashScreen'

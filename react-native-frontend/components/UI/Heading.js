@@ -3,8 +3,14 @@ import PropTypes from 'prop-types'
 import { StyleSheet, Text } from 'react-native'
 import Colors from '../../constants/Colors'
 
-const Header = ({ children }) => (
-	<Text style={styles.header}>{children}</Text>
+const Heading = ({ children, style }) => (
+	<Text style={[
+		styles.header,
+		style
+	]}
+	>
+		{children}
+	</Text>
 )
 
 const styles = StyleSheet.create({
@@ -17,8 +23,9 @@ const styles = StyleSheet.create({
 	},
 })
 
-Header.propTypes = {
-	children: PropTypes.string
+Heading.propTypes = {
+	children: PropTypes.string,
+	style: PropTypes.array
 }
 
-export default Header
+export default Heading

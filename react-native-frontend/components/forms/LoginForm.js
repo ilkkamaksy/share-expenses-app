@@ -9,7 +9,7 @@ import { loginUser, setPassword, setEmail } from '../../store/reducers/user'
 
 import Colors from '../../constants/Colors'
 import TextInput from '../UI/TextInput'
-import Paragraph from '../common/Paragraph'
+import Paragraph from '../UI/Paragraph'
 
 const LoginForm = props => {
 
@@ -67,7 +67,7 @@ const LoginForm = props => {
 					<Button 
 						mode="contained" 
 						onPress={submitHandler} 
-						color={Colors.accent}
+						color={Colors.primary}
 					>
                         Login
 					</Button>
@@ -93,14 +93,14 @@ const styles = StyleSheet.create({
 	},
 	row: {
 		flexDirection: 'row',
-		marginTop: 16,
+		marginTop: 20,
 	},
 	label: {
 		color: Colors.coffee,
 	},
 	link: {
 		fontWeight: 'bold',
-		color: Colors.accent,
+		color: Colors.primary,
 	},
 	errorNotice: {
 		color: Colors.error

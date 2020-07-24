@@ -8,7 +8,7 @@ import { registerUser, setEmail, setPassword } from '../../store/reducers/user'
 
 import Colors from '../../constants/Colors'
 import TextInput from '../UI/TextInput'
-import Paragraph from '../common/Paragraph'
+import Paragraph from '../UI/Paragraph'
 
 const RegisterForm = props => {
 
@@ -60,7 +60,7 @@ const RegisterForm = props => {
 						style={styles.button}
 						mode="contained" 
 						onPress={submitHandler} 
-						color={Colors.accent}
+						color={Colors.primary}
 					>
                         Sign up!
 					</Button>
@@ -87,11 +87,11 @@ const styles = StyleSheet.create({
 	},
 	row: {
 		flexDirection: 'row',
-		marginTop: 10,
+		marginTop: 20,
 	},
 	link: {
 		fontWeight: 'bold',
-		color: Colors.accent,
+		color: Colors.primary,
 	},
 })
 

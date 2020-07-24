@@ -8,7 +8,9 @@ const typeDef = `
         owner: User!
 		users: [User!]
 		people: [Person!]
-        id: ID!
+		id: ID!
+		lastUpdatedAt: String,
+		createdAt: String
     }
 `
 

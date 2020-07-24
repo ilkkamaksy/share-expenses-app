@@ -1,49 +1,65 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import Icon from 'react-native-vector-icons/AntDesign'
+
 import Colors from '../../constants/Colors'
 
-const GroupListItem = ({ item, onViewDetail, removeGroup }) => {
+const GroupListItem = ({ item, onViewDetail }) => {
+
+	const lastUpdatedAt = new Date(JSON.parse(item.lastUpdatedAt))
+	const formattedUpdatedAt = `${lastUpdatedAt.toLocaleDateString()} at ${lastUpdatedAt.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`
+	
 	return (
-		<TouchableOpacity onPress={onViewDetail} style={styles.groupContainer}>
-			<View style={styles.group}>
-				<View style={styles.textContainer}>
+		<TouchableOpacity onPress={onViewDetail} style={styles.item}>
+			<View style={styles.itemContainer}>
+				<View style={styles.itemContent}>
+					<Text style={styles.location}>{`${item.location}`}</Text>
 					<Text style={styles.title}>{item.title}</Text>
-					<Text>{`Group id ${item.id}`}</Text>
-					<Text>{`Group owner id ${item.owner.id}`}</Text>
+					<Text style={styles.lastUpdatedAt}>{`Last updated: ${formattedUpdatedAt}`}</Text>
 				</View>
-				<View style={styles.actions}>
-					<Button color={Colors.accent} title="remove" onPress={() => removeGroup(item.id)} />
-				</View>
+				<Icon name="right" size={16} color={Colors.lightCoffee} />
 			</View>
 		</TouchableOpacity>
 	)
 }
 
 const styles = StyleSheet.create({
-	groupContainer: {
-		display: 'flex',
-		alignItems: 'center'
+	item: {
+		borderBottomColor: '#f2f2f2',
+		borderBottomWidth: StyleSheet.hairlineWidth,
+		flex: 1,
+		paddingTop: 14,
+		paddingBottom: 16,
+		width: '100%',
+		maxWidth: 340,
+		alignSelf: 'center',
 	},
-	group: {
-		borderRadius: 4,
-		backgroundColor: 'white',
-		margin: 10,
-		width: '80%'
+	itemContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
 	},
-	textContainer: {
-		margin: 10
+	itemContent: {
+
 	},
 	title: {
-		fontSize: 18,
-		marginBottom: 8
+		fontSize: 16,
+		marginBottom: 8,
+		fontWeight: 'bold',
+		color: Colors.coffee
 	},
-	actions: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		margin: 10
-	}
+	lastUpdatedAt: {
+		fontSize: 12,
+		color: Colors.lightCoffee
+	},
+	location: {
+		fontSize: 10,
+		color: Colors.secondary,
+		textTransform: 'uppercase',
+		fontWeight: 'bold',
+		marginBottom: 6
+	},
 })
 
 GroupListItem.propTypes = {

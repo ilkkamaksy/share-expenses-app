@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { FlatList, StyleSheet, View } from 'react-native'
+import { FlatList, StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import GroupListItem from './GroupListItem'
 import { ActivityIndicator } from 'react-native-paper'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { getGroups, removeGroup, setGroupToEdit } from '../../store/reducers/groups'
+import { getGroups, setGroupToEdit } from '../../store/reducers/groups'
 
 import FloatingActionButton from '../UI/FloatingActionButton'
 import Colors from '../../constants/Colors'
 
 const GroupList = props => {
 	
-	const { setGroupToEdit, getGroups, removeGroup, navigation, fetching, userGroups } = props
+	const { setGroupToEdit, getGroups, navigation, fetching, userGroups } = props
 
 	useEffect(() => {
 		getGroups()
@@ -31,13 +32,20 @@ const GroupList = props => {
 
 	return (
 		<View style={styles.container}>
+			<View style={styles.sorting}>
+				<TouchableOpacity onPress={() => console.log('pressed')}>
+					<Text style={styles.sortingAction}>Most recently updated</Text>
+				</TouchableOpacity>
+				<TouchableOpacity onPress={() => console.log('pressed')}>
+					<Icon name="filter-variant" size={24} color={Colors.primary} />
+				</TouchableOpacity>
+			</View>
 			
 			<FlatList 
 				data={userGroups} 
 				keyExtractor={item=> item.id}
 				renderItem={itemData => <GroupListItem 
 					item={itemData.item} 
-					removeGroup={removeGroup}
 					onViewDetail={() => {
 						navigation.navigate('GroupItem', {
 							group: itemData.item
@@ -53,8 +61,18 @@ const GroupList = props => {
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1
+	sorting: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		marginBottom: 16,
+		paddingBottom: 10,
+		borderBottomColor: '#f2f2f2',
+		borderBottomWidth: StyleSheet.hairlineWidth,
+	},
+	sortingAction: {
+		color: Colors.coffee,
+		fontSize: 14
 	}
 })
 
@@ -81,7 +99,6 @@ const connectedGroupList = connect(
 	mapStateToProps, 
 	{
 		getGroups,
-		removeGroup,
 		setGroupToEdit
 	}
 )(GroupList)

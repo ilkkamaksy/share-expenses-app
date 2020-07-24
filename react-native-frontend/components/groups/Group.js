@@ -4,8 +4,9 @@ import PropTypes from 'prop-types'
 import { View, Text, StyleSheet, FlatList } from 'react-native'
 import { Button } from 'react-native-paper'
 
-import { setGroupToEdit } from '../../store/reducers/groups'
+import Colors from '../../constants/Colors'
 
+import { setGroupToEdit } from '../../store/reducers/groups'
 import FloatingActionButton from '../UI/FloatingActionButton'
 import PersonListItem from './PersonListItem'
 
@@ -18,12 +19,9 @@ const Group = ({ group, navigation, setGroupToEdit }) => {
 
 	return (
 		<View style={styles.container}>
-			<View style={styles.group}>
-				<View style={styles.textContainer}>
-					<Text style={styles.title}>{group.title}</Text>
-					<Text>{group.location}</Text>
-				</View>
-			</View>
+			
+			<Text style={styles.subtitle}>People in this group</Text>
+
 			<FlatList 
 				data={group.people} 
 				keyExtractor={item=> item.id}
@@ -44,22 +42,14 @@ const Group = ({ group, navigation, setGroupToEdit }) => {
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1
-	},
-	group: {
-		borderRadius: 4,
-		backgroundColor: 'white',
-		margin: 10,
-	},
-	textContainer: {
-		margin: 10,
-		textAlign: 'center'
-	},
-	title: {
-		fontSize: 18,
-		marginBottom: 8
-	},
+	subtitle: {
+		color: Colors.coffee,
+		fontSize: 14,
+		marginBottom: 16,
+		paddingBottom: 10,
+		borderBottomColor: '#f2f2f2',
+		borderBottomWidth: StyleSheet.hairlineWidth,
+	}
 })
 
 Group.propTypes = {

@@ -4,10 +4,10 @@ import { View, StyleSheet } from 'react-native'
 import { Button } from 'react-native-paper'
 import { connect } from 'react-redux'
 
-import Logo from '../common/Logo'
-import Background from '../common/Background'
-import Paragraph from '../common/Paragraph'
-import Header from '../common/Header'
+import Logo from '../UI/Logo'
+import Background from '../UI/Background'
+import Paragraph from '../UI/Paragraph'
+import Heading from '../UI/Heading'
 import Colors from '../../constants/Colors'
 
 const Home = props => {
@@ -23,7 +23,7 @@ const Home = props => {
 	return (
 		<Background>
 			<Logo />
-			<Header>Welcome to ShareExpenses</Header>
+			<Heading>Welcome to ShareExpenses</Heading>
 			<Paragraph>
 				An easy way to track shared expenses with your friends and family.
 			</Paragraph>
@@ -35,7 +35,7 @@ const Home = props => {
 						{color: Colors.white}
 					]}
 					onPress={loginButtonHandler} 
-					color={Colors.accent}
+					color={Colors.primary}
 				>
                     Login
 				</Button>
@@ -43,7 +43,7 @@ const Home = props => {
 					mode="outlined"
 					style={styles.button}
 					onPress={registerButtonHandler} 
-					color={Colors.accent}
+					color={Colors.primary}
 				>
                     Register
 				</Button>

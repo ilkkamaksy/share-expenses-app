@@ -1,29 +1,27 @@
-/* eslint-disable no-undef */
 import React from 'react'
 import PropTypes from 'prop-types'
-import { TouchableOpacity, Image, StyleSheet } from 'react-native'
+import { TouchableOpacity, StyleSheet } from 'react-native'
+import Icon from 'react-native-vector-icons/Ionicons'
+import Colors from '../../constants/Colors'
 
-const BackButton = ({ goBack }) => (
+const BackButton = ({ goBack, color =  Colors.coffee}) => (
 	<TouchableOpacity onPress={goBack} style={styles.container}>
-		<Image style={styles.image} source={require('../../assets/arrow_back.png')} />
+		<Icon name="md-arrow-back" size={24} color={color} />
 	</TouchableOpacity>
 )
 
 const styles = StyleSheet.create({
 	container: {
 		position: 'absolute',
-		top: 10,
-		left: 10,
-	},
-	image: {
-		width: 24,
-		height: 24,
-	},
+		top: 16,
+		left: 20,
+	}
 })
 
 
 BackButton.propTypes = {
-	goBack: PropTypes.func
+	goBack: PropTypes.func,
+	color: PropTypes.string
 }
 
 export default BackButton

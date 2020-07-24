@@ -74,6 +74,8 @@ const GET_GROUPS = `
 	query {
 		getGroups {
 			id
+			lastUpdatedAt
+			createdAt
 			title
 			location
 			owner {

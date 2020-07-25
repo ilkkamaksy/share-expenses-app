@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 
 
 ContentContainer.propTypes = {
-	children: PropTypes.array,
+	children: PropTypes.object,
 	style: PropTypes.array
 }
 

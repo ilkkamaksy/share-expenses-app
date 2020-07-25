@@ -4,6 +4,7 @@ const { merge } = require('lodash')
 const user = require('./user')
 const person = require('./person')
 const group = require('./group')
+const expense = require('./expense')
 
 const Query = `
         type Query {
@@ -74,12 +75,18 @@ const Mutation = `
             removePerson (
                 id: String!
             ): Person
+            addExpense(
+                groupid: String!
+                description: String!
+                amount: Float!
+                people: [String!]
+            ): Expense
         }
     `
 
 const schema = makeExecutableSchema({
-	typeDefs: [ Query, Mutation, user.typeDef, group.typeDef, person.typeDef ],
-	resolvers: merge(user.resolvers, group.resolvers, person.resolvers),
+	typeDefs: [ Query, Mutation, user.typeDef, group.typeDef, person.typeDef, expense.typeDef ],
+	resolvers: merge(user.resolvers, group.resolvers, person.resolvers, expense.resolvers),
 })
 
 module.exports = schema

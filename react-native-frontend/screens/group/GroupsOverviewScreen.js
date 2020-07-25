@@ -15,10 +15,10 @@ const GroupsOverViewScreen = ({navigation}) => {
 		<ScrollView style={styles.container}>
 			<Hero>
 
-				<Heading style={styles.header}>
+				<Heading style={[styles.header]}>
 					My groups
 				</Heading>
-				<Paragraph style={styles.intro}>
+				<Paragraph style={[styles.intro]}>
 					Browse you groups.
 				</Paragraph>
 			</Hero>

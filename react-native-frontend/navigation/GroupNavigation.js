@@ -1,29 +1,14 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-import { createDrawerNavigator } from '@react-navigation/drawer'
-import { useNavigation, DrawerActions } from '@react-navigation/native'
-import { Platform } from 'react-native'
-import Icon from 'react-native-vector-icons/Ionicons'
 
 import Colors from '../constants/Colors'
 import GroupsOverViewScreen from '../screens/group/GroupsOverviewScreen'
 import GroupDetailScreen from '../screens/group/GroupDetailScreen'
 import EditGroupInfoScreen from '../screens/group/EditGroupInfoScreen'
 import EditGroupPeopleScreen from '../screens/group/EditGroupPeopleScreen'
-import Logout from '../components/navigation/Logout'
+import EditExpenseScreen from '../screens/group/EditExpenseScreen'
 
-const HeaderRight = () => {
-
-	const navigation = useNavigation()
-    
-	return (
-		<Icon 
-			onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-			name='md-menu' 
-			size={23} 
-			color={Platform.OS === 'android' ? 'white' : Colors.primary} />
-	)
-}
+import MenuTopRight from '../components/menus/MenuTopRight'
 
 const GroupStack = createStackNavigator()
 
@@ -33,11 +18,17 @@ function GroupNavigator() {
 		<GroupStack.Navigator 
 			initialRouteName="GroupList"
 			headerMode="screen"
-			defaultNavigationOptions={{
-				headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary,
+			screenOptions={{
+				headerTitle: '',
+				headerTintColor: Colors.white,
 				headerStyle: { 
-					backgroundColor: Platform.OS === 'android' ? Colors.primary : '' 
+					backgroundColor: Colors.primary,
+					shadowColor: 'transparent',
+					elevation: 0,
+					borderBottomWidth: 0, 
 				},
+				// eslint-disable-next-line react/display-name
+				headerRight: () => <MenuTopRight />,
 			}}
 		>
 
@@ -45,9 +36,7 @@ function GroupNavigator() {
 				name="GroupList"
 				component={GroupsOverViewScreen}
 				options={{
-					title: 'My Groups',
-					// eslint-disable-next-line react/display-name
-					headerRight: () => <HeaderRight />,
+					title: 'My Groups',	
 				}}
                 
 			/>
@@ -57,8 +46,6 @@ function GroupNavigator() {
 				component={GroupDetailScreen}
 				options={{
 					navigation: ({route}) => ({ group: route.params.group }),
-					// eslint-disable-next-line react/display-name
-					headerRight: () => <HeaderRight />
 				}}
 			/>
 
@@ -67,8 +54,6 @@ function GroupNavigator() {
 				component={EditGroupInfoScreen}
 				options={{
 					title: 'Add a new group',
-					// eslint-disable-next-line react/display-name
-					headerRight: () => <HeaderRight />,
 				}}
 				
 			/>
@@ -78,8 +63,14 @@ function GroupNavigator() {
 				component={EditGroupPeopleScreen}
 				options={{
 					title: 'Manage group members',
-					// eslint-disable-next-line react/display-name
-					headerRight: () => <HeaderRight />
+				}}
+			/>
+
+			<GroupStack.Screen
+				name="EditExpense"
+				component={EditExpenseScreen}
+				options={{
+					title: 'Edit expense',
 				}}
 			/>
             
@@ -87,15 +78,4 @@ function GroupNavigator() {
 	)
 }
 
-const Drawer = createDrawerNavigator()
-
-function DrawerNavigator() {
-	return (
-		<Drawer.Navigator>
-			<Drawer.Screen name="My Groups" component={GroupNavigator} />
-			<Drawer.Screen name="Logout" component={Logout} />
-		</Drawer.Navigator>
-	)
-}
-
-export default DrawerNavigator
+export default GroupNavigator

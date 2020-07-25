@@ -18,10 +18,10 @@ const GroupDetailScreen = props => {
 	return (
 		<ScrollView style={styles.container}>
 			<Hero>
-				<Heading style={styles.header}>
+				<Heading style={[styles.header]}>
 					{props.route.params.group.title}
 				</Heading>
-				<Paragraph style={styles.intro}>
+				<Paragraph style={[styles.intro]}>
 					{props.route.params.group.location}
 				</Paragraph>
 			</Hero>

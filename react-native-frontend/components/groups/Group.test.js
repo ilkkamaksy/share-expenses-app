@@ -54,7 +54,7 @@ describe('Group test', () => {
 	test('it should execute with 1 element', () => {
         
 		const { getAllByText } = render(component)
-		const groups = getAllByText('People in this group')
+		const groups = getAllByText('Overview')
     
 		expect(groups.length).toEqual(1)
 

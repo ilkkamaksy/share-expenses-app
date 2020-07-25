@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { View, Text, StyleSheet, FlatList } from 'react-native'
-import { Button } from 'react-native-paper'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 
 import Colors from '../../constants/Colors'
+import Edit from '../icons/Edit'
 
 import { setGroupToEdit } from '../../store/reducers/groups'
 import FloatingActionButton from '../UI/FloatingActionButton'
@@ -20,7 +20,17 @@ const Group = ({ group, navigation, setGroupToEdit }) => {
 	return (
 		<View style={styles.container}>
 			
-			<Text style={styles.subtitle}>People in this group</Text>
+			<View style={styles.actions}>
+				<View>
+					<TouchableOpacity onPress={onEditGroup} style={styles.actionLinkContainer}>
+						<Edit size={14} color={Colors.white} />
+						<Text style={styles.actionLink}>Edit</Text>
+					</TouchableOpacity>
+				</View>
+				
+			</View>
+			
+			<Text style={styles.subtitle}>Overview</Text>
 
 			<FlatList 
 				data={group.people} 
@@ -29,14 +39,8 @@ const Group = ({ group, navigation, setGroupToEdit }) => {
 					person={itemData.item} 
 				/>} 
 			/>
-			<Button 
-				mode="contained" 
-				onPress={onEditGroup}
-			>
-				Edit group
-			</Button>
 			
-			<FloatingActionButton onPress={() => console.log('pressed')} />
+			<FloatingActionButton onPress={() => navigation.navigate('EditExpense')} />
 		</View>
 	)
 }
@@ -49,6 +53,26 @@ const styles = StyleSheet.create({
 		paddingBottom: 10,
 		borderBottomColor: '#f2f2f2',
 		borderBottomWidth: StyleSheet.hairlineWidth,
+	},
+	actions: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		position: 'absolute',
+		top: -65
+	}, 
+	actionLinkContainer: {
+		backgroundColor: Colors.primary,
+		paddingVertical: 4,
+		borderRadius: 4,
+		flexDirection: 'row',
+		alignItems: 'center'
+	},
+	actionLink: {
+		textTransform: 'uppercase',
+		color: Colors.white,
+		fontSize: 10,
+		fontWeight: 'bold',
+		marginLeft: 4
 	}
 })
 

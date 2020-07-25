@@ -1,12 +1,19 @@
 import React, { useState} from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { Menu, Divider, Provider } from 'react-native-paper'
+import { useNavigation  } from '@react-navigation/native'
+
+import { logoutUser } from '../../store/reducers/user'
 
 import Ellipsis from '../icons/Ellipsis'
 import Colors from '../../constants/Colors'
 
-const MenuTopRight = () => {
-    
+const MenuTopRight = props => {
+
+	const navigation = useNavigation()
+
 	const [visible, setVisible] = useState(true)
 
 	const openMenu = () => setVisible(true)
@@ -15,11 +22,7 @@ const MenuTopRight = () => {
 
 	return (
 		<Provider>
-			<View
-				style={{
-					flexDirection: 'row',
-					justifyContent: 'flex-end',
-				}}>
+			<View>
 				<Menu
 					visible={visible}
 					onDismiss={closeMenu}
@@ -29,10 +32,10 @@ const MenuTopRight = () => {
 							<Ellipsis size={20} color={Colors.white} />
 						</TouchableOpacity>
 					}>
-					<Menu.Item onPress={() => alert('pressed')} title="Home" style={styles.menuItem} />
-					<Menu.Item onPress={() => {}} title="Item 2" style={styles.menuItem} />
+					<Menu.Item onPress={() => navigation.navigate('GroupList')} title="My groups" style={styles.menuItem} />
+					<Menu.Item onPress={() => {}} title="My account" style={styles.menuItem} />
 					<Divider />
-					<Menu.Item onPress={() => {}} title="Item 3" style={styles.menuItem} />
+					<Menu.Item onPress={() => props.logoutUser()} title="Logout" style={styles.menuItem} />
 				</Menu>
 			</View>
 		</Provider>
@@ -47,10 +50,9 @@ const styles = StyleSheet.create({
 		zIndex: 10,
 	},
 	menu: {
-		flexDirection: 'row',
-		justifyContent: 'flex-end',
-		position: 'relative',
+		position: 'absolute',
 		top: 50,
+		left: -120,
 		zIndex: 10,
 		maxWidth: 340
 	},
@@ -60,4 +62,20 @@ const styles = StyleSheet.create({
 	}
 })
 
-export default MenuTopRight
+MenuTopRight.propTypes = {
+	userdata: PropTypes.object,
+	logoutUser: PropTypes.func,
+	navigation: PropTypes.object
+}
+
+const mapStateToProps = state => {
+	return {
+		userdata: state.user.userdata
+	}
+}
+
+const connectedMenuTopRight = connect(mapStateToProps, {
+	logoutUser
+})(MenuTopRight)
+
+export default connectedMenuTopRight

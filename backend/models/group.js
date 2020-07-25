@@ -22,6 +22,10 @@ const schema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Person'
 	}],
+	expenses: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Expense'
+	},
 	createdAt: Date,
 	lastUpdatedAt: Date
 })

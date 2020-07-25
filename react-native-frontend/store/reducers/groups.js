@@ -12,6 +12,8 @@ export const {
 	removeGroup,
 	addPersonToGroup,
 	removePerson,
+	addExpense,
+	setExpenseToEdit,
 	doneEditing } = actions
 
 const initialState = {
@@ -23,6 +25,12 @@ const initialState = {
 		id: null
 	},
 	currentPerson: '',
+	expenseToEdit: {
+		id: null,
+		description: '',
+		amount: parseFloat(0.00),
+		people: []
+	},
 	userGroups: [],
 	fetching: true,
 	error: '',
@@ -56,6 +64,11 @@ const groupReducer = (state = initialState, action) => {
 		return {
 			...state,
 			currentPerson: action.person
+		}
+	case 'SET_EXPENSE_TO_EDIT' : 
+		return {
+			...state,
+			expenseToEdit: action.expense ? action.expense : initialState.expenseToEdit
 		}
 	case 'INIT_CREATE_GROUP' :
 		return {
@@ -148,6 +161,27 @@ const groupReducer = (state = initialState, action) => {
 			...state,
 			groupToEdit: initialState.groupToEdit,
 			userGroups: state.userGroups.map(group => group.id === action.group.id ? action.group : group)
+		}
+	case 'INIT_CREATE_EXPENSE' :
+		return {
+			...state,
+			fetching: true,
+			saveGroupFail: false,
+			error: ''
+		}
+	case 'CREATE_EXPENSE_SUCCESS' :
+		return {
+			...state,
+			saveGroupFail: false,
+			error: '',
+			fetching: false,
+		}
+	case 'CREATE_EXPENSE_FAIL' :
+		return {
+			...state,
+			saveGroupFail: true,
+			error: action.response,
+			fetching: false
 		}
 	default: return state
 	}

@@ -16,8 +16,10 @@ const CREATE_GROUP = `
 			users: $users
 			people: $people
 		) {
-			title
 			id
+			title
+			lastUpdatedAt
+			createdAt
 			location
 			owner {
 				email
@@ -52,6 +54,8 @@ const UPDATE_GROUP = `
 			owner: $owner
 		) {
 			id
+			lastUpdatedAt
+			createdAt
 			title
 			location
 			users {
@@ -140,6 +144,26 @@ const REMOVE_PERSON = `
 		) {
 			id
 			name
+		}
+	}
+`
+
+const ADD_EXPENSE = `
+	mutation addExpense
+		$groupid: String!
+		$description: String!
+		$amount: Float!
+		$people: [String!]
+	) {
+		addExpense(
+			groupid: $groupid
+			description: $description
+			amount: $amount
+			people: $people
+		) {
+			id
+			description
+			amount
 		}
 	}
 `
@@ -266,4 +290,27 @@ const removePerson = async id => {
 	return await axios.post(apiUrl, data, config)
 }
 
-export default { saveGroup, updateGroup, getGroups, removeGroup, addPersonToGroup, removePerson }
+const addExpense = async (expense) => {
+	
+	const variables = { 
+		groupid: expense.groupid,
+		description: expense.description,
+		amount: expense.amount,
+		people: expense.people
+	}
+
+	const data = {
+		query: ADD_EXPENSE,
+		variables: variables
+	}
+
+	const config = {
+		headers: {
+			'Authorization': util.token
+		}
+	}
+
+	return await axios.post(apiUrl, data, config)
+}
+
+export default { saveGroup, updateGroup, getGroups, removeGroup, addPersonToGroup, removePerson, addExpense }

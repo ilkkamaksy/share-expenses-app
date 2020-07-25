@@ -192,6 +192,39 @@ const doneEditing = group => {
 	}
 }
 
+const setExpenseToEdit = expense => {
+	return dispatch => {
+		dispatch({
+			type: 'SET_EXPENSE_TO_EDIT',
+			expense
+		})
+	}
+}
+
+const addExpense = (expense) =>  {
+	return async dispatch => {
+
+		dispatch({
+			type: 'INIT_CREATE_EXPENSE',
+		})
+
+		const response = await appService.addExpense(expense)
+		
+		if (response.data.data.addExpense === null || response === null) {
+			return dispatch({
+				type: 'CREATE_EXPENSE_FAIL',
+				response: response.data.errors[0].message
+			})
+		}
+
+		dispatch({
+			type: 'CREATE_EXPENSE_SUCCESS',
+			group: response.data.data.addExpense
+		})
+	}
+}
+
+
 export default {
 	setGroupToEdit,
 	setGroupTitle,
@@ -204,5 +237,7 @@ export default {
 	removeGroup,
 	addPersonToGroup,
 	removePerson,
-	doneEditing
+	doneEditing,
+	setExpenseToEdit,
+	addExpense
 }

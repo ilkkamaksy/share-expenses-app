@@ -6,7 +6,7 @@ import { ActivityIndicator } from 'react-native-paper'
 
 import { authenticationCheck } from '../../store/reducers/user'
 import WelcomeNavigator from '../../navigation/WelcomeNavigation'
-import AppNavigator from '../../navigation/GroupNavigation'
+import GroupNavigator from '../../navigation/GroupNavigation'
 import Colors from '../../constants/Colors'
 
 const AppNavigation = props => {
@@ -27,7 +27,7 @@ const AppNavigation = props => {
 			{props.userdata === null ? (
 				<WelcomeNavigator activeScreen={props.loginFail ? 'Login' : props.registerFail ? 'Register' : 'Splash'} />
 			) : (
-				<AppNavigator />
+				<GroupNavigator />
 			) 
 			} 
 		</NavigationContainer>        

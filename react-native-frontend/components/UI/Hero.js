@@ -6,22 +6,16 @@ import {
 	KeyboardAvoidingView,
 } from 'react-native'
 
-import BackButton from './BackButton'
 import Colors from '../../constants/Colors'
 
-import MenuTopRight from '../menus/MenuTopRight'
-
-const Hero = ({ children, style, navigation }) => (
+const Hero = ({ children, style}) => (
 	<View
 		style={[
 			styles.background,
 			style
 		]}
 	>
-		<BackButton color={Colors.white} goBack={() => navigation.navigate('Splash')} />
 		
-		<MenuTopRight />
-
 		<KeyboardAvoidingView style={styles.container} behavior="padding">
 			{children}
 		</KeyboardAvoidingView>
@@ -38,8 +32,8 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		flex: 1,
-		paddingTop: 80,
-		paddingBottom: 40,
+		paddingTop: 40,
+		paddingBottom: 60,
 		width: '100%',
 		maxWidth: 340,
 		alignSelf: 'center',

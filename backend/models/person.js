@@ -9,7 +9,7 @@ const schema = new mongoose.Schema({
 	group: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Group'
-	}
+	},
 })
 
 module.exports = mongoose.model('Person', schema)

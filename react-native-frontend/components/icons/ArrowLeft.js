@@ -6,7 +6,7 @@ const ArrowLeft = ( {size = 24, color = Colors.primary }) => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
-			ariaHidden="true"
+			aria-hidden="true"
 			style={{ position: 'relative', width: size, height: size }}
 			viewBox={`0 0 ${size + 10} ${size + 10}`}
 		>

@@ -15,4 +15,5 @@
 | 22.7. |   8  | Kattavammin testejä backendiin ja frontendiin + circleci ja codecov-konffaus |
 | 23.7. |   6  | Leiskan suunnittelua, kirjautumisen ja rekisteröinnin visuaalisen ilmeen rakennusta |
 | 24.7. |   7  | Leiskan suunnittelu jatkuu, GroupsOverview- ja GroupDetails -näkymien visuaalisen ilmeen rakennusta |
-| yht   | 89   | | 
+| 25.7. |   5  | Expenses-featuren toteuttaminen, model ja schema backendiin, sekä alustavaa toteutusta frontendiin |
+| yht   | 94   | | 

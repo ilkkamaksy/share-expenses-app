@@ -5,28 +5,52 @@ import { TextInput, Button } from 'react-native-paper'
 import { connect } from 'react-redux'
 import DateTimePicker from '@react-native-community/datetimepicker'
 
-import { setTitle, setDate } from '../../store/reducers/groups'
+import { setDate, setExpenseToEdit } from '../../store/reducers/groups'
 
 const EditExpense = props => {
 
-	const { error, groupToEdit, setTitle, setDate, navigation } = props
+	const { error, expenseToEdit, setDate, setExpenseToEdit, navigation } = props
    
 	useEffect(() =>{
 		setDate(new Date(Date.now()))
 	}, [])
 
+	const onChangeDescription = (text) => {
+		setExpenseToEdit({
+			...expenseToEdit,
+			description: text
+		})
+	}
+
+	const onChangeAmount = (text) => {
+
+		let val = text
+		val = val.replace(/([^0-9.]+)/, "")
+		val = val.replace(/^(0|\.)/, "")
+		const match = /(\d{0,7})[^.]*((?:\.\d{0,2})?)/g.exec(val)
+		const value = match[1] + match[2]
+		text = value
+		
+		setExpenseToEdit({
+			...expenseToEdit,
+			amount: val.length > 0 ? Number(value).toFixed(2) : ''
+		})
+	}
+
+	console.log(expenseToEdit)
+
 	const [showDatePicker, setShowDatePicker] = useState(false)
 	const [showTimePicker, setShowTimePicker] = useState(false)
 
 	const onChangeDate = (event, selectedDate) => {
-		const currentDate = selectedDate || groupToEdit.date
+		const currentDate = selectedDate || expenseToEdit.date
 		setShowDatePicker(false)
 		setDate(currentDate)
 		setShowTimePicker(true)
 	}
 
 	const onChangeTime = (event, selectedTime) => {
-		const currentTime = selectedTime || groupToEdit.date
+		const currentTime = selectedTime || expenseToEdit.date
 		setShowTimePicker(false)
 		setDate(currentTime)
 	}
@@ -45,18 +69,28 @@ const EditExpense = props => {
 			<View style={styles.form}>
 				<View style={styles.formControl}>
 					<TextInput 
-						accessibilityLabel="Title"
-						label="Title" 
+						accessibilityLabel="Description"
+						label="Description" 
 						style={styles.input} 
-						value={groupToEdit.title}
-						onChangeText={text => setTitle(text)}
+						value={expenseToEdit.description}
+						onChangeText={text => onChangeDescription(text)}
+					/>
+				</View>
+
+				<View style={styles.formControl}>
+					<TextInput 
+						accessibilityLabel="Amount"
+						label="Amount" 
+						style={styles.input} 
+						value={expenseToEdit.amount.toString()}
+						onChangeText={text => onChangeAmount(text)}
 					/>
 				</View>
 				
 				<View style={styles.formControl}>
 					<View style={styles.row}>
 						<View style={styles.rowItem}>
-							<Text>{`When: ${groupToEdit.date.toLocaleDateString()}, at ${groupToEdit.date.toLocaleTimeString()}`}</Text>
+							{/* <Text>{`When: ${groupToEdit.date.toLocaleDateString()}, at ${groupToEdit.date.toLocaleTimeString()}`}</Text> */}
 						</View>
 						<View style={styles.rowItem}>
 							<Button style={styles.rowItem} compact={true} mode="text" uppercase={false} onPress={showDatepicker}>
@@ -68,7 +102,7 @@ const EditExpense = props => {
 					{showDatePicker && (
 						<DateTimePicker
 							testID="dateTimePicker"
-							value={groupToEdit.date}
+							value={expenseToEdit.date}
 							mode="date"
 							is24Hour={true}
 							display="default"
@@ -78,7 +112,7 @@ const EditExpense = props => {
 					{showTimePicker && (
 						<DateTimePicker
 							testID="dateTimePicker"
-							value={groupToEdit.date}
+							value={expenseToEdit.date}
 							mode="time"
 							is24Hour={false}
 							display="default"
@@ -90,7 +124,7 @@ const EditExpense = props => {
 
 				<View style={styles.formControl}>
 					<Button 
-						disabled={groupToEdit.title.length > 0 ? false : true} 
+						disabled={expenseToEdit.description.length > 0 ? false : true} 
 						mode="contained" 
 						onPress={() => navigation.navigate('EditGroupPeople')}
 					>
@@ -121,8 +155,8 @@ EditExpense.propTypes = {
 	user: PropTypes.object,
 	fetching: PropTypes.bool,
 	error: PropTypes.string,
-	groupToEdit: PropTypes.object,
-	setTitle: PropTypes.func,
+	setExpenseToEdit: PropTypes.func,
+	expenseToEdit: PropTypes.object,
 	setDate: PropTypes.func
 }
 
@@ -131,16 +165,16 @@ const mapStateToProps = (state) => {
 		user: state.user.user,
 		fetching: state.groups.fetching,
 		error: state.groups.error,
-		groupToEdit: state.groups.groupToEdit
+		expenseToEdit: state.groups.expenseToEdit
 	}
 }
 
-const connectedEditGroupInfo = connect(
+const ConnectedEditExpense = connect(
 	mapStateToProps,
 	{
-		setTitle,
+		setExpenseToEdit,
 		setDate
 	}
 )(EditExpense)
 
-export default connectedEditGroupInfo
+export default ConnectedEditExpense

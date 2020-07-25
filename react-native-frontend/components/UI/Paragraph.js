@@ -14,7 +14,7 @@ const Paragraph = ({ children, style }) => (
 
 Paragraph.propTypes = {
 	children: PropTypes.string,
-	style: PropTypes.object
+	style: PropTypes.array
 }
 
 const styles = StyleSheet.create({

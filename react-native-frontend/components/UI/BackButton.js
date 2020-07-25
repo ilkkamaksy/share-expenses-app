@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { TouchableOpacity, StyleSheet } from 'react-native'
-import Icon from 'react-native-vector-icons/Ionicons'
+import ArrowLeft from '../icons/ArrowLeft'
 import Colors from '../../constants/Colors'
 
 const BackButton = ({ goBack, color =  Colors.coffee}) => (
 	<TouchableOpacity onPress={goBack} style={styles.container}>
-		<Icon name="md-arrow-back" size={24} color={color} />
+		<ArrowLeft size={20} color={color} />
 	</TouchableOpacity>
 )
 

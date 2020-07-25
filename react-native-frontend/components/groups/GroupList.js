@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { FlatList, StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import GroupListItem from './GroupListItem'
 import { ActivityIndicator } from 'react-native-paper'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import FilterList from '../icons/FilterList'
 
 import { getGroups, setGroupToEdit } from '../../store/reducers/groups'
 
@@ -34,10 +34,10 @@ const GroupList = props => {
 		<View style={styles.container}>
 			<View style={styles.sorting}>
 				<TouchableOpacity onPress={() => console.log('pressed')}>
-					<Text style={styles.sortingAction}>Most recently updated</Text>
+					<Text style={styles.selectedSortingText}>Most recently updated</Text>
 				</TouchableOpacity>
 				<TouchableOpacity onPress={() => console.log('pressed')}>
-					<Icon name="filter-variant" size={24} color={Colors.primary} />
+					<FilterList size={24} color={Colors.primary} />
 				</TouchableOpacity>
 			</View>
 			
@@ -70,9 +70,9 @@ const styles = StyleSheet.create({
 		borderBottomColor: '#f2f2f2',
 		borderBottomWidth: StyleSheet.hairlineWidth,
 	},
-	sortingAction: {
+	selectedSortingText: {
 		color: Colors.coffee,
-		fontSize: 14
+		fontSize: 14,
 	}
 })
 

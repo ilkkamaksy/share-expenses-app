@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import Icon from 'react-native-vector-icons/AntDesign'
+import AngleRight from '../icons/AngleRight'
 
 import Colors from '../../constants/Colors'
 
@@ -18,7 +18,7 @@ const GroupListItem = ({ item, onViewDetail }) => {
 					<Text style={styles.title}>{item.title}</Text>
 					<Text style={styles.lastUpdatedAt}>{`Last updated: ${formattedUpdatedAt}`}</Text>
 				</View>
-				<Icon name="right" size={16} color={Colors.lightCoffee} />
+				<AngleRight size={18} color={Colors.lightCoffee} />
 			</View>
 		</TouchableOpacity>
 	)

@@ -7,7 +7,6 @@ import thunk from 'redux-thunk'
 import GroupList from './GroupList'
 
 jest.mock('react-native-paper')
-jest.mock('react-native-vector-icons')
 
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
@@ -35,21 +34,24 @@ describe('GroupList test', () => {
 						id: 'g1',
 						owner: {
 							id: 'u1'
-						} 
+						},
+						lastUpdatedAt: JSON.stringify('1595398910709')
 					},
 					{
 						title: 'some group',
 						id: 'g2',
 						owner: {
 							id: 'u1'
-						} 
+						},
+						lastUpdatedAt: JSON.stringify('1595398910709') 
 					},
 					{
 						title: 'some group',
 						id: 'g3',
 						owner: {
 							id: 'u1'
-						} 
+						},
+						lastUpdatedAt: JSON.stringify('1595323349236') 
 					}
 				],
 				groupToEdit: {
@@ -97,7 +99,15 @@ describe('GroupList test', () => {
 		const groups = await getAllByText('some group')
 
 		fireEvent(groups[0], 'press')
-		expect(props.navigation.navigate).toHaveBeenCalledWith('GroupItem', { group: { id: 'g1', owner: { id: 'u1' }, title: 'some group'}})
+		expect(props.navigation.navigate).toHaveBeenCalledWith('GroupItem', { 
+			group: { 
+				id: 'g1', 
+				owner: { 
+					id: 'u1' 
+				}, 
+				title: 'some group',
+				lastUpdatedAt: JSON.stringify('1595398910709')
+			}})
 
 	})
     

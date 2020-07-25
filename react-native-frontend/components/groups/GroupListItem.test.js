@@ -7,7 +7,6 @@ import thunk from 'redux-thunk'
 import GroupListItem from './GroupListItem'
 
 jest.mock('react-native-paper')
-jest.mock('react-native-vector-icons')
 
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
@@ -26,7 +25,10 @@ describe('GroupListItem test', () => {
 					owner: {
 						id: 'u1',
 						email: 'a@a.a'
-					}
+					},
+					lastUpdatedAt: JSON.stringify('1595323349236'),
+					location: 'somewhere'
+
 				},
 				{
 					title: 'some group 2',
@@ -34,7 +36,9 @@ describe('GroupListItem test', () => {
 					owner: {
 						id: 'u1',
 						email: 'a@a.a'
-					}
+					},
+					lastUpdatedAt: JSON.stringify('1595323349236'),
+					location: 'elsewhere'
 				}
 			]
 		})

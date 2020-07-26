@@ -6,14 +6,14 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native
 import Colors from '../../constants/Colors'
 import Edit from '../icons/Edit'
 
-import { setGroupToEdit } from '../../store/reducers/groups'
 import FloatingActionButton from '../UI/FloatingActionButton'
 import PersonListItem from './PersonListItem'
 
-const Group = ({ group, navigation, setGroupToEdit }) => {
+const Group = ({ group, navigation }) => {
+
+	console.log(group)
 
 	const onEditGroup = () => {	
-		setGroupToEdit(group)
 		navigation.navigate('EditGroupInfo')
 	}
 
@@ -81,7 +81,6 @@ Group.propTypes = {
 	onViewDetail: PropTypes.func,
 	navigation: PropTypes.object,
 	groupToEdit: PropTypes.object,
-	setGroupToEdit: PropTypes.func
 }
 
 const mapStateToProps = state => {
@@ -90,8 +89,6 @@ const mapStateToProps = state => {
 	}
 }
 
-const connectedGroup = connect(mapStateToProps, {
-	setGroupToEdit
-})(Group)
+const connectedGroup = connect(mapStateToProps, {})(Group)
 
 export default connectedGroup

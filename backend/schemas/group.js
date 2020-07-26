@@ -3,14 +3,15 @@ const Group = require('../models/group')
 
 const typeDef = `
     type Group {
+		id: ID!
+		lastUpdatedAt: String,
+		createdAt: String
 		title: String!
 		location: String
         owner: User!
 		users: [User!]
 		people: [Person!]
-		id: ID!
-		lastUpdatedAt: String,
-		createdAt: String
+		expenses: [Expense!]
     }
 `
 
@@ -29,6 +30,7 @@ const resolvers = {
 				.populate('owner', { email: 1, firstname: 1, lastname: 1 })
 				.populate('users')
 				.populate('people')
+				.populate('expenses')
 		},
 	},
 	Mutation: {
@@ -73,6 +75,7 @@ const resolvers = {
 					.populate('owner', { email: 1, firstname: 1, lastname: 1 })
 					.populate('users')
 					.populate('people')
+					.populate('expenses')
 					
 			} catch (error) {
 				throw new UserInputError(error.message, {
@@ -123,6 +126,7 @@ const resolvers = {
 					.populate('owner', { email: 1, firstname: 1, lastname: 1 })
 					.populate('users')
 					.populate('people')
+					.populate('expenses')
 
 			} catch (error) {
 				throw new UserInputError(error.message, {
@@ -153,6 +157,7 @@ const resolvers = {
 					.populate('owner', { email: 1, firstname: 1, lastname: 1 })
 					.populate('users')
 					.populate('people')
+					.populate('expenses')
 			} catch (error) {
 				throw new UserInputError(error.message, {
 					invalidArgs: args
@@ -187,7 +192,10 @@ const resolvers = {
 					.populate('owner', { email: 1, firstname: 1, lastname: 1 })
 					.populate('users')
 					.populate('people')
+					.populate('expenses')
+
 				return savedGroup
+
 			} catch (error) {
 				throw new UserInputError(error.message, {
 					invalidArgs: args
@@ -222,7 +230,10 @@ const resolvers = {
 					.populate('owner', { email: 1, firstname: 1, lastname: 1 })
 					.populate('users')
 					.populate('people')
+					.populate('expenses')
+
 				return savedGroup
+
 			} catch (error) {
 				throw new UserInputError(error.message, {
 					invalidArgs: args

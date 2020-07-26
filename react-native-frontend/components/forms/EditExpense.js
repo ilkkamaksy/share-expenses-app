@@ -1,43 +1,89 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { ScrollView, View, Text, StyleSheet } from 'react-native'
-import { TextInput, Button } from 'react-native-paper'
+import { Button, Checkbox } from 'react-native-paper'
 import { connect } from 'react-redux'
 import DateTimePicker from '@react-native-community/datetimepicker'
 
-import { setDate, setExpenseToEdit } from '../../store/reducers/groups'
+import { setDate, setExpenseToEdit, addExpense } from '../../store/reducers/groups'
+import TextInput from '../UI/TextInput'
+import CurrencyInput from '../UI/CurrencyInput'
 
-const EditExpense = props => {
-
-	const { error, expenseToEdit, setDate, setExpenseToEdit, navigation } = props
+const EditExpense = ({ 
+	error,
+	expenseToEdit,
+	setDate,
+	setExpenseToEdit,
+	addExpense,
+	groupToEdit,
+	navigation
+}) => {
    
 	useEffect(() =>{
 		setDate(new Date(Date.now()))
 	}, [])
 
-	const onChangeDescription = (text) => {
+	const onChangeDescription = (data) => {
 		setExpenseToEdit({
 			...expenseToEdit,
-			description: text
+			description: data.target.value
 		})
 	}
 
-	const onChangeAmount = (text) => {
+	const convertCurrencyValueToText = (value) => {
+		return value > 0 ? Number(value / 100).toFixed(2).toString().replace('.', ',') : ''
+	}
 
-		let val = text
-		val = val.replace(/([^0-9.]+)/, "")
-		val = val.replace(/^(0|\.)/, "")
-		const match = /(\d{0,7})[^.]*((?:\.\d{0,2})?)/g.exec(val)
-		const value = match[1] + match[2]
-		text = value
-		
+	const onChangeAmount = (data) => {
 		setExpenseToEdit({
 			...expenseToEdit,
-			amount: val.length > 0 ? Number(value).toFixed(2) : ''
+			amount: Number(data.target.value.toString().replace(',', '.')).toFixed(2) * 100
+		})
+	}
+
+	const togglePerson = (person) => {
+		setExpenseToEdit({
+			...expenseToEdit,
+			people: expenseToEdit.people.includes(person) 
+				? expenseToEdit.people.filter(p => p.id !== person.id)
+				: expenseToEdit.people.concat(person)
+			,
+			details: expenseToEdit.people.includes(person) 
+				? expenseToEdit.details.filter(item => item.person.id !== person.id)
+				: expenseToEdit.details.concat({
+					person: person,
+					share: 0,
+					paid: 0
+				}) 
+		})
+	}
+
+	const setPersonShare = (data) => {
+		setExpenseToEdit({
+			...expenseToEdit,
+			details: expenseToEdit.details.map(item => item.person.id === data.person.id 
+				? {
+					...item,
+					share: data.value.target.value,
+				}
+				: item)
+		})
+	}
+
+	const setPersonPaid = (data) => {
+		setExpenseToEdit({
+			...expenseToEdit,
+			details: expenseToEdit.details.map(item => item.person.id === data.person.id 
+				? {
+					...item,
+					paid: data.value.target.value,
+				}
+				: item)
 		})
 	}
 
 	console.log(expenseToEdit)
+
 
 	const [showDatePicker, setShowDatePicker] = useState(false)
 	const [showTimePicker, setShowTimePicker] = useState(false)
@@ -73,20 +119,79 @@ const EditExpense = props => {
 						label="Description" 
 						style={styles.input} 
 						value={expenseToEdit.description}
-						onChangeText={text => onChangeDescription(text)}
+						onChange={value => onChangeDescription(value)}
 					/>
 				</View>
 
 				<View style={styles.formControl}>
-					<TextInput 
-						accessibilityLabel="Amount"
+					<Text>Amount</Text>
+					<CurrencyInput
 						label="Amount" 
 						style={styles.input} 
-						value={expenseToEdit.amount.toString()}
-						onChangeText={text => onChangeAmount(text)}
+						value={convertCurrencyValueToText(expenseToEdit.amount)}
+						placeholder="0.00 €" 
+						type="text"
+						onChange={value => onChangeAmount(value)}
 					/>
 				</View>
 				
+				<View style={styles.section}>
+					<Text>Select people</Text>
+					{groupToEdit.people.map(person => {
+						return (
+							<View key={person.id} style={styles.formControl}>
+								<Checkbox.Item 
+									label={person.name} 
+									status={expenseToEdit.people.includes(person) ? 'checked' : 'unchecked'}
+									onPress={() => {
+										togglePerson(person)
+									}}
+								/>
+							</View>
+						)
+					})}
+				</View>
+
+				<View style={styles.section}>
+					{expenseToEdit.people.map(person => {
+						return (
+							<View key={person.id} style={styles.row}>
+								<View  style={styles.formControl}>
+									<Text>{`${person.name}'s share`}</Text>
+									<CurrencyInput
+										label="Share" 
+										style={styles.input} 
+										// value={person.name}
+										placeholder="0.00 €" 
+										type="text"
+										onChange={value => setPersonShare({
+											person,
+											value
+										})}
+									/>
+								</View>
+
+								<View key={person.id} style={styles.formControl}>
+									<Text>{`${person.name} paid`}</Text>
+									<CurrencyInput
+										label="Share" 
+										style={styles.input} 
+										// value={person.name}
+										placeholder="0.00 €" 
+										type="text"
+										onChange={value => setPersonPaid({
+											person,
+											value
+										})}
+									/>
+								</View>
+							</View>
+						)
+					})}
+				</View>
+				
+				
+
 				<View style={styles.formControl}>
 					<View style={styles.row}>
 						<View style={styles.rowItem}>
@@ -126,9 +231,9 @@ const EditExpense = props => {
 					<Button 
 						disabled={expenseToEdit.description.length > 0 ? false : true} 
 						mode="contained" 
-						onPress={() => navigation.navigate('EditGroupPeople')}
+						onPress={() => addExpense(expenseToEdit)}
 					>
-                        Next
+                        Save
 					</Button>
 				</View>
                 
@@ -155,9 +260,11 @@ EditExpense.propTypes = {
 	user: PropTypes.object,
 	fetching: PropTypes.bool,
 	error: PropTypes.string,
-	setExpenseToEdit: PropTypes.func,
 	expenseToEdit: PropTypes.object,
-	setDate: PropTypes.func
+	groupToEdit: PropTypes.object,
+	setExpenseToEdit: PropTypes.func,
+	setDate: PropTypes.func,
+	addExpense: PropTypes.func
 }
 
 const mapStateToProps = (state) => {
@@ -165,7 +272,8 @@ const mapStateToProps = (state) => {
 		user: state.user.user,
 		fetching: state.groups.fetching,
 		error: state.groups.error,
-		expenseToEdit: state.groups.expenseToEdit
+		expenseToEdit: state.groups.expenseToEdit,
+		groupToEdit: state.groups.groupToEdit
 	}
 }
 
@@ -173,7 +281,8 @@ const ConnectedEditExpense = connect(
 	mapStateToProps,
 	{
 		setExpenseToEdit,
-		setDate
+		setDate,
+		addExpense
 	}
 )(EditExpense)
 

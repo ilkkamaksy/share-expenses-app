@@ -201,15 +201,26 @@ const setExpenseToEdit = expense => {
 	}
 }
 
-const addExpense = (expense) =>  {
+const addExpense = expenseData =>  {
 	return async dispatch => {
 
 		dispatch({
 			type: 'INIT_CREATE_EXPENSE',
 		})
 
-		const response = await appService.addExpense(expense)
+		let data = expenseData
+		delete data.id
+
+		let response
+		try {
+			response = await appService.addExpense(data)
+		} catch(err) {
+			console.log('err', err)
+		}
 		
+
+		console.log(response)
+
 		if (response.data.data.addExpense === null || response === null) {
 			return dispatch({
 				type: 'CREATE_EXPENSE_FAIL',

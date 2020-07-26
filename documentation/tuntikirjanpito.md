@@ -16,4 +16,5 @@
 | 23.7. |   6  | Leiskan suunnittelua, kirjautumisen ja rekisteröinnin visuaalisen ilmeen rakennusta |
 | 24.7. |   7  | Leiskan suunnittelu jatkuu, GroupsOverview- ja GroupDetails -näkymien visuaalisen ilmeen rakennusta |
 | 25.7. |   5  | Expenses-featuren toteuttaminen, model ja schema backendiin, sekä alustavaa toteutusta frontendiin |
-| yht   | 94   | | 
+| 26.7. |   5  | Expenses-feature jatkuu |
+| yht   | 99   | | 

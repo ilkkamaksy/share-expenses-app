@@ -22,14 +22,19 @@ const initialState = {
 		location: '',
 		people: [],
 		users: [],
-		id: null
+		id: null,
+		lastUpdatedAt: '',
+		createdAt: '',
+		expenses: []
 	},
 	currentPerson: '',
 	expenseToEdit: {
 		id: null,
+		groupid: null,
 		description: '',
-		amount: parseFloat(0.00),
-		people: []
+		amount: null,
+		people: [],
+		details: []
 	},
 	userGroups: [],
 	fetching: true,
@@ -43,7 +48,11 @@ const groupReducer = (state = initialState, action) => {
 	case 'SET_GROUP_TO_EDIT' : 
 		return {
 			...state,
-			groupToEdit: action.group ? action.group : initialState.groupToEdit
+			groupToEdit: action.group ? action.group : initialState.groupToEdit,
+			expenseToEdit: {
+				...state.expenseToEdit,
+				groupid: action.group ? action.group.id : initialState.expenseToEdit.groupid
+			}
 		}
 	case 'SET_TITLE' : 
 		return {

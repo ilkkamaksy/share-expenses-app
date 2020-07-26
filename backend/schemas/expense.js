@@ -5,9 +5,9 @@ const Expense = require('../models/expense')
 
 const typeDef = `
     type Expense {
+		id: ID!
         description: String!
         amount: Float!
-        id: ID!
     }
 `
 
@@ -49,6 +49,7 @@ const resolvers = {
 					)
 					.populate('users')
 					.populate('people')
+					.populate('expenses')
 
 				newExpense.id = newExpense._id
 				delete newExpense._id

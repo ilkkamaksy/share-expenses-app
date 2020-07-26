@@ -93,6 +93,11 @@ const GET_GROUPS = `
 				id
 				name
 			}
+			expenses {
+				id
+				amount
+				description
+			}
 		}
 	}
 `
@@ -149,7 +154,7 @@ const REMOVE_PERSON = `
 `
 
 const ADD_EXPENSE = `
-	mutation addExpense
+	mutation addExpense(
 		$groupid: String!
 		$description: String!
 		$amount: Float!
@@ -218,6 +223,8 @@ const updateGroup = async (group) => {
 
 const getGroups = async () => {
 	
+	console.log('getGroups', util.token)
+
 	const data = {
 		query: GET_GROUPS
 	}
@@ -290,16 +297,16 @@ const removePerson = async id => {
 	return await axios.post(apiUrl, data, config)
 }
 
-const addExpense = async (expense) => {
+const addExpense = async (data) => {
 	
 	const variables = { 
-		groupid: expense.groupid,
-		description: expense.description,
-		amount: expense.amount,
-		people: expense.people
+		groupid: data.groupid,
+		description: data.description,
+		amount: data.amount,
+		people: data.people
 	}
 
-	const data = {
+	const body = {
 		query: ADD_EXPENSE,
 		variables: variables
 	}
@@ -310,7 +317,7 @@ const addExpense = async (expense) => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(apiUrl, body, config)
 }
 
 export default { saveGroup, updateGroup, getGroups, removeGroup, addPersonToGroup, removePerson, addExpense }

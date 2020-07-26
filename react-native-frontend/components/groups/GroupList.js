@@ -47,6 +47,7 @@ const GroupList = props => {
 				renderItem={itemData => <GroupListItem 
 					item={itemData.item} 
 					onViewDetail={() => {
+						setGroupToEdit(itemData.item)
 						navigation.navigate('GroupItem', {
 							group: itemData.item
 						})

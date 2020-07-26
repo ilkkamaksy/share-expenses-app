@@ -17,8 +17,9 @@ describe('test group reducer', () => {
 			currentPerson: '',
 			expenseToEdit: {
 				id: null,
+				groupid: null,
 				description: '',
-				amount: parseFloat(0.00),
+				amount: '',
 				people: []
 			},
 			userGroups: [],

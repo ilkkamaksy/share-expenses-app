@@ -26,6 +26,7 @@ const GroupsOverViewScreen = ({navigation}) => {
 				<GroupList navigation={navigation} />
 			</ContentContainer>
 			
+			
 		</ScrollView>
 		
 	) 

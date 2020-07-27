@@ -17,4 +17,5 @@
 | 24.7. |   7  | Leiskan suunnittelu jatkuu, GroupsOverview- ja GroupDetails -näkymien visuaalisen ilmeen rakennusta |
 | 25.7. |   5  | Expenses-featuren toteuttaminen, model ja schema backendiin, sekä alustavaa toteutusta frontendiin |
 | 26.7. |   5  | Expenses-feature jatkuu |
-| yht   | 99   | | 
+| 27.7. |   8  | Expenses-featuren toteutus jatkuu: balancen laskeminen, päivämäärän lisääminen. Android-herjojen debuggaaminen |
+| yht   | 107   | | 

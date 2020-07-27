@@ -4,14 +4,33 @@ import { View, Text, StyleSheet } from 'react-native'
 
 import Colors from '../../constants/Colors'
 
-const PersonListItem = props => {
+const PersonListItem = ({ person, expenses }) => {
+
+	const calculateBalance = (personId) => {
+	
+		let res = 0 
+		
+		expenses.forEach(expense => {
+			if (expense.details.length === 0) {
+				return
+			}
+
+			expense.details.forEach(item => {
+				if (item.person === personId) {
+					res += item.paid - item.share
+				}
+			})
+		})
+	
+		return <Text style={res >= 0 ? styles.balancePlus : styles.balanceNegative}>{res}</Text>
+	}
 
 	return (
 		<View style={styles.item}>
-			<View style={styles.itemContainer}>
-				<View style={styles.itemContent}>
-					<Text style={styles.title}>{props.person.name}</Text>
-				</View>
+			
+			<View style={styles.row}>
+				<Text style={styles.title}>{person.name}</Text>
+				<View>{calculateBalance(person.id)}</View>
 			</View>
 		</View>
 	)
@@ -28,35 +47,30 @@ const styles = StyleSheet.create({
 		maxWidth: 340,
 		alignSelf: 'center',
 	},
-	itemContainer: {
+	row: {
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
 	},
-	itemContent: {
-
-	},
 	title: {
 		fontSize: 16,
 		marginBottom: 8,
-		fontWeight: 'bold',
 		color: Colors.coffee
 	},
-	lastUpdatedAt: {
-		fontSize: 12,
-		color: Colors.lightCoffee
+	balancePlus: {
+		fontSize: 16,
+		marginBottom: 8,
 	},
-	location: {
-		fontSize: 10,
-		color: Colors.secondary,
-		textTransform: 'uppercase',
-		fontWeight: 'bold',
-		marginBottom: 6
-	},
+	balanceNegative: {
+		fontSize: 16,
+		marginBottom: 8,
+		color: Colors.primary
+	}
 })
 
 PersonListItem.propTypes = {
-	person: PropTypes.object
+	person: PropTypes.object,
+	expenses: PropTypes.array
 }
 
 export default PersonListItem

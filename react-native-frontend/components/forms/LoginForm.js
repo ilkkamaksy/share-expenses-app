@@ -11,9 +11,7 @@ import Colors from '../../constants/Colors'
 import TextInput from '../UI/TextInput'
 import Paragraph from '../UI/Paragraph'
 
-const LoginForm = props => {
-
-	const { email, password, loginUser, setEmail, setPassword, error, navigation } = props
+const LoginForm = ({ email, password, loginUser, setEmail, setPassword, error, navigation }) => {
 
 	const submitHandler = () => {
 		loginUser({email, password})
@@ -22,7 +20,7 @@ const LoginForm = props => {
 	return (
 		<ScrollView>
 
-			<Paragraph style={{ color: Colors.error }}>
+			<Paragraph style={[{ color: Colors.error }]}>
 				{error}
 			</Paragraph>
 			

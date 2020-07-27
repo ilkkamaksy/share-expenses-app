@@ -1,20 +1,27 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { FlatList, StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import { FlatList, StyleSheet, View, Text, TouchableOpacity, Button } from 'react-native'
 import GroupListItem from './GroupListItem'
 import { ActivityIndicator } from 'react-native-paper'
 import FilterList from '../icons/FilterList'
 
 import { getGroups, setGroupToEdit } from '../../store/reducers/groups'
+import { logoutUser } from '../../store/reducers/user'
 
 import FloatingActionButton from '../UI/FloatingActionButton'
 import Colors from '../../constants/Colors'
-
-const GroupList = props => {
 	
-	const { setGroupToEdit, getGroups, navigation, fetching, userGroups } = props
 
+const GroupList = ({ 
+	setGroupToEdit, 
+	getGroups, 
+	fetching, 
+	userGroups,
+	navigation,
+	logoutUser
+}) => {
+	
 	useEffect(() => {
 		getGroups()
 	}, [])
@@ -32,14 +39,11 @@ const GroupList = props => {
 
 	return (
 		<View style={styles.container}>
-			<View style={styles.sorting}>
-				<TouchableOpacity onPress={() => console.log('pressed')}>
-					<Text style={styles.selectedSortingText}>Most recently updated</Text>
-				</TouchableOpacity>
-				<TouchableOpacity onPress={() => console.log('pressed')}>
-					<FilterList size={24} color={Colors.primary} />
-				</TouchableOpacity>
-			</View>
+			
+			<TouchableOpacity style={styles.sorting} onPress={() => console.log('pressed')}>
+				<Text style={styles.selectedSortingText}>Most recently updated</Text>
+				<FilterList size={24} color={Colors.primary} />
+			</TouchableOpacity>
 			
 			<FlatList 
 				data={userGroups} 
@@ -56,6 +60,8 @@ const GroupList = props => {
 			/>
 			
 			<FloatingActionButton onPress={createNewGroup} labelText="Add a new group" />
+
+			
 		</View>
 		
 	) 
@@ -83,7 +89,8 @@ GroupList.propTypes = {
 	setGroupToEdit: PropTypes.func,
 	removeGroup: PropTypes.func,
 	fetching: PropTypes.bool,
-	userGroups: PropTypes.array
+	userGroups: PropTypes.array,
+	logoutUser: PropTypes.func
 }
 
 const mapStateToProps = state => {
@@ -100,7 +107,8 @@ const connectedGroupList = connect(
 	mapStateToProps, 
 	{
 		getGroups,
-		setGroupToEdit
+		setGroupToEdit,
+		logoutUser
 	}
 )(GroupList)
 

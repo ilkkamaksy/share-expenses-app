@@ -95,8 +95,14 @@ const GET_GROUPS = `
 			}
 			expenses {
 				id
+				dateTime
 				amount
 				description
+				details {
+					person
+					share
+					paid
+				}
 			}
 		}
 	}
@@ -153,22 +159,48 @@ const REMOVE_PERSON = `
 	}
 `
 
-const ADD_EXPENSE = `
+const ADD_EXPENSE_TO_GROUP = `
 	mutation addExpense(
 		$groupid: String!
 		$description: String!
 		$amount: Float!
-		$people: [String!]
+		$dateTime: String
+		$details: [ExpenseDetails!]
 	) {
 		addExpense(
 			groupid: $groupid
 			description: $description
 			amount: $amount
-			people: $people
+			dateTime: $dateTime
+			details: $details
 		) {
 			id
-			description
-			amount
+			lastUpdatedAt
+			createdAt
+			title
+			location
+			owner {
+				id
+			}
+			users {
+				id
+				email
+			}
+			people {
+				id
+				name
+			}
+			expenses {
+				id
+				dateTime
+				amount
+				description
+				details {
+					person
+					share
+					paid
+				}
+			}
 		}
 	}
 `
@@ -297,17 +329,24 @@ const removePerson = async id => {
 	return await axios.post(apiUrl, data, config)
 }
 
-const addExpense = async (data) => {
+const addExpense = async (args) => {
 	
 	const variables = { 
-		groupid: data.groupid,
-		description: data.description,
-		amount: data.amount,
-		people: data.people
+		groupid: args.groupid,
+		description: args.description,
+		amount: parseFloat(args.amount),
+		dateTime: args.date,
+		details: args.details.map(item => { 
+			return {
+				personId: item.personId,
+				share: parseFloat(item.share),
+				paid: parseFloat(item.paid),
+			}
+		})
 	}
 
-	const body = {
-		query: ADD_EXPENSE,
+	const data = {
+		query: ADD_EXPENSE_TO_GROUP,
 		variables: variables
 	}
 
@@ -317,7 +356,7 @@ const addExpense = async (data) => {
 		}
 	}
 
-	return await axios.post(apiUrl, body, config)
+	return await axios.post(apiUrl, data, config)
 }
 
 export default { saveGroup, updateGroup, getGroups, removeGroup, addPersonToGroup, removePerson, addExpense }

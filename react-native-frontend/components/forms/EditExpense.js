@@ -5,14 +5,14 @@ import { Button, Checkbox } from 'react-native-paper'
 import { connect } from 'react-redux'
 import DateTimePicker from '@react-native-community/datetimepicker'
 
-import { setDate, setExpenseToEdit, addExpense } from '../../store/reducers/groups'
+import { setExpenseDate, setExpenseToEdit, addExpense } from '../../store/reducers/groups'
 import TextInput from '../UI/TextInput'
 import CurrencyInput from '../UI/CurrencyInput'
 
 const EditExpense = ({ 
 	error,
 	expenseToEdit,
-	setDate,
+	setExpenseDate,
 	setExpenseToEdit,
 	addExpense,
 	groupToEdit,
@@ -20,7 +20,7 @@ const EditExpense = ({
 }) => {
    
 	useEffect(() =>{
-		setDate(new Date(Date.now()))
+		setExpenseDate(new Date(Date.now()))
 	}, [])
 
 	const onChangeDescription = (data) => {
@@ -49,9 +49,9 @@ const EditExpense = ({
 				: expenseToEdit.people.concat(person)
 			,
 			details: expenseToEdit.people.includes(person) 
-				? expenseToEdit.details.filter(item => item.person.id !== person.id)
+				? expenseToEdit.details.filter(item => item.personId !== person.id)
 				: expenseToEdit.details.concat({
-					person: person,
+					personId: person.id,
 					share: 0,
 					paid: 0
 				}) 
@@ -61,7 +61,7 @@ const EditExpense = ({
 	const setPersonShare = (data) => {
 		setExpenseToEdit({
 			...expenseToEdit,
-			details: expenseToEdit.details.map(item => item.person.id === data.person.id 
+			details: expenseToEdit.details.map(item => item.personId === data.person.id 
 				? {
 					...item,
 					share: data.value.target.value,
@@ -73,7 +73,7 @@ const EditExpense = ({
 	const setPersonPaid = (data) => {
 		setExpenseToEdit({
 			...expenseToEdit,
-			details: expenseToEdit.details.map(item => item.person.id === data.person.id 
+			details: expenseToEdit.details.map(item => item.personId === data.person.id 
 				? {
 					...item,
 					paid: data.value.target.value,
@@ -84,21 +84,20 @@ const EditExpense = ({
 
 	console.log(expenseToEdit)
 
-
 	const [showDatePicker, setShowDatePicker] = useState(false)
 	const [showTimePicker, setShowTimePicker] = useState(false)
 
 	const onChangeDate = (event, selectedDate) => {
 		const currentDate = selectedDate || expenseToEdit.date
 		setShowDatePicker(false)
-		setDate(currentDate)
+		setExpenseDate(currentDate)
 		setShowTimePicker(true)
 	}
 
 	const onChangeTime = (event, selectedTime) => {
 		const currentTime = selectedTime || expenseToEdit.date
 		setShowTimePicker(false)
-		setDate(currentTime)
+		setExpenseDate(currentTime)
 	}
 
 	const showDatepicker = () => {
@@ -195,7 +194,7 @@ const EditExpense = ({
 				<View style={styles.formControl}>
 					<View style={styles.row}>
 						<View style={styles.rowItem}>
-							{/* <Text>{`When: ${groupToEdit.date.toLocaleDateString()}, at ${groupToEdit.date.toLocaleTimeString()}`}</Text> */}
+							<Text>{`When: ${expenseToEdit.date.toLocaleDateString()}, at ${expenseToEdit.date.toLocaleTimeString()}`}</Text>
 						</View>
 						<View style={styles.rowItem}>
 							<Button style={styles.rowItem} compact={true} mode="text" uppercase={false} onPress={showDatepicker}>
@@ -263,7 +262,7 @@ EditExpense.propTypes = {
 	expenseToEdit: PropTypes.object,
 	groupToEdit: PropTypes.object,
 	setExpenseToEdit: PropTypes.func,
-	setDate: PropTypes.func,
+	setExpenseDate: PropTypes.func,
 	addExpense: PropTypes.func
 }
 
@@ -281,7 +280,7 @@ const ConnectedEditExpense = connect(
 	mapStateToProps,
 	{
 		setExpenseToEdit,
-		setDate,
+		setExpenseDate,
 		addExpense
 	}
 )(EditExpense)

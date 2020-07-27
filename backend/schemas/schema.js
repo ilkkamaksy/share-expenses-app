@@ -17,6 +17,16 @@ const Query = `
         }
     `
 const Mutation = `
+        input ExpenseDetails {
+            personId: String!
+            share: Float!
+            paid: Float!
+        }
+        type Detail {
+            person: String!
+            share: Float!
+            paid: Float!
+        }
         type LoginResponse {
             token: String
             user: User
@@ -79,8 +89,9 @@ const Mutation = `
                 groupid: String!
                 description: String!
                 amount: Float!
-                people: [String!]
-            ): Expense
+                dateTime: String
+                details: [ExpenseDetails!]
+            ): Group
         }
     `
 

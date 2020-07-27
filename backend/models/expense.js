@@ -11,7 +11,7 @@ const schema = new mongoose.Schema({
 		required: true,
 		min: 0
 	},
-	people: [{
+	details: [{
 		person: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Person'
@@ -19,12 +19,18 @@ const schema = new mongoose.Schema({
 		share: {
 			type: Number
 		},
-		amountPaid: {
+		paid: {
+			type: Number
+		},
+		balance: {
 			type: Number
 		}
 	}],
+	dateTime: {
+		type: Date
+	},
 	createdAt: Date,
 	lastUpdatedAt: Date
 })
-    
+
 module.exports = mongoose.model('Expense', schema)

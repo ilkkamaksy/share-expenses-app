@@ -1,5 +1,4 @@
 const { UserInputError, AuthenticationError } = require('apollo-server')
-const Person = require('../models/person')
 const Group = require('../models/group')
 const Expense = require('../models/expense')
 
@@ -7,7 +6,11 @@ const typeDef = `
     type Expense {
 		id: ID!
         description: String!
-        amount: Float!
+		amount: Float!
+		details: [Detail]
+		dateTime: String
+		createdAt: String
+		lastUpdatedAt: String
     }
 `
 
@@ -17,8 +20,11 @@ const resolvers = {
 		// groupid: String!
 		// description: String!
 		// amount: Float!
-		// people: [String!]
+		// details: [ExpenseDetails!]
+		// dateTime: String
 		addExpense: async (root, args, context) => {
+
+			console.log(args)
 
 			const currentUser = context.currentUser
 			
@@ -36,25 +42,28 @@ const resolvers = {
 
 				let expense = new Expense({
 					description: args.description.trim(),
-					amount: args.amount
+					amount: args.amount,
+					dateTime: args.dateTime,
+					details: args.details.map(item => { 
+						return {
+							person: item.personId,
+							share: item.share,
+							paid: item.paid
+						}
+					})
 				})
 
 				let newExpense = await expense.save()
 				
-				const group = await Group
-					.findByIdAndUpdate(
-						args.groupid, 
-						{ $addToSet: { expenses: newExpense._id }}, 
-						{ new: true }
-					)
+				return await Group.findByIdAndUpdate(
+					args.groupid, 
+					{ $addToSet: { expenses: newExpense._id }}, 
+					{ new: true }
+				)
+					.populate('owner', { email: 1, firstname: 1, lastname: 1 })
 					.populate('users')
 					.populate('people')
 					.populate('expenses')
-
-				newExpense.id = newExpense._id
-				delete newExpense._id
-				
-				return newExpense
                     
 			} catch (error) {
 				throw new UserInputError(error.message, {

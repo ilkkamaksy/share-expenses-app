@@ -21,7 +21,7 @@ const RegisterForm = props => {
 	return (
 		<ScrollView>
 
-			<Paragraph style={{ color: Colors.error }}>
+			<Paragraph style={[{ color: Colors.error }]}>
 				{error}
 			</Paragraph>
 

@@ -18,15 +18,6 @@ const setGroupTitle = (title) => {
 	}
 }
 
-const setDate = (date) => {
-	return async dispatch => {
-		dispatch({
-			type: 'SET_DATE',
-			date
-		})
-	}
-}
-
 const setGroupLocation = (location) => {
 	return async dispatch => {
 		dispatch({
@@ -201,6 +192,15 @@ const setExpenseToEdit = expense => {
 	}
 }
 
+const setExpenseDate = (date) => {
+	return async dispatch => {
+		dispatch({
+			type: 'SET_EXPENSE_DATE',
+			date
+		})
+	}
+}
+
 const addExpense = expenseData =>  {
 	return async dispatch => {
 
@@ -219,7 +219,7 @@ const addExpense = expenseData =>  {
 		}
 		
 
-		console.log(response)
+		console.log('response', response)
 
 		if (response.data.data.addExpense === null || response === null) {
 			return dispatch({
@@ -239,7 +239,7 @@ const addExpense = expenseData =>  {
 export default {
 	setGroupToEdit,
 	setGroupTitle,
-	setDate,
+	setDate: setExpenseDate,
 	setGroupLocation,
 	setCurrentPerson,
 	saveGroup,
@@ -250,5 +250,6 @@ export default {
 	removePerson,
 	doneEditing,
 	setExpenseToEdit,
+	setExpenseDate,
 	addExpense
 }

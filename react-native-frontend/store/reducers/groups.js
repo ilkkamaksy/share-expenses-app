@@ -14,6 +14,7 @@ export const {
 	removePerson,
 	addExpense,
 	setExpenseToEdit,
+	setExpenseDate,
 	doneEditing } = actions
 
 const initialState = {
@@ -31,6 +32,9 @@ const initialState = {
 	expenseToEdit: {
 		id: null,
 		groupid: null,
+		date: new Date(Date.now()),
+		lastUpdatedAt: '',
+		createdAt: '',
 		description: '',
 		amount: null,
 		people: [],
@@ -59,11 +63,6 @@ const groupReducer = (state = initialState, action) => {
 			...state,
 			groupToEdit: {...state.groupToEdit, title: action.title}
 		}
-	case 'SET_DATE' : 
-		return {
-			...state,
-			groupToEdit: {...state.groupToEdit, date: action.date}
-		}
 	case 'SET_LOCATION' : 
 		return {
 			...state,
@@ -78,6 +77,11 @@ const groupReducer = (state = initialState, action) => {
 		return {
 			...state,
 			expenseToEdit: action.expense ? action.expense : initialState.expenseToEdit
+		}
+	case 'SET_EXPENSE_DATE' : 
+		return {
+			...state,
+			expenseToEdit: {...state.expenseToEdit, date: action.date}
 		}
 	case 'INIT_CREATE_GROUP' :
 		return {
@@ -184,6 +188,7 @@ const groupReducer = (state = initialState, action) => {
 			saveGroupFail: false,
 			error: '',
 			fetching: false,
+			userGroups: state.userGroups.map(group => group.id === action.group.id ? action.group : group),
 		}
 	case 'CREATE_EXPENSE_FAIL' :
 		return {

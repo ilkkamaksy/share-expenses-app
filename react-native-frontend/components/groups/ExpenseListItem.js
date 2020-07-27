@@ -36,7 +36,7 @@ const ExpenseListItem = ({ people, expense }) => {
 const styles = StyleSheet.create({
 	item: {
 		backgroundColor: '#fafafa',
-		borderBottomColor: '#f2f2f2',
+		borderBottomColor: '#eee',
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		flex: 1,
 		padding: 30,
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 		marginBottom: 8
 	},
 	column: {
-		width: 110
+		width: '30%'
 	},
 	title: {
 		fontSize: 14,

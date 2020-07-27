@@ -1,15 +1,13 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { FlatList, StyleSheet, View, Text, TouchableOpacity, Button } from 'react-native'
+import { FlatList, StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import GroupListItem from './GroupListItem'
 import { ActivityIndicator } from 'react-native-paper'
 import FilterList from '../icons/FilterList'
 
 import { getGroups, setGroupToEdit } from '../../store/reducers/groups'
-import { logoutUser } from '../../store/reducers/user'
 
-import FloatingActionButton from '../UI/FloatingActionButton'
 import Colors from '../../constants/Colors'
 	
 
@@ -18,19 +16,14 @@ const GroupList = ({
 	getGroups, 
 	fetching, 
 	userGroups,
-	navigation,
-	logoutUser
+	navigation
 }) => {
 	
 	useEffect(() => {
 		getGroups()
 	}, [])
 
-	const createNewGroup = () => {
-		setGroupToEdit(null)
-		navigation.navigate('EditGroupInfo')
-	}
-
+	
 	if (fetching) {
 		return (
 			<ActivityIndicator animating={true} color={Colors.primary} />
@@ -58,10 +51,7 @@ const GroupList = ({
 					}}
 				/>} 
 			/>
-			
-			<FloatingActionButton onPress={createNewGroup} labelText="Add a new group" />
 
-			
 		</View>
 		
 	) 
@@ -90,7 +80,6 @@ GroupList.propTypes = {
 	removeGroup: PropTypes.func,
 	fetching: PropTypes.bool,
 	userGroups: PropTypes.array,
-	logoutUser: PropTypes.func
 }
 
 const mapStateToProps = state => {
@@ -107,8 +96,7 @@ const connectedGroupList = connect(
 	mapStateToProps, 
 	{
 		getGroups,
-		setGroupToEdit,
-		logoutUser
+		setGroupToEdit
 	}
 )(GroupList)
 

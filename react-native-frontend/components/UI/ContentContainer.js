@@ -1,10 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-	View,
-	StyleSheet,
-	KeyboardAvoidingView,
-} from 'react-native'
+import { View, StyleSheet } from 'react-native'
 
 import Colors from '../../constants/Colors'
 
@@ -15,9 +11,9 @@ const ContentContainer = ({ children, style }) => (
 			style
 		]}
 	>
-		<KeyboardAvoidingView style={styles.container} behavior="padding">
+		<View style={styles.container} behavior="padding">
 			{children}
-		</KeyboardAvoidingView>
+		</View>
 	</View>
 )
 

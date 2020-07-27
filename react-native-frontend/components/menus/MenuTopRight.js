@@ -44,17 +44,12 @@ const MenuTopRight = props => {
 
 const styles = StyleSheet.create({
 	toggleButton: {
-		position: 'relative',
-		top: 20,
-		right: 0,
-		zIndex: 10,
+		marginTop: 20,
 	},
 	menu: {
-		position: 'absolute',
-		top: 50,
-		left: -120,
-		zIndex: 10,
-		maxWidth: 340
+		marginTop: 10,
+		marginLeft: -400,
+		maxWidth: 340,
 	},
 	menuItem: {
 		position: 'relative',

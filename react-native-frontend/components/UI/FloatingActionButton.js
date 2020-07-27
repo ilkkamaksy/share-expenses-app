@@ -9,6 +9,7 @@ const FloatingActionButton = props => {
 	return (
 		<FAB
 			style={styles.fab}
+			color={Colors.white}
 			small
 			icon="plus"
 			onPress={() => props.onPress()}
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		margin: 16,
 		right: 0,
-		bottom: 0,
+		bottom: 10,
 		backgroundColor: Colors.primary
 	},
 })

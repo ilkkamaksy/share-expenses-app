@@ -1,35 +1,19 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, FlatList } from 'react-native'
 
 import Colors from '../../constants/Colors'
-import Edit from '../icons/Edit'
 
-import FloatingActionButton from '../UI/FloatingActionButton'
 import PersonListItem from './PersonListItem'
 import ExpenseListItem from './ExpenseListItem'
 
-const Group = ({ group, navigation }) => {
+const Group = ({ group }) => {
 
 	console.log(group)
 
-	const onEditGroup = () => {	
-		navigation.navigate('EditGroupInfo')
-	}
-
 	return (
 		<View style={styles.container}>
-			
-			<View style={styles.actions}>
-				<View>
-					<TouchableOpacity onPress={onEditGroup} style={styles.actionLinkContainer}>
-						<Edit size={14} color={Colors.white} />
-						<Text style={styles.actionLink}>Edit</Text>
-					</TouchableOpacity>
-				</View>
-				
-			</View>
 			
 			<Text style={styles.subtitle}>Overview</Text>
 
@@ -59,7 +43,7 @@ const Group = ({ group, navigation }) => {
 				/>} 
 			/>
 			
-			<FloatingActionButton onPress={() => navigation.navigate('EditExpense')} />
+			
 		</View>
 	)
 }
@@ -89,26 +73,7 @@ const styles = StyleSheet.create({
 		paddingBottom: 10,
 		textTransform: 'uppercase'
 	},
-	actions: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		position: 'absolute',
-		top: -65
-	}, 
-	actionLinkContainer: {
-		backgroundColor: Colors.primary,
-		paddingVertical: 4,
-		borderRadius: 4,
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
-	actionLink: {
-		textTransform: 'uppercase',
-		color: Colors.white,
-		fontSize: 10,
-		fontWeight: 'bold',
-		marginLeft: 4
-	}
+
 })
 
 Group.propTypes = {

@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { ScrollView, StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
 
 import GroupList from '../../components/groups/GroupList'
 import Hero from '../../components/UI/Hero'
@@ -9,26 +9,37 @@ import Paragraph from '../../components/UI/Paragraph'
 import ContentContainer from '../../components/UI/ContentContainer'
 import Colors from '../../constants/Colors'
 
+import FloatingActionButton from '../../components/UI/FloatingActionButton'
+
 const GroupsOverViewScreen = ({navigation}) => {
 	
-	return (
-		<ScrollView style={styles.container}>
-			<Hero>
+	const createNewGroup = () => {
+		// setGroupToEdit(null)
+		navigation.navigate('EditGroupInfo')
+	}
 
-				<Heading style={[styles.header]}>
+	return (
+		<View style={styles.container}>
+			<ScrollView style={styles.container}>
+				<Hero>
+
+					<Heading style={[styles.header]}>
 					My groups
-				</Heading>
-				<Paragraph style={[styles.intro]}>
+					</Heading>
+					<Paragraph style={[styles.intro]}>
 					Browse you groups.
-				</Paragraph>
-			</Hero>
-			<ContentContainer>
-				<GroupList navigation={navigation} />
-			</ContentContainer>
+					</Paragraph>
+				</Hero>
+				
+				<ContentContainer>
+					<GroupList navigation={navigation} />
+				</ContentContainer>
 			
-			
-		</ScrollView>
-		
+			</ScrollView>
+
+			<FloatingActionButton onPress={createNewGroup} labelText="Add a new group" />
+
+		</View>
 	) 
 }
 
@@ -44,7 +55,8 @@ const styles = StyleSheet.create({
 		fontSize: 14
 	},
 	container: {
-		backgroundColor: Colors.white
+		backgroundColor: Colors.white,
+		flex: 1
 	},
 })
 

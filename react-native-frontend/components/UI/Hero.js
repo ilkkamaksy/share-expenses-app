@@ -1,10 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-	View,
-	StyleSheet,
-	KeyboardAvoidingView,
-} from 'react-native'
+import { View, StyleSheet } from 'react-native'
 
 import Colors from '../../constants/Colors'
 
@@ -16,9 +12,9 @@ const Hero = ({ children, style}) => (
 		]}
 	>
 		
-		<KeyboardAvoidingView style={styles.container} behavior="padding">
+		<View style={styles.container} behavior="padding">
 			{children}
-		</KeyboardAvoidingView>
+		</View>
 	</View>
 )
 
@@ -32,8 +28,8 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		flex: 1,
-		paddingTop: 40,
-		paddingBottom: 60,
+		paddingTop: 30,
+		paddingBottom: 50,
 		width: '100%',
 		maxWidth: 340,
 		alignSelf: 'center',

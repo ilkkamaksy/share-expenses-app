@@ -5,8 +5,11 @@ import { Button, Checkbox } from 'react-native-paper'
 import { connect } from 'react-redux'
 import DateTimePicker from '@react-native-community/datetimepicker'
 
+import Colors from '../../constants/Colors'
+
 import { setExpenseDate, setExpenseToEdit, addExpense } from '../../store/reducers/groups'
 import TextInput from '../UI/TextInput'
+import DecimalInput from '../UI/DecimalInput'
 import CurrencyInput from '../UI/CurrencyInput'
 
 const EditExpense = ({ 
@@ -21,23 +24,29 @@ const EditExpense = ({
    
 	useEffect(() =>{
 		setExpenseDate(new Date(Date.now()))
+
 	}, [])
 
-	const onChangeDescription = (data) => {
+	const onChangeDescription = (text) => {
 		setExpenseToEdit({
 			...expenseToEdit,
-			description: data.target.value
+			description: text.nativeEvent.text
 		})
 	}
 
+
 	const convertCurrencyValueToText = (value) => {
-		return value > 0 ? Number(value / 100).toFixed(2).toString().replace('.', ',') : ''
+		return value 
+			? Number(value / 100).toFixed(2).toString().replace('.', ',') 
+			: Number(0).toFixed(2).replace('.', ',') 
 	}
 
-	const onChangeAmount = (data) => {
+	const onChangeAmount = (value) => {
+		let val = value.nativeEvent.text.toString()
+
 		setExpenseToEdit({
 			...expenseToEdit,
-			amount: Number(data.target.value.toString().replace(',', '.')).toFixed(2) * 100
+			amount: Number(val.replace(',', '.')).toFixed(2) * 100
 		})
 	}
 
@@ -64,7 +73,7 @@ const EditExpense = ({
 			details: expenseToEdit.details.map(item => item.personId === data.person.id 
 				? {
 					...item,
-					share: data.value.target.value,
+					share: data.value.nativeEvent.text,
 				}
 				: item)
 		})
@@ -76,13 +85,13 @@ const EditExpense = ({
 			details: expenseToEdit.details.map(item => item.personId === data.person.id 
 				? {
 					...item,
-					paid: data.value.target.value,
+					paid: data.value.nativeEvent.text,
 				}
 				: item)
 		})
 	}
 
-	console.log(expenseToEdit)
+	console.log('expenseToEdit', expenseToEdit)
 
 	const [showDatePicker, setShowDatePicker] = useState(false)
 	const [showTimePicker, setShowTimePicker] = useState(false)
@@ -124,13 +133,13 @@ const EditExpense = ({
 
 				<View style={styles.formControl}>
 					<Text>Amount</Text>
-					<CurrencyInput
+					<DecimalInput
 						label="Amount" 
 						style={styles.input} 
 						value={convertCurrencyValueToText(expenseToEdit.amount)}
 						placeholder="0.00 €" 
 						type="text"
-						onChange={value => onChangeAmount(value)}
+						onChange={text => onChangeAmount(text)}
 					/>
 				</View>
 				
@@ -157,7 +166,7 @@ const EditExpense = ({
 							<View key={person.id} style={styles.row}>
 								<View  style={styles.formControl}>
 									<Text>{`${person.name}'s share`}</Text>
-									<CurrencyInput
+									<DecimalInput
 										label="Share" 
 										style={styles.input} 
 										// value={person.name}
@@ -172,7 +181,7 @@ const EditExpense = ({
 
 								<View key={person.id} style={styles.formControl}>
 									<Text>{`${person.name} paid`}</Text>
-									<CurrencyInput
+									<DecimalInput
 										label="Share" 
 										style={styles.input} 
 										// value={person.name}
@@ -230,6 +239,7 @@ const EditExpense = ({
 					<Button 
 						disabled={expenseToEdit.description.length > 0 ? false : true} 
 						mode="contained" 
+						color={Colors.primary}
 						onPress={() => addExpense(expenseToEdit)}
 					>
                         Save

@@ -8,19 +8,26 @@ describe('test group reducer', () => {
 	beforeEach(() => {
 		initialState = {
 			groupToEdit: {
+				topRightMenuVisible: false,
 				title: '',
 				location: '',
 				people: [],
 				users: [],
-				id: null
+				id: null,
+				createdAt: '',
+				lastUpdatedAt: '',
+				expenses: []
 			},
 			currentPerson: '',
 			expenseToEdit: {
 				id: null,
 				groupid: null,
 				description: '',
-				amount: '',
-				people: []
+				amount: Number(0).toFixed(2),
+				createdAt: '',
+				lastUpdatedAt: '',
+				people: [],
+				details: []
 			},
 			userGroups: [],
 			fetching: true,

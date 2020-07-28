@@ -18,4 +18,5 @@
 | 25.7. |   5  | Expenses-featuren toteuttaminen, model ja schema backendiin, sekä alustavaa toteutusta frontendiin |
 | 26.7. |   5  | Expenses-feature jatkuu |
 | 27.7. |   8  | Expenses-featuren toteutus jatkuu: balancen laskeminen, päivämäärän lisääminen. Android-herjojen debuggaaminen |
-| yht   | 107   | | 
+| 28.7. |   8  | Android-käyttöliittymän toimintojen korjaus, frontendin logiikan refaktorointi |
+| yht   | 116   | | 

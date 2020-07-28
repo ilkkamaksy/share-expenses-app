@@ -1,9 +1,9 @@
 import actions from '../actions/groups'
 
 export const { 
+	toggleTopRightMenu,
 	setGroupToEdit,
 	setGroupTitle, 
-	setDate, 
 	setGroupLocation, 
 	setCurrentPerson, 
 	saveGroup, 
@@ -18,6 +18,7 @@ export const {
 	doneEditing } = actions
 
 const initialState = {
+	topRightMenuVisible: false,
 	groupToEdit: {
 		title: '',
 		location: '',
@@ -36,7 +37,7 @@ const initialState = {
 		lastUpdatedAt: '',
 		createdAt: '',
 		description: '',
-		amount: null,
+		amount: Number(0).toFixed(2),
 		people: [],
 		details: []
 	},
@@ -49,6 +50,11 @@ const initialState = {
 
 const groupReducer = (state = initialState, action) => {
 	switch (action.type) {
+	case 'TOGGLE_TOP_RIGHT_MENU' : 
+		return {
+			...state,
+			topRightMenuVisible: action.visibility
+		}
 	case 'SET_GROUP_TO_EDIT' : 
 		return {
 			...state,
@@ -183,6 +189,7 @@ const groupReducer = (state = initialState, action) => {
 			error: ''
 		}
 	case 'CREATE_EXPENSE_SUCCESS' :
+		console.log('create expense success', action.group)
 		return {
 			...state,
 			saveGroupFail: false,

@@ -1,17 +1,20 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { View, Text, StyleSheet, FlatList } from 'react-native'
+
+import { setGroupToEdit } from '../../store/reducers/groups'
 
 import Colors from '../../constants/Colors'
 
 import PersonListItem from './PersonListItem'
 import ExpenseListItem from './ExpenseListItem'
 
-const Group = ({ group }) => {
+const Group = ({ groupId, setGroupToEdit }) => {
 
-	console.log(group)
-
+	const group = useSelector(state => state.groups.userGroups.find(group => group.id === groupId))
+	setGroupToEdit(group)
+	
 	return (
 		<View style={styles.container}>
 			
@@ -35,7 +38,7 @@ const Group = ({ group }) => {
 			<Text style={styles.subtitle}>Recent expenses</Text>
 			
 			<FlatList 
-				data={group.expenses} 
+				data={group.expenses.reverse()} 
 				keyExtractor={item=> item.id}
 				renderItem={itemData => <ExpenseListItem 
 					people={group.people}
@@ -77,10 +80,11 @@ const styles = StyleSheet.create({
 })
 
 Group.propTypes = {
-	group: PropTypes.object,
+	groupId: PropTypes.string,
 	onViewDetail: PropTypes.func,
 	navigation: PropTypes.object,
 	groupToEdit: PropTypes.object,
+	setGroupToEdit: PropTypes.func
 }
 
 const mapStateToProps = state => {
@@ -89,6 +93,8 @@ const mapStateToProps = state => {
 	}
 }
 
-const connectedGroup = connect(mapStateToProps, {})(Group)
+const connectedGroup = connect(mapStateToProps, {
+	setGroupToEdit
+})(Group)
 
 export default connectedGroup

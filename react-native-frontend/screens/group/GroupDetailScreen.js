@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { ScrollView, StyleSheet, View, TouchableOpacity, Text } from 'react-native'
 import Group from '../../components/groups/Group'
+
+import { setExpenseToEdit } from '../../store/reducers/groups'
 
 import Hero from '../../components/UI/Hero'
 import Heading from '../../components/UI/Heading'
@@ -12,26 +15,38 @@ import Colors from '../../constants/Colors'
 import FloatingActionButton from '../../components/UI/FloatingActionButton'
 import Edit from '../../components/icons/Edit'
 
-const GroupDetailScreen = props => {
+import PopupMenuTopRight from '../../components/menus/PopupMenuTopRight'
+
+const GroupDetailScreen = ({ navigation, route, setExpenseToEdit }) => {
 
 	useEffect(() => {
-		props.navigation.setOptions({title: props.route.params.group.title})
+		navigation.setOptions({title: route.params.group.title})
 	}, [])
-	
+
+	const createNewExpense = () => {
+		setExpenseToEdit(null)
+		navigation.navigate('EditExpense')
+	}
+
 	return (
 		<View style={styles.container}>
+
 			<ScrollView>
+				
 				<Hero>
 					<Heading style={[styles.header]}>
-						{props.route.params.group.title}
+						{route.params.group.title}
 					</Heading>
 					<Paragraph style={[styles.intro]}>
-						{props.route.params.group.location}
+						{route.params.group.location}
 					</Paragraph>
 
 					<View style={styles.actions}>
 						<View>
-							<TouchableOpacity onPress={() => props.navigation.navigate('EditGroupInfo')} style={styles.actionLinkContainer}>
+							<TouchableOpacity 
+								onPress={() => navigation.navigate('EditGroupInfo')} 
+								style={styles.actionLinkContainer}
+							>
 								<Edit size={14} color={Colors.white} />
 								<Text style={styles.actionLink}>Edit</Text>
 							</TouchableOpacity>
@@ -41,15 +56,16 @@ const GroupDetailScreen = props => {
 				</Hero>
 				<ContentContainer>
 					<Group 
-						group={props.route.params.group}
-						navigation={props.navigation}
+						groupId={route.params.group.id}
+						navigation={navigation}
 					/>
 				</ContentContainer>
 			
 			
 			</ScrollView>
 
-			<FloatingActionButton onPress={() => props.navigation.navigate('EditExpense')} />
+			<PopupMenuTopRight />
+			<FloatingActionButton onPress={createNewExpense} />
 		</View>
 	)
 }
@@ -93,7 +109,18 @@ const styles = StyleSheet.create({
 
 GroupDetailScreen.propTypes = {
 	route: PropTypes.object,
-	navigation: PropTypes.object
+	navigation: PropTypes.object,
+	setExpenseToEdit: PropTypes.func
 }
 
-export default GroupDetailScreen
+const mapStateToProps = state => {
+	return {
+		expeseToEdit: state.groups.expeseToEdit
+	}
+}
+
+const ConnectedGroupDetailScreen = connect(mapStateToProps, {
+	setExpenseToEdit
+})(GroupDetailScreen)
+
+export default ConnectedGroupDetailScreen

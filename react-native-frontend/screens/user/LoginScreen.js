@@ -12,7 +12,11 @@ const LoginScreen = ({ navigation }) => {
 	return (
 		<Background>
 
-			<BackButton color={Colors.coffee} goBack={() => navigation.navigate('Splash')} />
+			<BackButton 
+				color={Colors.coffee} 
+				goBack={() => navigation.navigate('Splash')} 
+				distanceTop={20}
+			/>
 
 			<Logo />
 

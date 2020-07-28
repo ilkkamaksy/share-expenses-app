@@ -7,32 +7,34 @@ import Colors from '../../constants/Colors'
 const Hero = ({ children, style}) => (
 	<View
 		style={[
-			styles.background,
+			styles.container,
 			style
 		]}
 	>
-		
-		<View style={styles.container} behavior="padding">
+
+		<View style={styles.content} behavior="padding">
 			{children}
 		</View>
 	</View>
 )
 
 const styles = StyleSheet.create({
-	background: {
+	container: {
 		flex: 1,
 		width: '100%',
 		backgroundColor: Colors.primary,
 		paddingLeft: 10,
-		paddingRight: 10
+		paddingRight: 10,
+		zIndex: -1
 	},
-	container: {
+	content: {
 		flex: 1,
 		paddingTop: 30,
 		paddingBottom: 50,
 		width: '100%',
 		maxWidth: 340,
 		alignSelf: 'center',
+		zIndex: -1
 	},
 })
 

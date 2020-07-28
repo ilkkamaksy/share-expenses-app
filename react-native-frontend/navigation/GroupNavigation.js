@@ -1,14 +1,14 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 
+import ToggleMenu from '../components/menus/ToggleMenu'
+
 import Colors from '../constants/Colors'
 import GroupsOverViewScreen from '../screens/group/GroupsOverviewScreen'
 import GroupDetailScreen from '../screens/group/GroupDetailScreen'
 import EditGroupInfoScreen from '../screens/group/EditGroupInfoScreen'
 import EditGroupPeopleScreen from '../screens/group/EditGroupPeopleScreen'
 import EditExpenseScreen from '../screens/group/EditExpenseScreen'
-
-import MenuTopRight from '../components/menus/MenuTopRight'
 
 const GroupStack = createStackNavigator()
 
@@ -25,10 +25,10 @@ function GroupNavigator() {
 					backgroundColor: Colors.primary,
 					shadowColor: 'transparent',
 					elevation: 0,
-					borderBottomWidth: 0, 
+					borderBottomWidth: 0,
 				},
 				// eslint-disable-next-line react/display-name
-				headerRight: () => <MenuTopRight />,
+				headerRight: () => <ToggleMenu />,
 			}}
 		>
 

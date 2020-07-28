@@ -10,9 +10,7 @@ import { getGroups, setGroupToEdit } from '../../store/reducers/groups'
 
 import Colors from '../../constants/Colors'
 	
-
 const GroupList = ({ 
-	setGroupToEdit, 
 	getGroups, 
 	fetching, 
 	userGroups,
@@ -20,6 +18,7 @@ const GroupList = ({
 }) => {
 	
 	useEffect(() => {
+		console.log('fired')
 		getGroups()
 	}, [])
 
@@ -44,7 +43,6 @@ const GroupList = ({
 				renderItem={itemData => <GroupListItem 
 					item={itemData.item} 
 					onViewDetail={() => {
-						setGroupToEdit(itemData.item)
 						navigation.navigate('GroupItem', {
 							group: itemData.item
 						})

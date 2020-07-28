@@ -10,11 +10,18 @@ const ExpenseListItem = ({ people, expense }) => {
 		return people.find(p => p.id === person).name
 	}
 
+	const formatDate = (date) => {
+		const dateObj = new Date(JSON.parse(date))
+		return `${dateObj.toLocaleDateString()} at ${dateObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`
+	}
+
 	return (
 		<View style={styles.item}>			
 			<View>
 				<Text style={styles.title}>{expense.description}</Text>
+				<Text style={styles.description}>{`${formatDate(expense.dateTime)}`}</Text>
 				<Text style={styles.description}>{`Total amount: ${Number(expense.amount / 100).toFixed(2)} €`}</Text>
+				
 			</View>
 			{expense.details.map(item => {
 				return (

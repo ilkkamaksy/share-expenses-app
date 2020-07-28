@@ -54,7 +54,7 @@ const Home = props => {
 
 const styles = StyleSheet.create({
 	button: {
-		width: '100%',
+		width: 140,
 		marginVertical: 10,
 	},
 	

@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { ScrollView, StyleSheet, View } from 'react-native'
 
@@ -10,11 +11,14 @@ import ContentContainer from '../../components/UI/ContentContainer'
 import Colors from '../../constants/Colors'
 
 import FloatingActionButton from '../../components/UI/FloatingActionButton'
+import PopupMenuTopRight from '../../components/menus/PopupMenuTopRight'
 
-const GroupsOverViewScreen = ({navigation}) => {
+import { setGroupToEdit } from '../../store/reducers/groups'
+
+const GroupsOverViewScreen = ({ navigation, setGroupToEdit }) => {
 	
 	const createNewGroup = () => {
-		// setGroupToEdit(null)
+		setGroupToEdit(null)
 		navigation.navigate('EditGroupInfo')
 	}
 
@@ -30,12 +34,14 @@ const GroupsOverViewScreen = ({navigation}) => {
 					Browse you groups.
 					</Paragraph>
 				</Hero>
-				
+
 				<ContentContainer>
 					<GroupList navigation={navigation} />
 				</ContentContainer>
 			
 			</ScrollView>
+
+			<PopupMenuTopRight />
 
 			<FloatingActionButton onPress={createNewGroup} labelText="Add a new group" />
 
@@ -62,7 +68,19 @@ const styles = StyleSheet.create({
 
 
 GroupsOverViewScreen.propTypes = {
-	navigation: PropTypes.object
+	navigation: PropTypes.object,
+	setGroupToEdit: PropTypes.func,
+	groupToEdit: PropTypes.object
 }
 
-export default GroupsOverViewScreen
+const mapStateToProps = state => {
+	return {
+		groupToEdit: state.groups.groupToEdit
+	}
+}
+
+const ConnectedGroupsOverViewScreen = connect(mapStateToProps, {
+	setGroupToEdit
+})(GroupsOverViewScreen)
+
+export default ConnectedGroupsOverViewScreen

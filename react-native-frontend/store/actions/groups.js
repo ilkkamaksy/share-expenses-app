@@ -1,5 +1,14 @@
 import appService from '../../services/appService'
 
+const toggleTopRightMenu = visibility => {
+	return dispatch => {
+		dispatch({
+			type: 'TOGGLE_TOP_RIGHT_MENU',
+			visibility
+		})
+	}
+}
+
 const setGroupToEdit = group => {
 	return dispatch => {
 		dispatch({
@@ -237,9 +246,10 @@ const addExpense = expenseData =>  {
 
 
 export default {
+	toggleTopRightMenu,
 	setGroupToEdit,
 	setGroupTitle,
-	setDate: setExpenseDate,
+	setExpenseDate,
 	setGroupLocation,
 	setCurrentPerson,
 	saveGroup,
@@ -250,6 +260,5 @@ export default {
 	removePerson,
 	doneEditing,
 	setExpenseToEdit,
-	setExpenseDate,
 	addExpense
 }

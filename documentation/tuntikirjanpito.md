@@ -19,4 +19,5 @@
 | 26.7. |   5  | Expenses-feature jatkuu |
 | 27.7. |   8  | Expenses-featuren toteutus jatkuu: balancen laskeminen, päivämäärän lisääminen. Android-herjojen debuggaaminen |
 | 28.7. |   8  | Android-käyttöliittymän toimintojen korjaus, frontendin logiikan refaktorointi |
-| yht   | 116   | | 
+| 29.7. |   7  | Algoritmin kehittelyä maksujen ja velkojen laskemiseen yhteenvetoa varten |
+| yht   | 123   | | 

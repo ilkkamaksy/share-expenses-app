@@ -18,13 +18,11 @@ const EditExpense = ({
 	setExpenseDate,
 	setExpenseToEdit,
 	addExpense,
-	groupToEdit,
-	navigation
+	groupToEdit
 }) => {
    
 	useEffect(() =>{
 		setExpenseDate(new Date(Date.now()))
-
 	}, [])
 
 	const onChangeDescription = (text) => {
@@ -34,7 +32,7 @@ const EditExpense = ({
 		})
 	}
 
-
+	console.log('groupToEdit EditExpense', groupToEdit)
 	const convertCurrencyValueToText = (value) => {
 		return value 
 			? Number(value / 100).toFixed(2).toString().replace('.', ',') 

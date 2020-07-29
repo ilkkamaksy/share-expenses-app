@@ -43,6 +43,7 @@ const EditGroupPeople = props => {
 	}
 
 	console.log(contactList)
+	console.log('groupToEdit', groupToEdit)
    
 	return (
 		<ScrollView>

@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { View, Text, StyleSheet, FlatList } from 'react-native'
+import { Button } from 'react-native-paper'
+import { useNavigation  } from '@react-navigation/native'
 
 import { setGroupToEdit } from '../../store/reducers/groups'
 
@@ -13,45 +15,71 @@ import ExpenseListItem from './ExpenseListItem'
 const Group = ({ groupId, setGroupToEdit }) => {
 
 	const group = useSelector(state => state.groups.userGroups.find(group => group.id === groupId))
-	setGroupToEdit(group)
+	
+	useEffect(() => {
+		setGroupToEdit(group)
+	}, [])
+	
+
+	const navigation = useNavigation()
+
+	console.log('group', group)
 	
 	return (
 		<View style={styles.container}>
 			
-			<Text style={styles.subtitle}>Overview</Text>
+			<View style={styles.section}>
+				<Text style={styles.subtitle}>Overview</Text>
 
-			<View style={styles.row}>
-				<Text style={styles.columnTitle}>Person</Text>
-				<Text style={styles.columnTitle}>Balance</Text>
+				<View style={styles.row}>
+					<Text style={styles.columnTitle}>Person</Text>
+					<Text style={styles.columnTitle}>Balance</Text>
+				</View>
+
+				<FlatList 
+					data={group.people} 
+					style={styles.list}
+					keyExtractor={item=> item.id}
+					renderItem={itemData => <PersonListItem 
+						person={itemData.item} 
+						expenses={group.expenses}
+					/>} 
+				/>
+
+				<Button 
+					labelStyle={styles.summaryButton}
+					mode="text" 
+					color={Colors.primary}
+					onPress={() => navigation.navigate('GroupBalanceDetails', { group: group })}
+				>
+					View summary
+				</Button>
+
 			</View>
 
-			<FlatList 
-				data={group.people} 
-				style={styles.list}
-				keyExtractor={item=> item.id}
-				renderItem={itemData => <PersonListItem 
-					person={itemData.item} 
-					expenses={group.expenses}
-				/>} 
-			/>
+			<View style={styles.section}>
 
-			<Text style={styles.subtitle}>Recent expenses</Text>
+				<Text style={styles.subtitle}>Recent expenses</Text>
 			
-			<FlatList 
-				data={group.expenses.reverse()} 
-				keyExtractor={item=> item.id}
-				renderItem={itemData => <ExpenseListItem 
-					people={group.people}
-					expense={itemData.item} 
-				/>} 
-			/>
-			
+				<FlatList 
+					data={group.expenses.reverse()} 
+					keyExtractor={item=> item.id}
+					renderItem={itemData => <ExpenseListItem 
+						people={group.people}
+						expense={itemData.item} 
+					/>} 
+				/>
+
+			</View>
 			
 		</View>
 	)
 }
 
 const styles = StyleSheet.create({
+	section: {
+		marginBottom: 50
+	},
 	row: {
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -60,7 +88,7 @@ const styles = StyleSheet.create({
 		borderBottomWidth: StyleSheet.hairlineWidth,
 	},
 	list: {
-		marginBottom: 40
+		marginBottom: 20
 	},
 	columnTitle: {
 		fontSize: 14,
@@ -76,7 +104,10 @@ const styles = StyleSheet.create({
 		paddingBottom: 10,
 		textTransform: 'uppercase'
 	},
-
+	summaryButton: {
+		fontSize: 12,
+		fontWeight: 'bold'
+	}
 })
 
 Group.propTypes = {

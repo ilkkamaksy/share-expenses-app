@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { ScrollView, StyleSheet, View, TouchableOpacity, Text } from 'react-native'
 import Group from '../../components/groups/Group'
 
-import { setExpenseToEdit } from '../../store/reducers/groups'
+import { setExpenseToEdit, setExpenseDate } from '../../store/reducers/groups'
 
 import Hero from '../../components/UI/Hero'
 import Heading from '../../components/UI/Heading'
@@ -17,7 +17,7 @@ import Edit from '../../components/icons/Edit'
 
 import PopupMenuTopRight from '../../components/menus/PopupMenuTopRight'
 
-const GroupDetailScreen = ({ navigation, route, setExpenseToEdit }) => {
+const GroupDetailScreen = ({ navigation, route, setExpenseToEdit, setExpenseDate, expenseToEdit }) => {
 
 	useEffect(() => {
 		navigation.setOptions({title: route.params.group.title})
@@ -25,6 +25,11 @@ const GroupDetailScreen = ({ navigation, route, setExpenseToEdit }) => {
 
 	const createNewExpense = () => {
 		setExpenseToEdit(null)
+		setExpenseToEdit({
+			...expenseToEdit,
+			groupid: route.params.group.id
+		})
+		setExpenseDate(new Date(Date.now()))
 		navigation.navigate('EditExpense')
 	}
 
@@ -110,17 +115,20 @@ const styles = StyleSheet.create({
 GroupDetailScreen.propTypes = {
 	route: PropTypes.object,
 	navigation: PropTypes.object,
-	setExpenseToEdit: PropTypes.func
+	setExpenseToEdit: PropTypes.func,
+	setExpenseDate: PropTypes.func,
+	expenseToEdit: PropTypes.object
 }
 
 const mapStateToProps = state => {
 	return {
-		expeseToEdit: state.groups.expeseToEdit
+		expenseToEdit: state.groups.expenseToEdit
 	}
 }
 
 const ConnectedGroupDetailScreen = connect(mapStateToProps, {
-	setExpenseToEdit
+	setExpenseToEdit,
+	setExpenseDate
 })(GroupDetailScreen)
 
 export default ConnectedGroupDetailScreen

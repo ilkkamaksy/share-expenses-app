@@ -33,6 +33,17 @@ const CREATE_GROUP = `
 				id
 				name
 			}
+			expenses {
+				id
+				dateTime
+				amount
+				description
+				details {
+					person
+					share
+					paid
+				}
+			}
 		}
 	}
 `
@@ -69,6 +80,17 @@ const UPDATE_GROUP = `
 			owner {
 				email
 				id
+			}
+			expenses {
+				id
+				dateTime
+				amount
+				description
+				details {
+					person
+					share
+					paid
+				}
 			}
 		}
 	}
@@ -127,6 +149,17 @@ const REMOVE_GROUP = `
 			people {
 				id
 				name
+			}
+			expenses {
+				id
+				dateTime
+				amount
+				description
+				details {
+					person
+					share
+					paid
+				}
 			}
 		}
 	}
@@ -345,6 +378,8 @@ const addExpense = async (args) => {
 		})
 	}
 
+	console.log('variables', variables)
+	
 	const data = {
 		query: ADD_EXPENSE_TO_GROUP,
 		variables: variables

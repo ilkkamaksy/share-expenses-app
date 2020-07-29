@@ -6,9 +6,12 @@ import ToggleMenu from '../components/menus/ToggleMenu'
 import Colors from '../constants/Colors'
 import GroupsOverViewScreen from '../screens/group/GroupsOverviewScreen'
 import GroupDetailScreen from '../screens/group/GroupDetailScreen'
+import GroupBalanceDetailsScreen from '../screens/group/GroupBalanceDetailsScreen'
+
 import EditGroupInfoScreen from '../screens/group/EditGroupInfoScreen'
 import EditGroupPeopleScreen from '../screens/group/EditGroupPeopleScreen'
 import EditExpenseScreen from '../screens/group/EditExpenseScreen'
+
 
 const GroupStack = createStackNavigator()
 
@@ -71,6 +74,14 @@ function GroupNavigator() {
 				component={EditExpenseScreen}
 				options={{
 					title: 'Edit expense',
+				}}
+			/>
+
+			<GroupStack.Screen
+				name="GroupBalanceDetails"
+				component={GroupBalanceDetailsScreen}
+				options={{
+					navigation: ({route}) => ({ group: route.params.group }),
 				}}
 			/>
             

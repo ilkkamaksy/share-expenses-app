@@ -25,17 +25,17 @@ const initialState = {
 		people: [],
 		users: [],
 		id: null,
-		lastUpdatedAt: '',
-		createdAt: '',
+		lastUpdatedAt: null,
+		createdAt: null,
 		expenses: []
 	},
 	currentPerson: '',
 	expenseToEdit: {
 		id: null,
 		groupid: null,
-		date: new Date(Date.now()),
-		lastUpdatedAt: '',
-		createdAt: '',
+		date: null,
+		lastUpdatedAt: null,
+		createdAt: null,
 		description: '',
 		amount: Number(0).toFixed(2),
 		people: [],
@@ -168,12 +168,18 @@ const groupReducer = (state = initialState, action) => {
 	case 'ADD_PERSON_TO_GROUP_SUCCESS' : 
 		return {
 			...state,
-			groupToEdit: {...state.groupToEdit, people: [...state.groupToEdit.people, action.person]}
+			groupToEdit: {
+				...state.groupToEdit, 
+				people: [...state.groupToEdit.people, action.person]
+			},
 		}
 	case 'REMOVE_PERSON_SUCCESS' : 
 		return {
 			...state,
-			groupToEdit: {...state.groupToEdit, people: state.groupToEdit.people.filter(person => person.id !== action.id)}
+			groupToEdit: {
+				...state.groupToEdit, 
+				people: state.groupToEdit.people.filter(person => person.id !== action.id)
+			}
 		}
 	case 'DONE_EDITING_GROUP' : 
 		return {

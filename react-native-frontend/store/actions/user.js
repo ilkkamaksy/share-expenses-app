@@ -90,7 +90,7 @@ const authenticationCheck = () => {
 		
 		let loggedInUser = await AsyncStorage.getItem('loggedAppUser')
 
-		loggedInUser = ''
+		// loggedInUser = ''
 		if (loggedInUser) {
 			userdata = JSON.parse(loggedInUser)
 			util.setToken(userdata.token)

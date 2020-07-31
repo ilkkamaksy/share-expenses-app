@@ -28,9 +28,9 @@ const ExpenseListItem = ({ people, expense }) => {
 					<View key={item.person}>
 						<Text style={styles.columnTitle}>{getPersonName(item.person)}</Text>
 						<View style={styles.row}>
-							<Text style={[styles.expenseDetail, styles.column]}>{`Share: ${item.share}`}</Text>
-							<Text style={[styles.expenseDetail, styles.column]}>{`Paid: ${item.paid}`}</Text>
-							<Text style={[styles.expenseDetail, styles.column]}>{`Balance: ${parseFloat(item.paid - item.share)}`}</Text>
+							<Text style={[styles.expenseDetail, styles.column]}>{`Share: ${Number(item.share / 100).toFixed(2)} €`}</Text>
+							<Text style={[styles.expenseDetail, styles.column]}>{`Paid: ${Number(item.paid / 100).toFixed(2)} €`}</Text>
+							<Text style={[styles.expenseDetail, styles.column]}>{`Balance: ${Number((item.paid - item.share) / 100).toFixed(2)} €`}</Text>
 						</View>
 					</View>
 

@@ -1,17 +1,49 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { View, Text, StyleSheet, FlatList } from 'react-native'
 
 import Colors from '../../constants/Colors'
 
 import BalanceListItem from './BalanceListItem'
-import person from '../../../backend/models/person'
 
 const GroupBalanceDetails = ({ group }) => {
 
 	const calculateBalance = () => {
 		
-		let personData = []
+		let balanceData = group.people.map(person => {
+			return {
+				person,
+				totalSpending: 0,
+				balance: 0,
+				receivables: [
+					{
+						person,
+						totalSpending: 0,
+						balance: 0,
+						paid: 0,
+						share: 0,
+						debt: 0
+					}
+				],
+				debtors: group.people.map(debtor => {
+					return {
+						id: debtor.id,
+						name: debtor.name,
+						debt: 0,
+						creditor: ''
+					}
+				}),
+				creditors: group.people.map(creditor => {
+					return {
+						id: creditor.id,
+						name: creditor.name,
+						credit: 0
+					}
+				}),
+			}
+		})
+
+		console.log('initial balanceData', balanceData)
 
 		group.expenses.forEach(expense => {
 			
@@ -19,41 +51,87 @@ const GroupBalanceDetails = ({ group }) => {
 				return
 			}
 
-			expense.details.forEach(item => {
-				personData = [
-					...personData,
-					{
-						personId: item.person,
-						totalSpending: item.share,
-						balance: item.paid - item.share,
-						paid: item.paid,
-						share: item.share,
-						debtors: [],
-						receivables: null
+			expense.details.forEach(expenseItem => {
+	
+				balanceData = balanceData.map(dataItem => {
+					if (dataItem.person.id === expenseItem.person) {
+						return {
+							...dataItem,
+							totalSpending: dataItem.totalSpending + expenseItem.share,
+							balance: dataItem.balance + expenseItem.balance,
+							debtors: dataItem.debtors.map(debtor => {
+								// Skip if debtor and expenseItem person are the same
+								if (debtor.id === expenseItem.person) {
+									return {
+										...debtor,
+										creditor: expenseItem.person
+									}
+								}
+								
+								const currentDebtor = expense.details.find(d => d.person === debtor.id)
+
+								console.log('expenseITem', expenseItem)
+								console.log('currentdebtor', currentDebtor)
+								console.log('debtor', debtor)
+
+								let currentItemDebt = 0
+
+								// If debtor has positive balance AND is in debt to current expenseItem person,
+								// deduct balance from that debt
+								if (currentDebtor.balance > 0 && debtor.debt < 0) {
+									currentItemDebt = currentDebtor.balance + debtor.debt
+								} 
+																
+								// If debtor has negative balance AND expenseItem balance is positive,
+								// set currentItemDebt to either expenseItem balance or currentDebtor balance, which ever
+								// is smaller
+								if (currentDebtor.balance < 0 && expenseItem.balance > 0) {
+									currentItemDebt = (-1 * Math.min(expenseItem.balance, Math.abs(currentDebtor.balance))) + debtor.debt
+								}
+
+								console.log('currentItemDebt', currentItemDebt)
+
+								return {
+									...debtor,
+									debt: currentItemDebt,
+									creditor: expenseItem.person
+								}
+							})
+						}
 					}
-				]
+					console.log('balanceData', balanceData)
+					return dataItem
+				})
 			})
 
-			personData.forEach(i => {
-				let debtors = []
-				if (i.balance < 0) {
-					return
-				}
-				personData.forEach(j => {
-					if (i.personId !== j.personId && j.balance < 0) {
-						debtors.push(j.personId) 
+			let temp = balanceData
+			temp.forEach(dataItem => {
+				dataItem.debtors.forEach(debtorItem => {
+					if (debtorItem.debt > 0) {
+						console.log(debtorItem)
+						let reference = balanceData.find(subItem => subItem.person.id === debtorItem.id)
+						console.log('reference', reference)
+						reference.debtors.forEach(debtor => {
+							if (debtor.id === debtorItem.creditor) {
+								debtor.debt = debtorItem.debt + debtor.debt
+							}
+						})
 					}
 				})
-				i.debtors = debtors
-				i.receivables = i.balance / debtors.length
 			})
+
+			balanceData = temp
 		})
 		
-		console.log('persondata', personData)
-		return personData
+		console.log('balancedata end', balanceData)
+		return balanceData
 	}
 
-	const balanceData = calculateBalance()
+	const [balanceData, setBalanceData] = useState([])
+
+	useEffect(() => {
+		setBalanceData(calculateBalance())
+	}, [])
 	
 	return (
 		<View style={styles.container}>
@@ -62,10 +140,9 @@ const GroupBalanceDetails = ({ group }) => {
 			
 			<FlatList 
 				data={balanceData} 
-				keyExtractor={item=> item.personId}
+				keyExtractor={item => item.person.id}
 				renderItem={itemData => <BalanceListItem 
 					data={itemData.item}
-					people={group.people}
 				/>} 
 			/>
 			

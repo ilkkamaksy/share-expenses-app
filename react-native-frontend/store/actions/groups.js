@@ -146,7 +146,6 @@ const addPersonToGroup = ({ name, groupid }) =>  {
 
 		const response = await appService.addPersonToGroup({ name, groupid })
 		
-		console.log('resonse', response)
 		if (response.data.data.addPersonToGroup === null || response === null) {
 			return dispatch({
 				type: 'UPDATE_GROUP_FAIL',
@@ -219,6 +218,7 @@ const addExpense = expenseData =>  {
 		})
 
 		let data = expenseData
+
 		delete data.id
 
 		let response

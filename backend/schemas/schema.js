@@ -21,11 +21,13 @@ const Mutation = `
             personId: String!
             share: Float!
             paid: Float!
+            balance: Float!
         }
         type Detail {
             person: String!
             share: Float!
             paid: Float!
+            balance: Float!
         }
         type LoginResponse {
             token: String

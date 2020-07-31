@@ -10,7 +10,6 @@ import Colors from '../../constants/Colors'
 import { setExpenseDate, setExpenseToEdit, addExpense } from '../../store/reducers/groups'
 import TextInput from '../UI/TextInput'
 import DecimalInput from '../UI/DecimalInput'
-import CurrencyInput from '../UI/CurrencyInput'
 
 const EditExpense = ({ 
 	error,
@@ -44,7 +43,7 @@ const EditExpense = ({
 
 		setExpenseToEdit({
 			...expenseToEdit,
-			amount: Number(val.replace(',', '.')).toFixed(2) * 100
+			amount: parseFloat(val.replace(',', ''))
 		})
 	}
 
@@ -60,7 +59,8 @@ const EditExpense = ({
 				: expenseToEdit.details.concat({
 					personId: person.id,
 					share: 0,
-					paid: 0
+					paid: 0,
+					balance: 0
 				}) 
 		})
 	}
@@ -71,7 +71,8 @@ const EditExpense = ({
 			details: expenseToEdit.details.map(item => item.personId === data.person.id 
 				? {
 					...item,
-					share: data.value.nativeEvent.text,
+					share: parseFloat(data.value.nativeEvent.text) * 100,
+					balance: item.paid - parseFloat(data.value.nativeEvent.text) * 100
 				}
 				: item)
 		})
@@ -83,7 +84,8 @@ const EditExpense = ({
 			details: expenseToEdit.details.map(item => item.personId === data.person.id 
 				? {
 					...item,
-					paid: data.value.nativeEvent.text,
+					paid: parseFloat(data.value.nativeEvent.text) * 100,
+					balance: parseFloat(data.value.nativeEvent.text) * 100 - item.share
 				}
 				: item)
 		})
@@ -135,7 +137,7 @@ const EditExpense = ({
 						label="Amount" 
 						style={styles.input} 
 						value={convertCurrencyValueToText(expenseToEdit.amount)}
-						placeholder="0.00 €" 
+						placeholder="0.00" 
 						type="text"
 						onChange={text => onChangeAmount(text)}
 					/>
@@ -168,7 +170,7 @@ const EditExpense = ({
 										label="Share" 
 										style={styles.input} 
 										// value={person.name}
-										placeholder="0.00 €" 
+										placeholder="0.00" 
 										type="text"
 										onChange={value => setPersonShare({
 											person,
@@ -183,7 +185,7 @@ const EditExpense = ({
 										label="Share" 
 										style={styles.input} 
 										// value={person.name}
-										placeholder="0.00 €" 
+										placeholder="0.00" 
 										type="text"
 										onChange={value => setPersonPaid({
 											person,

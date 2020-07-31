@@ -4,25 +4,42 @@ import { View, Text, StyleSheet } from 'react-native'
 
 import Colors from '../../constants/Colors'
 
-const BalanceListItem = ({ data, people }) => {
-
-	const getPersonName = (personId) => {
-		return people.find(person => person.id === personId).name
-	}
+const BalanceListItem = ({ data }) => {
 
 	return (
 		<View style={styles.item}>			
-			<View>
-				<Text style={styles.title}>{getPersonName(data.personId)}</Text>
-				<Text style={styles.description}>{`Total spending: ${Number(data.totalSpending).toFixed(2)} €`}</Text>
+			<View style={styles.itemHeader}>
+				<Text style={styles.title}>{data.person.name}</Text>
+				<Text style={styles.description}>{`Total spending: ${Number(data.totalSpending / 100).toFixed(2)} €`}</Text>
+				<Text style={styles.description}>{`Balance: ${Number(data.balance / 100).toFixed(2)} €`}</Text>
 			</View>
             
-			<View>
-				<View style={styles.row}>
-					<Text style={[styles.expenseDetail, styles.column]}>{`Receivables: ${Number(data.receivables).toFixed(2)} €`}</Text>
-					<Text style={[styles.expenseDetail, styles.column]}>{`From: ${data.debtors.map(person => getPersonName(person))}`}</Text>
+			{data.balance > 0
+				? <View>
+					<View style={styles.row}>
+						<View style={styles.column}>
+							<Text style={styles.receivablesTitle}>Receivables</Text>
+							<Text style={styles.receivablesItem}>{`${Number(data.balance / 100).toFixed(2)} €`}</Text>
+						</View>
+
+						<View style={styles.column}>
+							<Text style={styles.receivablesTitle}>From</Text>
+							{data.debtors.map((item, index) => {
+								if (item.debt < 0) {
+									return (
+										<View key={`receivablesItem-${item.id}-${index}`}>
+											<Text style={styles.receivablesItem}>{`${Number(Math.abs(item.debt) / 100).toFixed(2)} € from ${item.name}`}</Text>
+										</View>	
+									)	
+								}
+							})
+							}
+						</View>
+					</View>
 				</View>
-			</View>
+				: <Text style={[styles.receivablesTitle, { color: Colors.lightCoffee }]}>No receivables</Text>
+			}
+			
 		</View>
 	)
 }
@@ -34,18 +51,19 @@ const styles = StyleSheet.create({
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		flex: 1,
 		marginBottom: 20,
+		paddingBottom: 10,
 		width: '100%',
 		maxWidth: 340,
 		alignSelf: 'center',
 	},
 	row: {
 		flexDirection: 'row',
-		alignItems: 'center',
+		alignItems: 'flex-start',
 		justifyContent: 'flex-start',
 		marginBottom: 8
 	},
 	column: {
-		width: '30%'
+		width: '50%'
 	},
 	title: {
 		fontSize: 14,
@@ -53,13 +71,14 @@ const styles = StyleSheet.create({
 		color: Colors.coffee,
 		fontWeight: 'bold'
 	},
-	description: {
-		fontSize: 13,
+	itemHeader: {
 		marginBottom: 10,
 		paddingBottom: 10,
+	},
+	description: {
+		fontSize: 13,
+		marginBottom: 4,
 		color: Colors.coffee,
-		borderBottomColor: '#f2f2f2',
-		borderBottomWidth: StyleSheet.hairlineWidth,
 	},
 	columnTitle: {
 		fontSize: 13,
@@ -67,11 +86,18 @@ const styles = StyleSheet.create({
 		color: Colors.coffee,
 		fontWeight: 'bold'
 	},
-	expenseDetail: {
-		fontSize: 13,
+	receivablesTitle: {
+		fontSize: 10,
+		textTransform: 'uppercase',
 		marginBottom: 6,
-		color: Colors.coffee,
+		letterSpacing: 1,
+		color: Colors.secondary,
+		fontWeight: 'bold'
 	},
+	receivablesItem: {
+		fontSize: 13,
+		color: Colors.coffee
+	}
 })
 
 BalanceListItem.propTypes = {

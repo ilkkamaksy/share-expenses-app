@@ -48,7 +48,14 @@ const resolvers = {
 						return {
 							person: item.personId,
 							share: item.share,
-							paid: item.paid
+							paid: item.paid,
+							balance: item.balance,
+							// receivables: item.receivables.map(r => {
+							// 	return {
+							// 		debtor: r.debtor,
+							// 		amount: r.amount
+							// 	}
+							// })
 						}
 					})
 				})

@@ -24,12 +24,18 @@ const GroupDetailScreen = ({ navigation, route, setExpenseToEdit, setExpenseDate
 	}, [])
 
 	const createNewExpense = () => {
-		setExpenseToEdit(null)
 		setExpenseToEdit({
-			...expenseToEdit,
-			groupid: route.params.group.id
+			id: null,
+			groupid: route.params.group.id,
+			date: new Date(Date.now()),
+			lastUpdatedAt: null,
+			createdAt: null,
+			description: '',
+			amount: Number(0).toFixed(2),
+			people: [],
+			details: []
 		})
-		setExpenseDate(new Date(Date.now()))
+		
 		navigation.navigate('EditExpense')
 	}
 

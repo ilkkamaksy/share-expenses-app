@@ -22,7 +22,7 @@ const PersonListItem = ({ person, expenses }) => {
 			})
 		})
 	
-		return <Text style={res >= 0 ? styles.balancePlus : styles.balanceNegative}>{res}</Text>
+		return <Text style={res >= 0 ? styles.balancePlus : styles.balanceNegative}>{`${Number(res / 100).toFixed(2)} €`}</Text>
 	}
 
 	return (

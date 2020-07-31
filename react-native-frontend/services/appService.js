@@ -42,6 +42,7 @@ const CREATE_GROUP = `
 					person
 					share
 					paid
+					balance
 				}
 			}
 		}
@@ -90,6 +91,7 @@ const UPDATE_GROUP = `
 					person
 					share
 					paid
+					balance
 				}
 			}
 		}
@@ -124,6 +126,7 @@ const GET_GROUPS = `
 					person
 					share
 					paid
+					balance
 				}
 			}
 		}
@@ -159,6 +162,7 @@ const REMOVE_GROUP = `
 					person
 					share
 					paid
+					balance
 				}
 			}
 		}
@@ -232,6 +236,7 @@ const ADD_EXPENSE_TO_GROUP = `
 					person
 					share
 					paid
+					balance
 				}
 			}
 		}
@@ -367,19 +372,20 @@ const addExpense = async (args) => {
 	const variables = { 
 		groupid: args.groupid,
 		description: args.description,
-		amount: parseFloat(args.amount),
+		amount: args.amount,
 		dateTime: args.date,
 		details: args.details.map(item => { 
 			return {
 				personId: item.personId,
-				share: parseFloat(item.share),
-				paid: parseFloat(item.paid),
+				share: item.share,
+				paid: item.paid,
+				balance: item.balance,
 			}
 		})
 	}
 
 	console.log('variables', variables)
-	
+
 	const data = {
 		query: ADD_EXPENSE_TO_GROUP,
 		variables: variables

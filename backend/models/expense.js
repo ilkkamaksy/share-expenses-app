@@ -24,7 +24,16 @@ const schema = new mongoose.Schema({
 		},
 		balance: {
 			type: Number
-		}
+		},
+		receivables: [{
+			debtor: {
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Person'
+			},
+			amount: {
+				type: Number
+			}
+		}]
 	}],
 	dateTime: {
 		type: Date

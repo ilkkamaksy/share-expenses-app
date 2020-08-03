@@ -1,10 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { View, Text, StyleSheet } from 'react-native'
+import { Button } from 'react-native-paper'
 
 import Colors from '../../constants/Colors'
 
-const ExpenseListItem = ({ people, expense }) => {
+const ExpenseListItem = ({ people, expense, removeExpense }) => {
 
 	const getPersonName = (person) => {
 		return people.find(p => p.id === person).name
@@ -36,6 +37,13 @@ const ExpenseListItem = ({ people, expense }) => {
 
 				)
 			})}
+			<Button 
+				onPress={removeExpense} 
+				mode="contained"
+				color={Colors.primary}
+			>
+				Remove expense
+			</Button>
 		</View>
 	)
 }
@@ -90,7 +98,8 @@ const styles = StyleSheet.create({
 
 ExpenseListItem.propTypes = {
 	expense: PropTypes.object,
-	people: PropTypes.array
+	people: PropTypes.array,
+	removeExpense: PropTypes.func
 }
 
 export default ExpenseListItem

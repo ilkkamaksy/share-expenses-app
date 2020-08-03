@@ -4,33 +4,18 @@ import { View, Text, StyleSheet } from 'react-native'
 
 import Colors from '../../constants/Colors'
 
-const PersonListItem = ({ person, expenses }) => {
-
-	const calculateBalance = (personId) => {
-	
-		let res = 0 
-		
-		expenses.forEach(expense => {
-			if (expense.details.length === 0) {
-				return
-			}
-
-			expense.details.forEach(item => {
-				if (item.person === personId) {
-					res += item.paid - item.share
-				}
-			})
-		})
-	
-		return <Text style={res >= 0 ? styles.balancePlus : styles.balanceNegative}>{`${Number(res / 100).toFixed(2)} €`}</Text>
-	}
+const PersonListItem = ({ item }) => {
 
 	return (
 		<View style={styles.item}>
 			
 			<View style={styles.row}>
-				<Text style={styles.title}>{person.name}</Text>
-				<View>{calculateBalance(person.id)}</View>
+				<Text style={styles.title}>{item.person.name}</Text>
+				<View>
+					<Text style={item.balance >= 0 ? styles.balancePlus : styles.balanceNegative}>
+						{`${Number(item.balance / 100).toFixed(2)} €`}
+					</Text>
+				</View>
 			</View>
 		</View>
 	)
@@ -69,8 +54,7 @@ const styles = StyleSheet.create({
 })
 
 PersonListItem.propTypes = {
-	person: PropTypes.object,
-	expenses: PropTypes.array
+	item: PropTypes.object
 }
 
 export default PersonListItem

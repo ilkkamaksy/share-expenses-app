@@ -21,4 +21,5 @@
 | 28.7. |   8  | Android-käyttöliittymän toimintojen korjaus, frontendin logiikan refaktorointi |
 | 29.7. |   7  | Algoritmin kehittelyä maksujen ja velkojen laskemiseen yhteenvetoa varten |
 | 31.7. |   7  | Algoritmin kehittely maksujen ja velkojen laskemiseen yhteenvetoa varten jatkuu |
-| yht   | 130   | | 
+| 3.8. |   8  | Algoritmi maksujen ja velkojen laskemiseen yhteenvetoa varten läpäisee testit |
+| yht   | 138   | | 

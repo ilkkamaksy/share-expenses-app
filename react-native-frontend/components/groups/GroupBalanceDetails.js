@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { View, Text, StyleSheet, FlatList } from 'react-native'
 
@@ -8,141 +8,143 @@ import BalanceListItem from './BalanceListItem'
 
 const GroupBalanceDetails = ({ group }) => {
 
-	const calculateBalance = () => {
+	const initDebtorData = () => {
 		
-		let balanceData = group.people.map(person => {
-			return {
-				person,
-				totalSpending: 0,
-				balance: 0,
-				receivables: [
-					{
-						person,
-						totalSpending: 0,
-						balance: 0,
-						paid: 0,
-						share: 0,
-						debt: 0
-					}
-				],
-				debtors: group.people.map(debtor => {
-					return {
-						id: debtor.id,
-						name: debtor.name,
-						debt: 0,
-						creditor: ''
-					}
-				}),
-				creditors: group.people.map(creditor => {
-					return {
-						id: creditor.id,
-						name: creditor.name,
-						credit: 0
-					}
-				}),
-			}
+		let initialData = [] 
+		
+		group.people.map(creditor => {	
+			let temp = []		
+			group.people.forEach(debtor => {
+				if (debtor.id === creditor.id) {
+					return
+				}
+
+				temp = [...temp, {
+					debtor,
+					creditor,
+					balance: 0,
+				}]
+				
+			})
+			initialData = [...initialData, ...temp]
 		})
 
-		console.log('initial balanceData', balanceData)
+		return initialData
+	}
 
-		group.expenses.forEach(expense => {
+	const calculateDebtorBalances = () => {
+		
+		let balanceData = initDebtorData() 
+
+		group.expenses.map(expense => {
 			
-			if (expense.details.length === 0) {
-				return
-			}
+			const creditors = expense.details.filter(expenseItem => expenseItem.balance > 0)
+			
+			expense.details.map(expenseItem => {
+				
+				if (expenseItem.balance < 0) {
+					
+					creditors.forEach(creditor => {
+						
+						const debtorBalanceData = findDataItemByCreditorAndDebtor(balanceData, creditor.person, expenseItem.person)
+						const creditorReference = findDataItemByCreditorAndDebtor(balanceData, expenseItem.person, creditor.person)
 
-			expense.details.forEach(expenseItem => {
-	
-				balanceData = balanceData.map(dataItem => {
-					if (dataItem.person.id === expenseItem.person) {
-						return {
-							...dataItem,
-							totalSpending: dataItem.totalSpending + expenseItem.share,
-							balance: dataItem.balance + expenseItem.balance,
-							debtors: dataItem.debtors.map(debtor => {
-								// Skip if debtor and expenseItem person are the same
-								if (debtor.id === expenseItem.person) {
-									return {
-										...debtor,
-										creditor: expenseItem.person
-									}
-								}
-								
-								const currentDebtor = expense.details.find(d => d.person === debtor.id)
+						let balance = debtorBalanceData.balance - Math.min(Math.abs(creditor.balance), Math.abs(expenseItem.balance))
 
-								console.log('expenseITem', expenseItem)
-								console.log('currentdebtor', currentDebtor)
-								console.log('debtor', debtor)
-
-								let currentItemDebt = 0
-
-								// If debtor has positive balance AND is in debt to current expenseItem person,
-								// deduct balance from that debt
-								if (currentDebtor.balance > 0 && debtor.debt < 0) {
-									currentItemDebt = currentDebtor.balance + debtor.debt
-								} 
-																
-								// If debtor has negative balance AND expenseItem balance is positive,
-								// set currentItemDebt to either expenseItem balance or currentDebtor balance, which ever
-								// is smaller
-								if (currentDebtor.balance < 0 && expenseItem.balance > 0) {
-									currentItemDebt = (-1 * Math.min(expenseItem.balance, Math.abs(currentDebtor.balance))) + debtor.debt
-								}
-
-								console.log('currentItemDebt', currentItemDebt)
-
-								return {
-									...debtor,
-									debt: currentItemDebt,
-									creditor: expenseItem.person
-								}
-							})
+						// if creditor is in debt to current debtor, update creditor balance 
+						if (creditorReference.balance < 0 && balance < 0) {
+							
+							balance = balance - creditorReference.balance
+							
+							balanceData = balanceData.map(dataItem => 
+								dataItem.creditor.id === creditorReference.creditor.id && dataItem.debtor.id === creditorReference.debtor.id 
+									? updateBalanceDataItem(dataItem, dataItem.balance - expenseItem.balance) 
+									: dataItem
+							)
 						}
-					}
-					console.log('balanceData', balanceData)
-					return dataItem
-				})
-			})
 
-			let temp = balanceData
-			temp.forEach(dataItem => {
-				dataItem.debtors.forEach(debtorItem => {
-					if (debtorItem.debt > 0) {
-						console.log(debtorItem)
-						let reference = balanceData.find(subItem => subItem.person.id === debtorItem.id)
-						console.log('reference', reference)
-						reference.debtors.forEach(debtor => {
-							if (debtor.id === debtorItem.creditor) {
-								debtor.debt = debtorItem.debt + debtor.debt
-							}
-						})
-					}
-				})
+						balanceData = balanceData.map(dataItem => 
+							dataItem.debtor.id === debtorBalanceData.debtor.id && dataItem.creditor.id === debtorBalanceData.creditor.id 
+								? updateBalanceDataItem(debtorBalanceData, balance)
+								: dataItem
+						)
+					})
+					
+				}
 			})
-
-			balanceData = temp
 		})
-		
-		console.log('balancedata end', balanceData)
+
 		return balanceData
 	}
 
-	const [balanceData, setBalanceData] = useState([])
+	const findDataItemByCreditorAndDebtor = (balanceData, creditorId, debtorId) => {
+		return balanceData.find(balanceDataItem => 
+			balanceDataItem.debtor.id === debtorId 
+			&& balanceDataItem.creditor.id === creditorId)
+	}
 
-	useEffect(() => {
-		setBalanceData(calculateBalance())
+	const updateBalanceDataItem = (balanceDataItem, balance) => {
+		return {
+			...balanceDataItem,
+			balance: Math.min(balance, 0)
+		}
+	}
+
+	const calculateTotals = () => {
+
+		let totals = group.people.map(person => {
+			return {
+				...person,
+				totalSpending: 0,
+				balance: 0
+			}
+		})
+
+		group.expenses.map(expense => {
+			expense.details.map(expenseItem => {
+				totals = totals.map(person => {
+					if (person.id === expenseItem.person) {
+						return {
+							...person,
+							totalSpending: person.totalSpending + expenseItem.share,
+							balance: person.balance + expenseItem.balance
+						}
+					} else {
+						return person
+					}
+				})	
+					
+			})
+			
+		})
+		
+		return totals
+	}
+
+	const [totals, setTotals] = useState([])
+	const [debtorBalanceData, setDebtorBalanceData] = useState([])
+
+	useEffect(() => {		
+		setDebtorBalanceData(calculateDebtorBalances())
+		setTotals(calculateTotals())
 	}, [])
-	
+
+	if (totals.length === 0 || debtorBalanceData.length === 0) {
+		return <></>
+	}
+
 	return (
 		<View style={styles.container}>
 
 			<Text style={styles.subtitle}>Balance summary</Text>
 			
 			<FlatList 
-				data={balanceData} 
-				keyExtractor={item => item.person.id}
+				data={group.people} 
+				keyExtractor={item => item.id}
 				renderItem={itemData => <BalanceListItem 
-					data={itemData.item}
+					person={itemData.item}
+					debtors={debtorBalanceData.filter(item => item.creditor.id === itemData.item.id)}
+					totals={totals.find(item => item.id === itemData.item.id)}
 				/>} 
 			/>
 			

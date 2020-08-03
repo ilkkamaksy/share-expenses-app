@@ -4,41 +4,41 @@ import { View, Text, StyleSheet } from 'react-native'
 
 import Colors from '../../constants/Colors'
 
-const BalanceListItem = ({ data }) => {
+const BalanceListItem = ({ person, debtors, totals }) => {
 
+	console.log('person-----', person)
+	console.log('balancedata----', debtors)
+	console.log('totals---', totals)
 	return (
 		<View style={styles.item}>			
 			<View style={styles.itemHeader}>
-				<Text style={styles.title}>{data.person.name}</Text>
-				<Text style={styles.description}>{`Total spending: ${Number(data.totalSpending / 100).toFixed(2)} €`}</Text>
-				<Text style={styles.description}>{`Balance: ${Number(data.balance / 100).toFixed(2)} €`}</Text>
+				<Text style={styles.title}>{person.name}</Text>
+				<Text style={styles.description}>{`Total spending: ${Number(totals.totalSpending / 100).toFixed(2)} €`}</Text>
+				<Text style={styles.description}>{`Balance: ${Number(totals.balance / 100).toFixed(2)} €`}</Text>
 			</View>
             
-			{data.balance > 0
-				? <View>
-					<View style={styles.row}>
-						<View style={styles.column}>
-							<Text style={styles.receivablesTitle}>Receivables</Text>
-							<Text style={styles.receivablesItem}>{`${Number(data.balance / 100).toFixed(2)} €`}</Text>
-						</View>
-
-						<View style={styles.column}>
-							<Text style={styles.receivablesTitle}>From</Text>
-							{data.debtors.map((item, index) => {
-								if (item.debt < 0) {
-									return (
-										<View key={`receivablesItem-${item.id}-${index}`}>
-											<Text style={styles.receivablesItem}>{`${Number(Math.abs(item.debt) / 100).toFixed(2)} € from ${item.name}`}</Text>
-										</View>	
-									)	
-								}
-							})
-							}
-						</View>
+			
+			<View>
+				<View style={styles.row}>
+					<View style={styles.column}>
+						{debtors.filter(debtor => debtor.balance < 0).length > 0 
+							? <Text style={styles.receivablesTitle}>Receivables</Text> 
+							: <Text style={[styles.receivablesTitle, { color: Colors.lightCoffee }]}>No receivables</Text> 
+						}
+						{debtors.map(item => {
+							if (item.balance < 0) {
+								return (
+									<View key={`receivablesItem-${person.id}-${item.debtor.id}`}>
+										<Text style={styles.receivablesItem}>{`${Number(Math.abs(item.balance) / 100).toFixed(2)} € from ${item.debtor.name}`}</Text>
+									</View>	
+								)
+							} 	
+						})
+						}
 					</View>
 				</View>
-				: <Text style={[styles.receivablesTitle, { color: Colors.lightCoffee }]}>No receivables</Text>
-			}
+			</View>
+			
 			
 		</View>
 	)
@@ -101,9 +101,9 @@ const styles = StyleSheet.create({
 })
 
 BalanceListItem.propTypes = {
-	expense: PropTypes.object,
-	people: PropTypes.array,
-	data: PropTypes.object
+	debtors: PropTypes.array,
+	person: PropTypes.object,
+	totals: PropTypes.object
 }
 
 export default BalanceListItem

@@ -1,4 +1,4 @@
-import appService from '../../services/appService'
+import * as appService from '../../services/appService'
 
 const toggleTopRightMenu = visibility => {
 	return dispatch => {
@@ -218,19 +218,10 @@ const addExpense = expenseData =>  {
 		})
 
 		let data = expenseData
-
 		delete data.id
 
-		let response
-		try {
-			response = await appService.addExpense(data)
-		} catch(err) {
-			console.log('err', err)
-		}
+		let response = await appService.addExpense(data)
 		
-
-		console.log('response', response)
-
 		if (response.data.data.addExpense === null || response === null) {
 			return dispatch({
 				type: 'CREATE_EXPENSE_FAIL',
@@ -245,6 +236,29 @@ const addExpense = expenseData =>  {
 	}
 }
 
+const removeExpense = id =>  {
+	return async dispatch => {
+		dispatch({
+			type: 'INIT_REMOVE_EXPENSE',
+		})
+
+		const response = await appService.removeExpense(id)
+		
+		console.log('response', response)
+		
+		if (response.data.data.removeExpense === null || response === null) {
+			return dispatch({
+				type: 'REMOVE_EXPENSE_FAIL',
+				response: response.data.errors[0].message
+			})
+		}
+
+		dispatch({
+			type: 'REMOVE_EXPENSE_SUCCESS',
+			removedExpenseId: id
+		})
+	}
+}
 
 export default {
 	toggleTopRightMenu,
@@ -261,5 +275,6 @@ export default {
 	removePerson,
 	doneEditing,
 	setExpenseToEdit,
-	addExpense
+	addExpense,
+	removeExpense
 }

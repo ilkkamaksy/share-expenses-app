@@ -243,7 +243,19 @@ const ADD_EXPENSE_TO_GROUP = `
 	}
 `
 
-const saveGroup = async (group) => {
+const REMOVE_EXPENSE = `
+	mutation removeExpense(
+		$id: String!
+	){
+		removeExpense(
+			id: $id
+		) {
+	 	 	id
+		}
+  }
+`
+
+export const saveGroup = async (group) => {
 	
 	const variables = { 
 		title: group.title,
@@ -266,7 +278,7 @@ const saveGroup = async (group) => {
 	return await axios.post(apiUrl, data, config)
 }
 
-const updateGroup = async (group) => {
+export const updateGroup = async (group) => {
 
 	const variables = { 
 		id: group.id,
@@ -291,7 +303,7 @@ const updateGroup = async (group) => {
 	return await axios.post(apiUrl, data, config)
 }
 
-const getGroups = async () => {
+export const getGroups = async () => {
 	
 	console.log('getGroups', util.token)
 
@@ -308,7 +320,7 @@ const getGroups = async () => {
 	return await axios.post(apiUrl, data, config)
 }
 
-const removeGroup = async id => {
+export const removeGroup = async id => {
 	const variables = { 
 		id: id
 	}
@@ -328,7 +340,7 @@ const removeGroup = async id => {
 }
 
 
-const addPersonToGroup = async (args) => {
+export const addPersonToGroup = async (args) => {
 	const variables = { 
 		name: args.name,
 		groupid: args.groupid
@@ -348,7 +360,7 @@ const addPersonToGroup = async (args) => {
 	return await axios.post(apiUrl, data, config)
 }
 
-const removePerson = async id => {
+export const removePerson = async id => {
 	const variables = { 
 		id
 	}
@@ -367,7 +379,7 @@ const removePerson = async id => {
 	return await axios.post(apiUrl, data, config)
 }
 
-const addExpense = async (args) => {
+export const addExpense = async (args) => {
 	
 	const variables = { 
 		groupid: args.groupid,
@@ -384,8 +396,6 @@ const addExpense = async (args) => {
 		})
 	}
 
-	console.log('variables', variables)
-
 	const data = {
 		query: ADD_EXPENSE_TO_GROUP,
 		variables: variables
@@ -400,4 +410,22 @@ const addExpense = async (args) => {
 	return await axios.post(apiUrl, data, config)
 }
 
-export default { saveGroup, updateGroup, getGroups, removeGroup, addPersonToGroup, removePerson, addExpense }
+export const removeExpense = async id => {
+	
+	const variables = { 
+		id
+	}
+
+	const data = {
+		query: REMOVE_EXPENSE,
+		variables: variables
+	}
+
+	const config = {
+		headers: {
+			'Authorization': util.token
+		}
+	}
+
+	return await axios.post(apiUrl, data, config)
+}

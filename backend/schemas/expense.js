@@ -24,8 +24,6 @@ const resolvers = {
 		// dateTime: String
 		addExpense: async (root, args, context) => {
 
-			console.log(args)
-
 			const currentUser = context.currentUser
 			
 			if (!currentUser) {
@@ -50,12 +48,6 @@ const resolvers = {
 							share: item.share,
 							paid: item.paid,
 							balance: item.balance,
-							// receivables: item.receivables.map(r => {
-							// 	return {
-							// 		debtor: r.debtor,
-							// 		amount: r.amount
-							// 	}
-							// })
 						}
 					})
 				})
@@ -78,6 +70,31 @@ const resolvers = {
 				})
 			}
 		},
+		// args
+		// id: ID!
+		removeExpense: async (root, args, context) => {
+			const currentUser = context.currentUser
+
+			if (!currentUser) {
+				throw new AuthenticationError('not authenticated')
+			}
+
+			try {
+
+				let groupInDB = await Group.findOne({ expenses: args.id })
+
+				if (!groupInDB.users.includes(currentUser._id)) {
+					throw new AuthenticationError('user is not a member of the group')
+				}
+
+				return await Expense.findByIdAndRemove(args.id)
+					
+			} catch (error) {
+				throw new UserInputError(error.message, {
+					invalidArgs: args
+				})
+			}
+		}
 	}
 }
 

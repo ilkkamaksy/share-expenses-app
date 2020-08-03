@@ -94,6 +94,9 @@ const Mutation = `
                 dateTime: String
                 details: [ExpenseDetails!]
             ): Group
+            removeExpense(
+                id: String!
+            ): Expense
         }
     `
 

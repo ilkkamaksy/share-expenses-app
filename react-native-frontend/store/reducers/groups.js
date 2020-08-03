@@ -13,6 +13,7 @@ export const {
 	addPersonToGroup,
 	removePerson,
 	addExpense,
+	removeExpense,
 	setExpenseToEdit,
 	setExpenseDate,
 	doneEditing } = actions
@@ -209,6 +210,27 @@ const groupReducer = (state = initialState, action) => {
 			saveGroupFail: true,
 			error: action.response,
 			fetching: false
+		}
+	case 'INIT_REMOVE_EXPENSE' :
+		return {
+			...state,
+			error: ''
+		}
+	case 'REMOVE_EXPENSE_SUCCESS' :
+		return {
+			...state,
+			userGroups: state.userGroups.map(group => {
+				const expenses = group.expenses.filter(expense => expense.id !== action.removedExpenseId)
+				return {
+					...group,
+					expenses
+				}
+			})
+		}
+	case 'REMOVE_EXPENSE_FAIL' :
+		return {
+			...state,
+			error: action.response
 		}
 	default: return state
 	}

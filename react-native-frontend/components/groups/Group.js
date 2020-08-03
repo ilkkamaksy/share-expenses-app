@@ -5,21 +5,47 @@ import { View, Text, StyleSheet, FlatList } from 'react-native'
 import { Button } from 'react-native-paper'
 import { useNavigation  } from '@react-navigation/native'
 
-import { setGroupToEdit } from '../../store/reducers/groups'
+import { setGroupToEdit, removeExpense } from '../../store/reducers/groups'
 
 import Colors from '../../constants/Colors'
 
 import PersonListItem from './PersonListItem'
 import ExpenseListItem from './ExpenseListItem'
 
-const Group = ({ groupId, setGroupToEdit }) => {
+const Group = ({ groupId, setGroupToEdit, removeExpense }) => {
 
 	const group = useSelector(state => state.groups.userGroups.find(group => group.id === groupId))
-	
+
 	useEffect(() => {
 		setGroupToEdit(group)
 	}, [])
 	
+	const calculateBalances = () => {
+		
+		const balances = group.people.map(person => {
+
+			let balance = 0 
+		
+			group.expenses.forEach(expense => {
+				if (expense.details.length === 0) {
+					return
+				}
+
+				expense.details.forEach(item => {
+					if (item.person === person.id) {
+						balance += item.paid - item.share
+					}
+				})
+			})
+
+			return {
+				person,
+				balance
+			}
+		})
+
+		return balances
+	}
 
 	const navigation = useNavigation()
 
@@ -37,12 +63,11 @@ const Group = ({ groupId, setGroupToEdit }) => {
 				</View>
 
 				<FlatList 
-					data={group.people} 
+					data={calculateBalances()} 
 					style={styles.list}
-					keyExtractor={item=> item.id}
+					keyExtractor={item=> item.person.id}
 					renderItem={itemData => <PersonListItem 
-						person={itemData.item} 
-						expenses={group.expenses}
+						item={itemData.item} 
 					/>} 
 				/>
 
@@ -67,6 +92,7 @@ const Group = ({ groupId, setGroupToEdit }) => {
 					renderItem={itemData => <ExpenseListItem 
 						people={group.people}
 						expense={itemData.item} 
+						removeExpense={() => removeExpense(itemData.item.id)}
 					/>} 
 				/>
 
@@ -115,7 +141,8 @@ Group.propTypes = {
 	onViewDetail: PropTypes.func,
 	navigation: PropTypes.object,
 	groupToEdit: PropTypes.object,
-	setGroupToEdit: PropTypes.func
+	setGroupToEdit: PropTypes.func,
+	removeExpense: PropTypes.func
 }
 
 const mapStateToProps = state => {
@@ -125,7 +152,8 @@ const mapStateToProps = state => {
 }
 
 const connectedGroup = connect(mapStateToProps, {
-	setGroupToEdit
+	setGroupToEdit,
+	removeExpense
 })(Group)
 
 export default connectedGroup

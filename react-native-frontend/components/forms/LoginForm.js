@@ -38,6 +38,8 @@ const LoginForm = ({ email, password, loginUser, setEmail, setPassword, error, n
 						autoCompleteType="email"
 						textContentType="emailAddress"
 						keyboardType="email-address"
+						underlineColor="transparent"
+						mode="flat"
 					/>
 				</View>
 				<View style={styles.formControl}>
@@ -52,6 +54,8 @@ const LoginForm = ({ email, password, loginUser, setEmail, setPassword, error, n
 						onChangeText={text => setPassword(text)}
 						error={!!password.error}
 						errorText=""
+						underlineColor="transparent"
+						mode="flat"
 					/>
 				</View>
 				<View style={styles.forgotPassword}>

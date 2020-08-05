@@ -185,7 +185,6 @@ const groupReducer = (state = initialState, action) => {
 	case 'DONE_EDITING_GROUP' : 
 		return {
 			...state,
-			groupToEdit: initialState.groupToEdit,
 			userGroups: state.userGroups.map(group => group.id === action.group.id ? action.group : group)
 		}
 	case 'INIT_CREATE_EXPENSE' :

@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { ScrollView, StyleSheet, View, TouchableOpacity, Text } from 'react-native'
+
+import { setGroupToEdit, setExpenseToEdit, setExpenseDate } from '../../store/reducers/groups'
+
 import Group from '../../components/groups/Group'
-
-import { setExpenseToEdit, setExpenseDate } from '../../store/reducers/groups'
-
 import Hero from '../../components/UI/Hero'
 import Heading from '../../components/UI/Heading'
 import Paragraph from '../../components/UI/Paragraph'
@@ -14,12 +14,21 @@ import Colors from '../../constants/Colors'
 
 import FloatingActionButton from '../../components/UI/FloatingActionButton'
 import Edit from '../../components/icons/Edit'
+import Share from '../../components/icons/Share'
 
 import PopupMenuTopRight from '../../components/menus/PopupMenuTopRight'
 
-const GroupDetailScreen = ({ navigation, route, setExpenseToEdit, setExpenseDate, expenseToEdit }) => {
+const GroupDetailScreen = ({ 
+	navigation, 
+	route, 
+	setGroupToEdit,
+	setExpenseToEdit 
+}) => {
+
+	const group = useSelector(state => state.groups.userGroups.find(group => group.id === route.params.group.id))
 
 	useEffect(() => {
+		setGroupToEdit(group)
 		navigation.setOptions({title: route.params.group.title})
 	}, [])
 
@@ -46,20 +55,27 @@ const GroupDetailScreen = ({ navigation, route, setExpenseToEdit, setExpenseDate
 				
 				<Hero>
 					<Heading style={[styles.header]}>
-						{route.params.group.title}
+						{group.title}
 					</Heading>
 					<Paragraph style={[styles.intro]}>
-						{route.params.group.location}
+						{group.location}
 					</Paragraph>
 
 					<View style={styles.actions}>
-						<View>
+						<View style={styles.row}>
 							<TouchableOpacity 
-								onPress={() => navigation.navigate('EditGroupInfo')} 
+								onPress={() => navigation.navigate('EditGroup')} 
 								style={styles.actionLinkContainer}
 							>
 								<Edit size={14} color={Colors.white} />
-								<Text style={styles.actionLink}>Edit</Text>
+								<Text style={styles.actionLink}>Edit Group</Text>
+							</TouchableOpacity>
+							<TouchableOpacity 
+								onPress={() => navigation.navigate('EditGroup')} 
+								style={styles.actionLinkContainer}
+							>
+								<Share size={14} color={Colors.white} />
+								<Text style={styles.actionLink}>Invite friends</Text>
 							</TouchableOpacity>
 						</View>
 					</View>
@@ -67,7 +83,7 @@ const GroupDetailScreen = ({ navigation, route, setExpenseToEdit, setExpenseDate
 				</Hero>
 				<ContentContainer>
 					<Group 
-						groupId={route.params.group.id}
+						group={group}
 						navigation={navigation}
 					/>
 				</ContentContainer>
@@ -96,11 +112,16 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.white,
 		flex: 1
 	},
-	actions: {
+	row: {
 		flexDirection: 'row',
 		alignItems: 'center',
+		justifyContent: 'space-between',
+		width: '100%'
+	},
+	actions: {
 		position: 'absolute',
 		bottom: 10,
+		width: '100%'
 	}, 
 	actionLinkContainer: {
 		backgroundColor: Colors.primary,
@@ -114,13 +135,15 @@ const styles = StyleSheet.create({
 		color: Colors.white,
 		fontSize: 10,
 		fontWeight: 'bold',
-		marginLeft: 4
+		marginLeft: 4,
+		letterSpacing: 0.3
 	}
 })
 
 GroupDetailScreen.propTypes = {
 	route: PropTypes.object,
 	navigation: PropTypes.object,
+	setGroupToEdit: PropTypes.func,
 	setExpenseToEdit: PropTypes.func,
 	setExpenseDate: PropTypes.func,
 	expenseToEdit: PropTypes.object
@@ -134,7 +157,8 @@ const mapStateToProps = state => {
 
 const ConnectedGroupDetailScreen = connect(mapStateToProps, {
 	setExpenseToEdit,
-	setExpenseDate
+	setExpenseDate,
+	setGroupToEdit
 })(GroupDetailScreen)
 
 export default ConnectedGroupDetailScreen

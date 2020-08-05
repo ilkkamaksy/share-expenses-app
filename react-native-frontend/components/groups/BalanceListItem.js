@@ -6,14 +6,11 @@ import Colors from '../../constants/Colors'
 
 const BalanceListItem = ({ person, debtors, totals }) => {
 
-	console.log('person-----', person)
-	console.log('balancedata----', debtors)
-	console.log('totals---', totals)
 	return (
 		<View style={styles.item}>			
 			<View style={styles.itemHeader}>
 				<Text style={styles.title}>{person.name}</Text>
-				<Text style={styles.description}>{`Total spending: ${Number(totals.totalSpending / 100).toFixed(2)} €`}</Text>
+				<Text style={styles.description}>{`Total expenses: ${Number(totals.totalSpending / 100).toFixed(2)} €`}</Text>
 				<Text style={styles.description}>{`Balance: ${Number(totals.balance / 100).toFixed(2)} €`}</Text>
 			</View>
             
@@ -21,15 +18,14 @@ const BalanceListItem = ({ person, debtors, totals }) => {
 			<View>
 				<View style={styles.row}>
 					<View style={styles.column}>
-						{debtors.filter(debtor => debtor.balance < 0).length > 0 
-							? <Text style={styles.receivablesTitle}>Receivables</Text> 
-							: <Text style={[styles.receivablesTitle, { color: Colors.lightCoffee }]}>No receivables</Text> 
+						{debtors.filter(debtor => debtor.balance < 0).length > 0 &&  
+							<Text style={styles.receivablesTitle}>Payables</Text> 
 						}
 						{debtors.map(item => {
 							if (item.balance < 0) {
 								return (
-									<View key={`receivablesItem-${person.id}-${item.debtor.id}`}>
-										<Text style={styles.receivablesItem}>{`${Number(Math.abs(item.balance) / 100).toFixed(2)} € from ${item.debtor.name}`}</Text>
+									<View key={`receivablesItem-${person.id}-${item.creditor.id}`}>
+										<Text style={styles.receivablesItem}>{`${Number(Math.abs(item.balance) / 100).toFixed(2)} € to ${item.creditor.name}`}</Text>
 									</View>	
 								)
 							} 	

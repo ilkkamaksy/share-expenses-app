@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { ScrollView, View, Text, StyleSheet, Platform } from 'react-native'
-import { TextInput, Button } from 'react-native-paper'
 import { connect } from 'react-redux'
+import { ScrollView, View, Text, StyleSheet, Platform } from 'react-native'
+import { Button } from 'react-native-paper'
 
 import { setCurrentPerson, addPersonToGroup, removePerson, doneEditing } from '../../store/reducers/groups'
 import contactsService from '../../services/contactsService'
 
-const EditGroupPeople = props => {
+import Heading from '../UI/Heading'
+import TextInput from '../UI/TextInput'
+import Colors from '../../constants/Colors'
 
-	const { 
-		error, 
-		groupToEdit, 
-		currentPerson, 
-		setCurrentPerson, 
-		addPersonToGroup, 
-		removePerson,
-		doneEditing,
-		navigation } = props
+const EditGroupPeople = ({ 
+	error, 
+	groupToEdit, 
+	currentPerson, 
+	setCurrentPerson, 
+	addPersonToGroup, 
+	removePerson,
+	doneEditing,
+	navigation 
+}) => {
 
 	const [contactList, setContactList] = useState({})
 
@@ -39,7 +42,7 @@ const EditGroupPeople = props => {
     
 	const onDoneEditingGroup = () => {
 		doneEditing(groupToEdit)
-		navigation.navigate('GroupList')
+		navigation.navigate('GroupItem', { group: groupToEdit })
 	}
 
 	console.log(contactList)
@@ -52,32 +55,45 @@ const EditGroupPeople = props => {
 				<Text>{error}</Text>
 			</View>
 			
+			<Heading style={[{ textAlign: 'left', fontSize: 12, color: Colors.secondary, textTransform: 'uppercase', paddingBottom: 5 }]}>
+				Add a new person to this group
+			</Heading>
+
 			<View style={styles.form}>
 				<View style={styles.formControl}>
-					<View style={styles.row}>
-						<View style={styles.column}>
-							<TextInput 
-								accessibilityLabel="Name"
-								label="Name" 
-								style={styles.input} 
-								value={currentPerson}
-								onChangeText={text => setCurrentPerson(text)}
-							/>
-						</View>
-						<View style={styles.column}>
-                        
-							<Button 
-								disabled={currentPerson.length === 0 ? true : false} 
-								mode="outlined" 
-								onPress={() => onAddPersonToGroup()}
-							>
-                            Add to group
-							</Button>
 					
-						</View>
-					</View>
+					<TextInput 
+						accessibilityLabel="Name"
+						label="Name" 
+						placeholder="John Doe"
+						value={currentPerson}
+						onChangeText={text => setCurrentPerson(text)}
+						error={false}
+						errorText=""
+						returnKeyType="next"
+						mode="outlined"
+					/>
+						
+				</View>
+
+				<View style={styles.formControl}>
+                        
+					<Button 
+						disabled={currentPerson.length === 0 ? true : false} 
+						mode="contained" 
+						onPress={() => onAddPersonToGroup()}
+						color={Colors.secondary}
+						labelStyle={{ color: Colors.white }}
+					>
+                            Add to group
+					</Button>
+					
 				</View>
 				
+				<Heading style={[{ textAlign: 'left', fontSize: 12, color: Colors.secondary, textTransform: 'uppercase', marginTop: 20 }]}>
+					People in this group
+				</Heading>
+
 				<View style={styles.formControl}>
 					{groupToEdit.people.map(person => { return (
 						<View key={person.id} style={styles.row}>
@@ -86,12 +102,12 @@ const EditGroupPeople = props => {
 							</View>
 							<View style={styles.column}>
 								<Button 
-									style={styles.column} 
+									labelStyle={{ color: Colors.primary, fontSize: 12 }}
 									compact={true} 
 									mode="text" 
 									uppercase={false} 
 									onPress={() => removePerson(person.id)}>
-								(Remove)
+								Remove
 								</Button> 
 							</View>
 						</View>
@@ -99,7 +115,13 @@ const EditGroupPeople = props => {
 				</View>
 
 				<View style={styles.formControl}>
-					<Button mode="contained" onPress={onDoneEditingGroup}>
+					<Button 
+						mode="contained" 
+						onPress={onDoneEditingGroup}
+						color={Colors.primary}
+						labelStyle={{ color: Colors.white }}
+						style={styles.doneButton}
+					>
                         Done
 					</Button>
 				</View>
@@ -110,9 +132,6 @@ const EditGroupPeople = props => {
 }
 
 const styles = StyleSheet.create({
-	formControl: {
-		marginVertical: 5
-	},
 	row: {
 		display: 'flex',
 		alignItems: 'center',
@@ -123,8 +142,8 @@ const styles = StyleSheet.create({
 	column: {
 		flex: 1
 	},
-	input: {
-		width: '100%'
+	doneButton: {
+		marginTop: 20
 	}
 })
 

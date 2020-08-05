@@ -22,4 +22,5 @@
 | 29.7. |   7  | Algoritmin kehittelyä maksujen ja velkojen laskemiseen yhteenvetoa varten |
 | 31.7. |   7  | Algoritmin kehittely maksujen ja velkojen laskemiseen yhteenvetoa varten jatkuu |
 | 3.8. |   8  | Algoritmi maksujen ja velkojen laskemiseen yhteenvetoa varten läpäisee testit |
-| yht   | 138   | | 
+| 5.8. |   8  | Maksujen ja velkojen algoritmin korjauksia, frontendin refaktorointia, ryhmämuokkauksen screenin kehittämistä |
+| yht   | 146   | | 

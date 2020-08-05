@@ -4,16 +4,16 @@ import PropTypes from 'prop-types'
 
 import EditExpense from '../../components/forms/EditExpense'
 
-const EditExpenseScreen = props => {
+const EditExpenseScreen = ({ navigation, groupToEdit }) => {
 		
 	useEffect(() => {
-		if (props.groupToEdit.id) {
-			props.navigation.setOptions({title: 'Edit expense'})
+		if (groupToEdit.id) {
+			navigation.setOptions({title: 'Edit expense'})
 		}
 	}, [])
 	
 	return (
-		<EditExpense navigation={props.navigation} />
+		<EditExpense navigation={navigation} />
 	)
 }
 

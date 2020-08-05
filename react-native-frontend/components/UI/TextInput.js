@@ -9,9 +9,6 @@ const TextInput = ({ errorText, ...props }) => (
 		<Input
 			style={styles.input}
 			selectionColor={Colors.primary}
-			underlineColor="transparent"
-			dense={true}
-			mode="flat"
 			{...props}
 		/>
 		{errorText ? <Text style={styles.error}>{errorText}</Text> : null}

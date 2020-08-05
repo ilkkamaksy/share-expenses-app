@@ -19,7 +19,7 @@ const GroupsOverViewScreen = ({ navigation, setGroupToEdit }) => {
 	
 	const createNewGroup = () => {
 		setGroupToEdit(null)
-		navigation.navigate('EditGroupInfo')
+		navigation.navigate('EditGroup')
 	}
 
 	return (

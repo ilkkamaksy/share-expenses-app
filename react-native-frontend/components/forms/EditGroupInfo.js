@@ -1,30 +1,54 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { ScrollView, View, Text, StyleSheet } from 'react-native'
-import { TextInput, Button } from 'react-native-paper'
 import { connect } from 'react-redux'
+import { ScrollView, View, Text, StyleSheet } from 'react-native'
+import { Button } from 'react-native-paper'
 
 import { setGroupTitle, setGroupLocation, saveGroup, updateGroup } from '../../store/reducers/groups'
 
-const EditGroupInfo = props => {
+import Heading from '../UI/Heading'
+import TextInput from '../UI/TextInput'
+import Colors from '../../constants/Colors'
 
-	const { 
-		error, 
-		groupToEdit, 
-		setGroupTitle, 
-		setGroupLocation, 
-		saveGroup, 
-		updateGroup,
-		navigation } = props
+const EditGroupInfo = ({ 
+	error, 
+	groupToEdit, 
+	setGroupTitle, 
+	setGroupLocation, 
+	saveGroup, 
+	updateGroup,
+	navigation 
+}) => {
+
+	const [existingGroupToEdit, setExistingGroupToEdit] = useState({})
+
+	useEffect(() => {
+		setExistingGroupToEdit(groupToEdit)
+	}, [])
 
 	const onSaveGroup = async () => {
 		if (!groupToEdit.id) {
 			await saveGroup(groupToEdit)
+			navigation.navigate('EditGroupPeople')
 		} else {
 			await updateGroup(groupToEdit)
 		}
-		
-		navigation.navigate('EditGroupPeople')
+	}
+
+	const validateForm = () => {
+		if (groupToEdit.title.length === 0) {
+			return true
+		}
+
+		if (
+			groupToEdit.id && 
+			groupToEdit.title === existingGroupToEdit.title && 
+			groupToEdit.location === existingGroupToEdit.location
+		) {
+			return true
+		}
+
+		return false
 	}
 
 	return (
@@ -34,14 +58,21 @@ const EditGroupInfo = props => {
 				<Text>{error}</Text>
 			</View>
 			
+			<Heading style={[{ textAlign: 'left', fontSize: 12, color: Colors.secondary, textTransform: 'uppercase', paddingBottom: 5 }]}>
+				Edit Group details
+			</Heading>
+
 			<View style={styles.form}>
 				<View style={styles.formControl}>
 					<TextInput 
 						accessibilityLabel="Title"
 						label="Title" 
-						style={styles.input} 
 						value={groupToEdit.title}
 						onChangeText={text => setGroupTitle(text)}
+						error={false}
+						errorText=""
+						returnKeyType="next"
+						mode="outlined"
 					/>
 				</View>
 				
@@ -49,19 +80,25 @@ const EditGroupInfo = props => {
 					<TextInput 
 						accessibilityLabel="Location"
 						label="Location (optional)" 
-						style={styles.input} 
 						value={groupToEdit.location}
 						onChangeText={text => setGroupLocation(text)}
+						error={false}
+						errorText=""
+						returnKeyType="next"
+						mode="outlined"
 					/>
 				</View>
 			
 				<View style={styles.formControl}>
 					<Button 
-						disabled={groupToEdit.title.length > 0 ? false : true} 
+						disabled={validateForm()} 
 						mode="contained" 
 						onPress={onSaveGroup}
+						color={Colors.primary}
+						labelStyle={{ color: Colors.white }}
+						style={styles.button}
 					>
-						{!groupToEdit.id ? 'Save & start adding people' : 'Ok, let\'s edit group members'}
+						{!groupToEdit.id ? 'Save & start adding people' : 'Save changes'}
 					</Button>
 				</View>
                 
@@ -80,6 +117,9 @@ const styles = StyleSheet.create({
 	}, 
 	rowItem: {
 		flex: 0
+	},
+	button: {
+		marginTop: 10
 	}
 })
 

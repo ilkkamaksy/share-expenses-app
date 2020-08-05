@@ -1,25 +1,19 @@
-import React, { useEffect } from 'react'
-import { connect, useSelector } from 'react-redux'
+import React from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { View, Text, StyleSheet, FlatList } from 'react-native'
 import { Button } from 'react-native-paper'
 import { useNavigation  } from '@react-navigation/native'
 
-import { setGroupToEdit, removeExpense } from '../../store/reducers/groups'
+import { removeExpense } from '../../store/reducers/groups'
 
 import Colors from '../../constants/Colors'
 
 import PersonListItem from './PersonListItem'
 import ExpenseListItem from './ExpenseListItem'
 
-const Group = ({ groupId, setGroupToEdit, removeExpense }) => {
+const Group = ({ group, removeExpense }) => {
 
-	const group = useSelector(state => state.groups.userGroups.find(group => group.id === groupId))
-
-	useEffect(() => {
-		setGroupToEdit(group)
-	}, [])
-	
 	const calculateBalances = () => {
 		
 		const balances = group.people.map(person => {
@@ -84,7 +78,7 @@ const Group = ({ groupId, setGroupToEdit, removeExpense }) => {
 
 			<View style={styles.section}>
 
-				<Text style={styles.subtitle}>Recent expenses</Text>
+				{group.expenses.length > 0 && <Text style={styles.subtitle}>Recent expenses</Text>}
 			
 				<FlatList 
 					data={group.expenses.reverse()} 
@@ -137,22 +131,20 @@ const styles = StyleSheet.create({
 })
 
 Group.propTypes = {
-	groupId: PropTypes.string,
+	group: PropTypes.object,
 	onViewDetail: PropTypes.func,
 	navigation: PropTypes.object,
 	groupToEdit: PropTypes.object,
-	setGroupToEdit: PropTypes.func,
 	removeExpense: PropTypes.func
 }
 
 const mapStateToProps = state => {
 	return {
-		groupToEdit: state.groups.groupToEdit
+		groupToEdit: state.groups.groupToEdit,
 	}
 }
 
 const connectedGroup = connect(mapStateToProps, {
-	setGroupToEdit,
 	removeExpense
 })(Group)
 

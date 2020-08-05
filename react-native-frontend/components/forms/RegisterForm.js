@@ -40,6 +40,8 @@ const RegisterForm = props => {
 						autoCompleteType="email"
 						textContentType="emailAddress"
 						keyboardType="email-address"
+						underlineColor="transparent"
+						mode="flat"
 					/>
 				</View>
 				<View style={styles.formControl}>
@@ -53,6 +55,8 @@ const RegisterForm = props => {
 						onChangeText={text => setPassword(text)}
 						error={!!password.error}
 						errorText=""
+						underlineColor="transparent"
+						mode="flat"
 					/>
 				</View>
 				<View style={styles.formControl}>

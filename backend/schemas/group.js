@@ -110,6 +110,7 @@ const resolvers = {
 					...args,
 					lastUpdatedAt: Date.now()
 				}
+				groupToUpdate.lastUpdatedAt instanceof Date
 
 				if (args.title) {
 					groupToUpdate.title = args.title.trim()
@@ -177,24 +178,41 @@ const resolvers = {
 
 			try {
 
-				let groupInDB = await Group.findById({ _id: args.groupid })
+				// let groupInDB = await Group.findById({ _id: args.groupid })
 
-				if (!groupInDB.users.includes(currentUser._id)) {
-					throw new AuthenticationError('user is not a member of the group')
+				// if (!groupInDB.users.includes(currentUser._id)) {
+				// 	throw new AuthenticationError('user is not a member of the group')
+				// }
+
+				const filter = { 
+					_id: args.groupid,
+					users: currentUser._id, 
 				}
 
-				const savedGroup = await Group
-					.findByIdAndUpdate(
-						args.groupid, 
-						{ $addToSet: { users: args.userid }}, 
-						{ new: true }
+				const update = { $addToSet: { users: args.userid }}
+
+				return await Group
+					.findOneAndUpdate(
+						filter, 
+						update
 					)
 					.populate('owner', { email: 1, firstname: 1, lastname: 1 })
 					.populate('users')
 					.populate('people')
 					.populate('expenses')
 
-				return savedGroup
+				// const savedGroup = await Group
+				// 	.findByIdAndUpdate(
+				// 		args.groupid, 
+				// 		{ $addToSet: { users: args.userid }}, 
+				// 		{ new: true }
+				// 	)
+				// 	.populate('owner', { email: 1, firstname: 1, lastname: 1 })
+				// 	.populate('users')
+				// 	.populate('people')
+				// 	.populate('expenses')
+
+				// return savedGroup
 
 			} catch (error) {
 				throw new UserInputError(error.message, {

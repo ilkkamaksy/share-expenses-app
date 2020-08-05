@@ -53,14 +53,15 @@ const GroupBalanceDetails = ({ group }) => {
 
 						// if creditor is in debt to current debtor, update creditor balance 
 						if (creditorReference.balance < 0 && balance < 0) {
-							
-							balance = balance - creditorReference.balance
-							
+							console.log('joo', creditorReference.debtor.name, creditorReference.creditor.name, creditorReference.balance, balance)
+
 							balanceData = balanceData.map(dataItem => 
 								dataItem.creditor.id === creditorReference.creditor.id && dataItem.debtor.id === creditorReference.debtor.id 
-									? updateBalanceDataItem(dataItem, dataItem.balance - expenseItem.balance) 
+									? updateBalanceDataItem(dataItem, dataItem.balance - balance) 
 									: dataItem
 							)
+
+							balance = balance - creditorReference.balance
 						}
 
 						balanceData = balanceData.map(dataItem => 
@@ -133,6 +134,8 @@ const GroupBalanceDetails = ({ group }) => {
 		return <></>
 	}
 
+	console.log('final----', debtorBalanceData)
+
 	return (
 		<View style={styles.container}>
 
@@ -143,7 +146,7 @@ const GroupBalanceDetails = ({ group }) => {
 				keyExtractor={item => item.id}
 				renderItem={itemData => <BalanceListItem 
 					person={itemData.item}
-					debtors={debtorBalanceData.filter(item => item.creditor.id === itemData.item.id)}
+					debtors={debtorBalanceData.filter(item => item.debtor.id === itemData.item.id)}
 					totals={totals.find(item => item.id === itemData.item.id)}
 				/>} 
 			/>

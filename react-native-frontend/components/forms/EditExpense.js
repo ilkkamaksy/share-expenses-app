@@ -31,7 +31,9 @@ const EditExpense = ({
 		})
 	}
 
-	console.log('groupToEdit EditExpense', groupToEdit)
+	console.log('EditExpense.js ---- groupToEdit ', groupToEdit)
+	console.log('EditExpense.js ---- expenseToEdit ', expenseToEdit)
+	
 	const convertCurrencyValueToText = (value) => {
 		return value 
 			? Number(value / 100).toFixed(2).toString().replace('.', ',') 

@@ -68,7 +68,10 @@ const resolvers = {
 				const group = await Group
 					.findByIdAndUpdate(
 						args.groupid, 
-						{ $addToSet: { people: newPerson._id }}, 
+						{ 
+							$addToSet: { people: newPerson._id },
+							lastUpdatedAt: Date.now()
+						}, 
 						{ new: true }
 					)
 					.populate('users')
@@ -138,7 +141,7 @@ const resolvers = {
 					throw new AuthenticationError('user is not a member of the group')
 				}
 
-				return await personInDb.deleteOne()
+				return await personInDb.remove()
 				
 			} catch (error) {
 				throw new UserInputError(error.message, {

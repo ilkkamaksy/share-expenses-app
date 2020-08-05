@@ -8,10 +8,8 @@ import GroupsOverViewScreen from '../screens/group/GroupsOverviewScreen'
 import GroupDetailScreen from '../screens/group/GroupDetailScreen'
 import GroupBalanceDetailsScreen from '../screens/group/GroupBalanceDetailsScreen'
 
-import EditGroupInfoScreen from '../screens/group/EditGroupInfoScreen'
-import EditGroupPeopleScreen from '../screens/group/EditGroupPeopleScreen'
+import EditGroupScreen from '../screens/group/EditGroupScreen'
 import EditExpenseScreen from '../screens/group/EditExpenseScreen'
-
 
 const GroupStack = createStackNavigator()
 
@@ -53,20 +51,11 @@ function GroupNavigator() {
 			/>
 
 			<GroupStack.Screen
-				name="EditGroupInfo"
-				component={EditGroupInfoScreen}
+				name="EditGroup"
+				component={EditGroupScreen}
 				options={{
 					title: 'Add a new group',
-				}}
-				
-			/>
-
-			<GroupStack.Screen
-				name="EditGroupPeople"
-				component={EditGroupPeopleScreen}
-				options={{
-					title: 'Manage group members',
-				}}
+				}}				
 			/>
 
 			<GroupStack.Screen

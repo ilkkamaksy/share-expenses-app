@@ -1,35 +1,56 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { ScrollView, View, Text, StyleSheet } from 'react-native'
+import { ScrollView, View, Text, StyleSheet, TouchableHighlight } from 'react-native'
 import { Button } from 'react-native-paper'
 
-import { setGroupTitle, setGroupLocation, saveGroup, updateGroup } from '../../store/reducers/groups'
+import { 
+	setGroupTitle, 
+	setGroupLocation, 
+	saveGroup, 
+	updateGroup,
+	removeGroup 
+} from '../../store/actions/groups'
 
 import Heading from '../UI/Heading'
 import TextInput from '../UI/TextInput'
+import Modal from '../UI/Modal'
 import Colors from '../../constants/Colors'
 
 const EditGroupInfo = ({ 
+	user,
 	error, 
 	groupToEdit, 
 	setGroupTitle, 
 	setGroupLocation, 
 	saveGroup, 
 	updateGroup,
+	removeGroup,
 	navigation 
 }) => {
 
 	const [existingGroupToEdit, setExistingGroupToEdit] = useState({})
+	const [modalVisible, setModalVisible] = useState(false)
 
+	console.log('groupToEdit', groupToEdit)
+	console.log('user', user)
 	useEffect(() => {
 		setExistingGroupToEdit(groupToEdit)
 	}, [])
 
+	const onConfirmRemoveGroup = async () => {
+		navigation.navigate('GroupList')
+		await removeGroup(groupToEdit.id)
+	}
+
+	const toggleRemoveConfirmationModal = () => {
+		setModalVisible(!modalVisible)
+	}
+
 	const onSaveGroup = async () => {
 		if (!groupToEdit.id) {
 			await saveGroup(groupToEdit)
-			navigation.navigate('EditGroupPeople')
+			navigation.navigate('AddGroupPeople')
 		} else {
 			await updateGroup(groupToEdit)
 		}
@@ -58,6 +79,32 @@ const EditGroupInfo = ({
 				<Text>{error}</Text>
 			</View>
 			
+			{groupToEdit.id && groupToEdit.owner.id === user.id &&
+				<Modal visible={modalVisible}>
+					<Heading style={styles.modalText}>{`Permanently remove group "${groupToEdit.title}"?`}</Heading>
+
+					<TouchableHighlight
+						style={{ ...styles.openButton, backgroundColor: '#2196F3' }}
+						onPress={() => {
+							onConfirmRemoveGroup()
+						}}
+					>
+						<Text style={styles.textStyle}>Confirm</Text>
+					</TouchableHighlight>
+
+					<TouchableHighlight
+						style={{ ...styles.openButton, backgroundColor: '#2196F3' }}
+						onPress={() => {
+							setModalVisible(!modalVisible)
+						}}
+					>
+						<Text style={styles.textStyle}>Cancel</Text>
+					</TouchableHighlight>
+				
+				</Modal>
+			}
+			
+
 			<Heading style={[{ textAlign: 'left', fontSize: 12, color: Colors.secondary, textTransform: 'uppercase', paddingBottom: 5 }]}>
 				Edit Group details
 			</Heading>
@@ -101,6 +148,20 @@ const EditGroupInfo = ({
 						{!groupToEdit.id ? 'Save & start adding people' : 'Save changes'}
 					</Button>
 				</View>
+
+				{groupToEdit.id && groupToEdit.owner.id === user.id &&
+					<View style={styles.formControl}>
+						<Button 
+							mode="outlined" 
+							onPress={toggleRemoveConfirmationModal}
+							color={Colors.primary}
+							labelStyle={{ color: Colors.primary }}
+							style={styles.removeButton}
+						>
+							Remove group
+						</Button>
+					</View>
+				}
                 
 			</View>
 		</ScrollView>
@@ -120,7 +181,31 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		marginTop: 10
-	}
+	},
+	removeButton: {
+		marginTop: 80
+	},
+	centeredView: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginTop: 22
+	},
+	modalView: {
+		margin: 20,
+		backgroundColor: 'white',
+		borderRadius: 20,
+		padding: 35,
+		alignItems: 'center',
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5
+	},
 })
 
 EditGroupInfo.propTypes = {
@@ -133,12 +218,13 @@ EditGroupInfo.propTypes = {
 	setGroupLocation: PropTypes.func,
 	saveGroup: PropTypes.func,
 	updateGroup: PropTypes.func,
-	setGroupToEdit: PropTypes.func
+	setGroupToEdit: PropTypes.func,
+	removeGroup: PropTypes.func
 }
 
 const mapStateToProps = (state) => {
 	return {
-		user: state.user.user,
+		user: state.user.userdata.user,
 		fetching: state.groups.fetching,
 		error: state.groups.error,
 		groupToEdit: state.groups.groupToEdit
@@ -151,7 +237,8 @@ const connectedEditGroupInfo = connect(
 		setGroupTitle,
 		setGroupLocation,
 		saveGroup,
-		updateGroup
+		updateGroup,
+		removeGroup
 	}
 )(EditGroupInfo)
 

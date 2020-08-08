@@ -6,7 +6,7 @@ import GroupListItem from './GroupListItem'
 import { ActivityIndicator } from 'react-native-paper'
 import FilterList from '../icons/FilterList'
 
-import { getGroups, setGroupToEdit } from '../../store/reducers/groups'
+import { getGroups, setGroupToEdit } from '../../store/actions/groups'
 
 import Colors from '../../constants/Colors'
 	
@@ -18,7 +18,6 @@ const GroupList = ({
 }) => {
 	
 	useEffect(() => {
-		console.log('fired')
 		getGroups()
 	}, [])
 

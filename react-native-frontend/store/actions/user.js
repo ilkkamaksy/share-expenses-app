@@ -2,9 +2,10 @@ import { AsyncStorage } from 'react-native'
 	
 import userService from '../../services/userService'
 import util from '../../services/util'
+import '../reducers/user'
 // import { emailValidator, passwordValidator } from '../../utils/validate'
 
-const registerUser = (credentials = null) =>  {
+export const registerUser = (credentials = null) =>  {
 	return async dispatch => {
 
 		dispatch({
@@ -31,7 +32,7 @@ const registerUser = (credentials = null) =>  {
 	}
 }
 
-const loginUser = (credentials = null) =>  {
+export const loginUser = (credentials = null) =>  {
 	
 	return async dispatch => {
 
@@ -59,7 +60,7 @@ const loginUser = (credentials = null) =>  {
 	}
 }
 
-const setEmail = (email) => {
+export const setEmail = (email) => {
 	return dispatch => {
 
 		
@@ -70,7 +71,7 @@ const setEmail = (email) => {
 	}
 }
 
-const setPassword = (password) => {
+export const setPassword = (password) => {
 	return dispatch => {
 		dispatch({
 			type: 'SET_PASSWORD',
@@ -79,7 +80,7 @@ const setPassword = (password) => {
 	}
 }
 
-const authenticationCheck = () => {
+export const authenticationCheck = () => {
 	return async dispatch => {
         
 		dispatch({
@@ -103,7 +104,7 @@ const authenticationCheck = () => {
 	}
 }
 
-const logoutUser = () => {
+export const logoutUser = () => {
 	return async dispatch => {
 		util.setToken('')
 		dispatch({
@@ -116,13 +117,4 @@ const logoutUser = () => {
 			type: 'LOGOUT_DONE'
 		})
 	}
-}
-
-export default {
-	registerUser,
-	loginUser,
-	logoutUser,
-	authenticationCheck,
-	setPassword,
-	setEmail
 }

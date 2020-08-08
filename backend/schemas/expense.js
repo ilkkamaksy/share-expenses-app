@@ -39,6 +39,7 @@ const resolvers = {
 				}
 
 				let expense = new Expense({
+					group: args.groupid,
 					description: args.description.trim(),
 					amount: args.amount,
 					dateTime: args.dateTime,
@@ -87,7 +88,8 @@ const resolvers = {
 					throw new AuthenticationError('user is not a member of the group')
 				}
 
-				return await Expense.findByIdAndRemove(args.id)
+			
+				return await Expense.findOneAndDelete({ _id: args.id })
 					
 			} catch (error) {
 				throw new UserInputError(error.message, {

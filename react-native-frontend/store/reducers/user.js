@@ -1,7 +1,3 @@
-import userActions from '../actions/user'
-
-export const { registerUser, loginUser, logoutUser, authenticationCheck, setEmail, setPassword } = userActions
-
 const initialState = {
 	email: '',
 	password: '',

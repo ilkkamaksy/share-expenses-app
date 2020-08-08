@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { ScrollView, View, Text, StyleSheet } from 'react-native'
 import { Button } from 'react-native-paper'
 
-import { doneEditing } from '../../store/reducers/groups'
+import { doneEditing } from '../../store/actions/groups'
 
 import Heading from '../UI/Heading'
 import Colors from '../../constants/Colors'
@@ -87,6 +87,17 @@ const EditGroupUsers = ({
 							</View>
 						</View>
 					)})}
+				</View>
+
+				<View style={styles.formControl}>
+					<Button 
+						mode="outlined" 
+						onPress={onDoneEditingGroup}
+						color={Colors.primary}
+						style={styles.doneButton}
+					>
+                        Leave this group
+					</Button>
 				</View>
 
 				<View style={styles.formControl}>

@@ -4,7 +4,7 @@ import { ScrollView, View, Text, StyleSheet, TouchableOpacity } from 'react-nati
 import { Button } from 'react-native-paper'
 import { connect } from 'react-redux'
 
-import { registerUser, setEmail, setPassword } from '../../store/reducers/user'
+import { registerUser, setEmail, setPassword } from '../../store/actions/user'
 
 import Colors from '../../constants/Colors'
 import TextInput from '../UI/TextInput'

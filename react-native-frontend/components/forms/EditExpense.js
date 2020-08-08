@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import { ScrollView, View, Text, StyleSheet } from 'react-native'
 import { Button, Checkbox } from 'react-native-paper'
-import { connect } from 'react-redux'
 import DateTimePicker from '@react-native-community/datetimepicker'
 
-import Colors from '../../constants/Colors'
+import { setExpenseDate, setExpenseToEdit, addExpense } from '../../store/actions/groups'
 
-import { setExpenseDate, setExpenseToEdit, addExpense } from '../../store/reducers/groups'
+import Colors from '../../constants/Colors'
 import TextInput from '../UI/TextInput'
 import DecimalInput from '../UI/DecimalInput'
 
@@ -33,7 +33,7 @@ const EditExpense = ({
 
 	console.log('EditExpense.js ---- groupToEdit ', groupToEdit)
 	console.log('EditExpense.js ---- expenseToEdit ', expenseToEdit)
-	
+
 	const convertCurrencyValueToText = (value) => {
 		return value 
 			? Number(value / 100).toFixed(2).toString().replace('.', ',') 

@@ -5,8 +5,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { useNavigation  } from '@react-navigation/native'
 
-import { toggleTopRightMenu } from '../../store/reducers/groups'
-import { logoutUser } from '../../store/reducers/user'
+import { toggleTopRightMenu } from '../../store/actions/groups'
+import { logoutUser } from '../../store/actions/user'
 
 const PopupMenuTopRight = ({ topRightMenuVisible, toggleTopRightMenu, logoutUser }) => {
 

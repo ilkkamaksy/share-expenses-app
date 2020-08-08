@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const Group = require('./group')
 
 const schema = new mongoose.Schema({
 	name: {
@@ -13,13 +12,15 @@ const schema = new mongoose.Schema({
 	},
 })
 
-schema.pre('remove', function(next) {
-	Group.update(
-		{ people : this._id}, 
-		{ $pull: { people: this._id } },
-		{ multi: true })  //if reference exists in multiple documents 
-		.exec()
-	next()
+schema.pre('findOneAndDelete', { document: true }, function(next) {
+	let id = this.getQuery()['_id']
+	mongoose.model('Group').update({ people: id }, { $pull: { people: id } }, function(err) {
+		if (err) {
+			next(err)
+		} else {
+			next()
+		}
+	})
 })
 
 module.exports = mongoose.model('Person', schema)

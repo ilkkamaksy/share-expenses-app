@@ -6,7 +6,7 @@ import { StyleSheet, TouchableOpacity } from 'react-native'
 import Ellipsis from '../icons/Ellipsis'
 import Colors from '../../constants/Colors'
 
-import { toggleTopRightMenu } from '../../store/reducers/groups'
+import { toggleTopRightMenu } from '../../store/actions/groups'
 
 const ToggleMenu = ({ toggleTopRightMenu, topRightMenuVisible }) => {
 

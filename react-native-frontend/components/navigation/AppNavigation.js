@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { NavigationContainer } from '@react-navigation/native'
 import { ActivityIndicator } from 'react-native-paper'
 
-import { authenticationCheck } from '../../store/reducers/user'
+import { authenticationCheck } from '../../store/actions/user'
 import WelcomeNavigator from '../../navigation/WelcomeNavigation'
 import GroupNavigator from '../../navigation/GroupNavigation'
 import Colors from '../../constants/Colors'

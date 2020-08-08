@@ -183,6 +183,21 @@ const ADD_PERSON_TO_GROUP = `
 	}
 `
 
+const UPDATE_PERSON = `
+	mutation editPerson(
+		$id: String!
+		$name: String!
+	) {
+		editPerson(
+			id: $groupid
+			name: $name
+		) {
+			id
+			name
+		}
+	}
+`
+
 const REMOVE_PERSON = `
 	mutation removePerson(
 		$id: String!
@@ -348,6 +363,26 @@ export const addPersonToGroup = async (args) => {
 
 	const data = {
 		query: ADD_PERSON_TO_GROUP,
+		variables: variables
+	}
+
+	const config = {
+		headers: {
+			'Authorization': util.token
+		}
+	}
+
+	return await axios.post(apiUrl, data, config)
+}
+
+export const updatePerson = async (args) => {
+	const variables = { 
+		name: args.name,
+		id: args.id
+	}
+
+	const data = {
+		query: UPDATE_PERSON,
 		variables: variables
 	}
 

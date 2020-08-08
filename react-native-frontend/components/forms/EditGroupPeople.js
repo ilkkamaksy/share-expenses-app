@@ -4,7 +4,12 @@ import { connect } from 'react-redux'
 import { ScrollView, View, Text, StyleSheet, Platform } from 'react-native'
 import { Button } from 'react-native-paper'
 
-import { setCurrentPerson, addPersonToGroup, removePerson, doneEditing } from '../../store/reducers/groups'
+import { 
+	setCurrentPerson, 
+	addPersonToGroup, 
+	removePerson, 
+	doneEditing } from '../../store/actions/groups'
+	
 import contactsService from '../../services/contactsService'
 
 import Heading from '../UI/Heading'

@@ -13,13 +13,13 @@ import Colors from '../../constants/Colors'
 import FloatingActionButton from '../../components/UI/FloatingActionButton'
 import PopupMenuTopRight from '../../components/menus/PopupMenuTopRight'
 
-import { setGroupToEdit } from '../../store/reducers/groups'
+import { setGroupToEdit } from '../../store/actions/groups'
 
 const GroupsOverViewScreen = ({ navigation, setGroupToEdit }) => {
 	
 	const createNewGroup = () => {
 		setGroupToEdit(null)
-		navigation.navigate('EditGroup')
+		navigation.navigate('CreateGroup')
 	}
 
 	return (

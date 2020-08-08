@@ -5,7 +5,7 @@ import { View, Text, StyleSheet, FlatList } from 'react-native'
 import { Button } from 'react-native-paper'
 import { useNavigation  } from '@react-navigation/native'
 
-import { removeExpense } from '../../store/reducers/groups'
+import { removeExpense } from '../../store/actions/groups'
 
 import Colors from '../../constants/Colors'
 
@@ -26,7 +26,7 @@ const Group = ({ group, removeExpense }) => {
 				}
 
 				expense.details.forEach(item => {
-					if (item.person === person.id) {
+					if (item && item.person === person.id) {
 						balance += item.paid - item.share
 					}
 				})

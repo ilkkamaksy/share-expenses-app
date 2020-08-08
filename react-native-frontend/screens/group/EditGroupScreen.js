@@ -5,7 +5,6 @@ import { ScrollView, StyleSheet, View, TouchableOpacity, Text } from 'react-nati
 
 import Hero from '../../components/UI/Hero'
 import Heading from '../../components/UI/Heading'
-import Paragraph from '../../components/UI/Paragraph'
 import ContentContainer from '../../components/UI/ContentContainer'
 import Colors from '../../constants/Colors'
 
@@ -14,13 +13,10 @@ import EditGroupPeople from '../../components/forms/EditGroupPeople'
 import EditGroupUsers from '../../components/forms/EditGroupUsers'
 
 const EditGroupScreen = ({ groupToEdit, navigation }) => {
-        
+	
 	const [tab, setTab] = useState('')
 
 	useEffect(() => {
-		if (groupToEdit.id) {
-			navigation.setOptions({title: 'Edit group'})
-		}
 		setTab('details')
 	}, [])
 	
@@ -37,11 +33,9 @@ const EditGroupScreen = ({ groupToEdit, navigation }) => {
 		<ScrollView>
 			<Hero>
 				<Heading style={[styles.header]}>
-					Edit group
+					{`Edit "${groupToEdit.title}"`}
 				</Heading>
-				<Paragraph style={[styles.intro]}>
-					{`Your are currently editing "${groupToEdit.title}"`}
-				</Paragraph>
+
 
 				<View style={styles.actions}>
 					<View style={styles.row}>
@@ -65,6 +59,8 @@ const EditGroupScreen = ({ groupToEdit, navigation }) => {
 						</TouchableOpacity>
 					</View>
 				</View>
+
+				
 			</Hero>
 
 			<ContentContainer>

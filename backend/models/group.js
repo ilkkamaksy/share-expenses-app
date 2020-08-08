@@ -29,5 +29,27 @@ const schema = new mongoose.Schema({
 	createdAt: Date,
 	lastUpdatedAt: Date
 })
-    
+
+schema.pre('findOneAndDelete', { document: true }, function(next) {
+	let id = this.getQuery()['_id']
+	mongoose.model('Person').deleteMany({ group: id }, function(err) {
+		if (err) {
+			next(err)
+		} else {
+			next()
+		}
+	})
+})
+
+schema.pre('findOneAndDelete', { document: true }, function(next) {
+	let id = this.getQuery()['_id']
+	mongoose.model('Expense').deleteMany({ group: id }, function(err) {
+		if (err) {
+			next(err)
+		} else {
+			next()
+		}
+	})
+})
+
 module.exports = mongoose.model('Group', schema)

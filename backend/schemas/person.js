@@ -108,14 +108,15 @@ const resolvers = {
 					throw new AuthenticationError('user is not a member of the group')
 				}
 
-				let personToUpdate = {
-					...args
+				const filter = {
+					_id: args.id,
 				}
-				delete personToUpdate.id
-
-				personInDb.name = args.name
 				
-				return await personInDb.save()
+				return await Person.findOneAndUpdate(
+					filter,
+					{ name: args.name },
+					{ new: true }
+				)
 				
 			} catch (error) {
 				throw new UserInputError(error.message, {
@@ -141,7 +142,7 @@ const resolvers = {
 					throw new AuthenticationError('user is not a member of the group')
 				}
 
-				return await personInDb.remove()
+				return await Person.findOneAndDelete({ _id: args.id })
 				
 			} catch (error) {
 				throw new UserInputError(error.message, {

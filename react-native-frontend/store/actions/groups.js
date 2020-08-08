@@ -1,6 +1,7 @@
 import * as appService from '../../services/appService'
+import '../reducers/groups'
 
-const toggleTopRightMenu = visibility => {
+export const toggleTopRightMenu = visibility => {
 	return dispatch => {
 		dispatch({
 			type: 'TOGGLE_TOP_RIGHT_MENU',
@@ -9,7 +10,7 @@ const toggleTopRightMenu = visibility => {
 	}
 }
 
-const setGroupToEdit = group => {
+export const setGroupToEdit = group => {
 	return dispatch => {
 		dispatch({
 			type: 'SET_GROUP_TO_EDIT',
@@ -18,7 +19,7 @@ const setGroupToEdit = group => {
 	}
 }
 
-const setGroupTitle = (title) => {
+export const setGroupTitle = (title) => {
 	return async dispatch => {
 		dispatch({
 			type: 'SET_TITLE',
@@ -27,7 +28,7 @@ const setGroupTitle = (title) => {
 	}
 }
 
-const setGroupLocation = (location) => {
+export const setGroupLocation = (location) => {
 	return async dispatch => {
 		dispatch({
 			type: 'SET_LOCATION',
@@ -36,7 +37,7 @@ const setGroupLocation = (location) => {
 	}
 }
 
-const setCurrentPerson = (person) => {
+export const setCurrentPerson = (person) => {
 	return async dispatch => {
 		dispatch({
 			type: 'SET_CURRENT_PERSON',
@@ -45,7 +46,7 @@ const setCurrentPerson = (person) => {
 	}
 }
 
-const updateGroup = (group) =>  {
+export const updateGroup = (group) =>  {
 	return async dispatch => {
 
 		dispatch({
@@ -68,7 +69,7 @@ const updateGroup = (group) =>  {
 	}
 }
 
-const saveGroup = (group) =>  {
+export const saveGroup = (group) =>  {
 	return async dispatch => {
 
 		dispatch({
@@ -91,7 +92,7 @@ const saveGroup = (group) =>  {
 	}
 }
 
-const getGroups = () =>  {
+export const getGroups = () =>  {
 	return async dispatch => {
 
 		dispatch({
@@ -114,7 +115,7 @@ const getGroups = () =>  {
 	}
 }
 
-const removeGroup = id =>  {
+export const removeGroup = id =>  {
 	return async dispatch => {
 
 		dispatch({
@@ -137,7 +138,7 @@ const removeGroup = id =>  {
 	}
 }
 
-const addPersonToGroup = ({ name, groupid }) =>  {
+export const addPersonToGroup = ({ name, groupid }) =>  {
 	return async dispatch => {
 
 		dispatch({
@@ -160,7 +161,7 @@ const addPersonToGroup = ({ name, groupid }) =>  {
 	}
 }
 
-const removePerson = id => {
+export const removePerson = id => {
 	return async dispatch => {
 
 		dispatch({
@@ -183,7 +184,7 @@ const removePerson = id => {
 	}
 }
 
-const doneEditing = group => {
+export const doneEditing = group => {
 	return dispatch => {
 		dispatch({
 			type: 'DONE_EDITING_GROUP',
@@ -192,7 +193,7 @@ const doneEditing = group => {
 	}
 }
 
-const setExpenseToEdit = expense => {
+export const setExpenseToEdit = expense => {
 	return dispatch => {
 		dispatch({
 			type: 'SET_EXPENSE_TO_EDIT',
@@ -201,7 +202,7 @@ const setExpenseToEdit = expense => {
 	}
 }
 
-const setExpenseDate = (date) => {
+export const setExpenseDate = (date) => {
 	return async dispatch => {
 		dispatch({
 			type: 'SET_EXPENSE_DATE',
@@ -210,7 +211,7 @@ const setExpenseDate = (date) => {
 	}
 }
 
-const addExpense = expenseData =>  {
+export const addExpense = expenseData =>  {
 	return async dispatch => {
 
 		dispatch({
@@ -236,7 +237,7 @@ const addExpense = expenseData =>  {
 	}
 }
 
-const removeExpense = id =>  {
+export const removeExpense = id =>  {
 	return async dispatch => {
 		dispatch({
 			type: 'INIT_REMOVE_EXPENSE',
@@ -245,7 +246,7 @@ const removeExpense = id =>  {
 		const response = await appService.removeExpense(id)
 		
 		console.log('response', response)
-		
+
 		if (response.data.data.removeExpense === null || response === null) {
 			return dispatch({
 				type: 'REMOVE_EXPENSE_FAIL',
@@ -258,23 +259,4 @@ const removeExpense = id =>  {
 			removedExpenseId: id
 		})
 	}
-}
-
-export default {
-	toggleTopRightMenu,
-	setGroupToEdit,
-	setGroupTitle,
-	setExpenseDate,
-	setGroupLocation,
-	setCurrentPerson,
-	saveGroup,
-	updateGroup,
-	getGroups,
-	removeGroup,
-	addPersonToGroup,
-	removePerson,
-	doneEditing,
-	setExpenseToEdit,
-	addExpense,
-	removeExpense
 }

@@ -1,23 +1,3 @@
-import actions from '../actions/groups'
-
-export const { 
-	toggleTopRightMenu,
-	setGroupToEdit,
-	setGroupTitle, 
-	setGroupLocation, 
-	setCurrentPerson, 
-	saveGroup, 
-	updateGroup,
-	getGroups, 
-	removeGroup,
-	addPersonToGroup,
-	removePerson,
-	addExpense,
-	removeExpense,
-	setExpenseToEdit,
-	setExpenseDate,
-	doneEditing } = actions
-
 const initialState = {
 	topRightMenuVisible: false,
 	groupToEdit: {

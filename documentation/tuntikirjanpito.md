@@ -23,4 +23,5 @@
 | 31.7. |   7  | Algoritmin kehittely maksujen ja velkojen laskemiseen yhteenvetoa varten jatkuu |
 | 3.8. |   8  | Algoritmi maksujen ja velkojen laskemiseen yhteenvetoa varten läpäisee testit |
 | 5.8. |   8  | Maksujen ja velkojen algoritmin korjauksia, frontendin refaktorointia, ryhmämuokkauksen screenin kehittämistä |
-| yht   | 146   | | 
+| 8.8. |   6  | Ryhmien muokkauksen ja luomisen refaktorointi, mongoosen pre-middlewaren opiskelu, ryhmiin liittyvien dokumenttien poisto ryhmää poistettaessa |
+| yht   | 152   | | 

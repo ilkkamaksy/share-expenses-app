@@ -1,10 +1,13 @@
 const { createTestClient } = require('apollo-server-testing')
 const gql = require('graphql-tag')
 const { constructTestServer } = require('../utils/testconfig')
-const Group = require('../models/group')
-const User = require('../models/user')
 const { mongoose } = require('../index')
 const bcrypt = require('bcryptjs')
+
+const Group = require('../models/group')
+const User = require('../models/user')
+const Person = require('../models/person')
+const Expense = require('../models/expense')
 
 const CREATE_GROUP = gql`
 	mutation createGroup(
@@ -150,7 +153,9 @@ describe('Group mutations', () => {
 	beforeEach(async () => {
 		await Group.deleteMany({})
 		await User.deleteMany({})
-
+		await Person.deleteMany({})
+		await Expense.deleteMany({})
+		
 		const hashedPassword = await bcrypt.hash('testpassword', 10)
 
 		const userAToSave = new User({
@@ -243,7 +248,7 @@ describe('Group mutations', () => {
 		})
 		
 		expect(res.data.updateGroup).toEqual(null)
-		expect(res.errors[0].message).toEqual('user is not a member of the group')
+		expect(res.errors[0].message).toEqual('not authorized')
 	})
 
 	it('A user can edit a group with group membership', async () => {
@@ -310,8 +315,9 @@ describe('Group mutations', () => {
 			variables,
 		})
 		
+		
 		expect(res.data.removeGroup).toEqual(null)
-		expect(res.errors[0].message).toEqual('user is not a member of the group')
+		expect(res.errors[0].message).toEqual('not authorized')
 	})
 
 	it('A user can remove a group with a group membership', async () => {
@@ -335,6 +341,117 @@ describe('Group mutations', () => {
 		})
 		
 		expect(res.data.removeGroup.id).toEqual(defaultGroup.id)
+		
+	})
+
+	it('When a group is deleted, also people in that group are deleted', async () => {
+		
+		const person = new Person({
+			name: 'Test Person 1',
+			group: defaultGroup.id
+		})
+        
+		let savedPerson = await person.save()
+
+		await Group.updateOne(
+			{ _id: defaultGroup.id },
+			{ 
+				$addToSet: { people: savedPerson._id },
+			},
+		)
+
+		const { server } = constructTestServer({
+			currentUser: { 
+				_id: userA.id, 
+				email: userA.email
+			} 
+		})
+
+		const { mutate } = createTestClient(server)
+
+		const variables = { 
+			id: defaultGroup.id
+		}
+
+		const res = await mutate({
+			mutation: REMOVE_GROUP,
+			variables,
+		})
+		
+		expect(res.data.removeGroup.id).toEqual(defaultGroup.id)
+
+		const personInDb = await Person.findById(savedPerson._id)
+		expect(personInDb).toBeNull()
+		
+	})
+
+	it('When a group is deleted, also expenses in that group are deleted', async () => {
+		
+		let expense = new Expense({
+			group: defaultGroup.id,
+			description: 'description',
+			amount: 2000,
+			dateTime: new Date(Date.now()),
+		})
+        
+		let savedExpense = await expense.save()
+
+		await Group.updateOne(
+			{ _id: defaultGroup.id },
+			{ 
+				$addToSet: { expenses: savedExpense._id },
+			},
+		)
+
+		const { server } = constructTestServer({
+			currentUser: { 
+				_id: userA.id, 
+				email: userA.email
+			} 
+		})
+
+		const { mutate } = createTestClient(server)
+
+		const variables = { 
+			id: defaultGroup.id
+		}
+
+		const res = await mutate({
+			mutation: REMOVE_GROUP,
+			variables,
+		})
+		
+		expect(res.data.removeGroup.id).toEqual(defaultGroup.id)
+
+		const expenseInDb = await Expense.findById(savedExpense._id)
+		expect(expenseInDb).toBeNull()
+		
+	})
+
+	it('A group user is not deleted from db when group is deleted', async () => {
+		
+		const { server } = constructTestServer({
+			currentUser: { 
+				_id: userA.id, 
+				email: userA.email
+			} 
+		})
+
+		const { mutate } = createTestClient(server)
+
+		const variables = { 
+			id: defaultGroup.id
+		}
+
+		const res = await mutate({
+			mutation: REMOVE_GROUP,
+			variables,
+		})
+		
+		expect(res.data.removeGroup.id).toEqual(defaultGroup.id)
+
+		const user = await User.findById(userA.id)
+		expect(user.id).toEqual(userA.id)
 		
 	})
 
@@ -380,7 +497,7 @@ describe('Group mutations', () => {
 		})
 		
 		expect(res.data.addGroupUser).toEqual(null)
-		expect(res.errors[0].message).toEqual('user is not a member of the group')
+		expect(res.errors[0].message).toEqual('not authorized')
 	})
 
 	it('A user can add a user to a group with group membership', async () => {
@@ -449,8 +566,9 @@ describe('Group mutations', () => {
 			variables,
 		})
 		
+		
 		expect(res.data.removeGroupUser).toEqual(null)
-		expect(res.errors[0].message).toEqual('user is not a member of the group')
+		expect(res.errors[0].message).toEqual('not authorized')
 	})
 
 	it('A user can remove a user of a group with group membership', async () => {
@@ -478,6 +596,7 @@ describe('Group mutations', () => {
 		
 	})
 
+	
 	it('A logged in user can add a group with only a title', async () => {
 		
 		const { server } = constructTestServer({

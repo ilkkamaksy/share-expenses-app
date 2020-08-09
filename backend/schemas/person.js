@@ -1,4 +1,4 @@
-const { UserInputError, AuthenticationError } = require('apollo-server')
+const { UserInputError, AuthenticationError, ForbiddenError } = require('apollo-server')
 const Person = require('../models/person')
 const Group = require('../models/group')
 
@@ -11,34 +11,6 @@ const typeDef = `
 `
 
 const resolvers = {
-	Query: {
-		// args: 
-		// groupid: String! 
-		getPeopleByGroupId: async (root, args, context) => {
-
-			const currentUser = context.currentUser
-			
-			if (!currentUser) {
-				throw new AuthenticationError('not authenticated')
-			}
-
-			return await Person
-				.find({ people: { $in: [ args.groupid ] } })
-				.populate( 'group' )
-		}, 
-		// args: 
-		// id: String! 
-		getPersonById: async (root, args, context) => {
-
-			const currentUser = context.currentUser
-			
-			if (!currentUser) {
-				throw new AuthenticationError('not authenticated')
-			}
-
-			return await Person.findById(args.id).populate('group')
-		}, 
-	},
 	Mutation: {
 		// args:
 		// groupid: String!
@@ -50,14 +22,14 @@ const resolvers = {
 			if (!currentUser) {
 				throw new AuthenticationError('not authenticated')
 			}
-			
+
+			const groupInDB = await Group.findById({ _id: args.groupid })
+
+			if (!groupInDB.users.includes(currentUser._id)) {
+				throw new ForbiddenError('not authorized')
+			}
+
 			try {
-
-				let groupInDB = await Group.findById({ _id: args.groupid })
-
-				if (!groupInDB.users.includes(currentUser._id)) {
-					throw new AuthenticationError('user is not a member of the group')
-				}
 
 				let person = new Person({
 					name: args.name.trim(),
@@ -100,20 +72,16 @@ const resolvers = {
 				throw new AuthenticationError('not authenticated')
 			}
 
-			try {
-
-				let personInDb = await Person.findById(args.id).populate('group')
+			const personInDb = await Person.findById(args.id).populate('group')
 				
-				if (!personInDb.group.users.includes(currentUser._id)) {
-					throw new AuthenticationError('user is not a member of the group')
-				}
+			if (!personInDb.group.users.includes(currentUser._id)) {
+				throw new ForbiddenError('not authorized')
+			}
 
-				const filter = {
-					_id: args.id,
-				}
+			try {
 				
 				return await Person.findOneAndUpdate(
-					filter,
+					{_id: args.id },
 					{ name: args.name },
 					{ new: true }
 				)
@@ -134,13 +102,13 @@ const resolvers = {
 				throw new AuthenticationError('not authenticated')
 			}
 
-			try {
-
-				let personInDb = await Person.findById(args.id).populate('group')
+			const personInDb = await Person.findById(args.id).populate('group')
 				
-				if (!personInDb.group.users.includes(currentUser._id)) {
-					throw new AuthenticationError('user is not a member of the group')
-				}
+			if (!personInDb.group.users.includes(currentUser._id)) {
+				throw new ForbiddenError('not authorized')
+			}
+
+			try {
 
 				return await Person.findOneAndDelete({ _id: args.id })
 				

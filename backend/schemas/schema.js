@@ -11,8 +11,6 @@ const Query = `
             getGroups: [Group]
             getUserById(id: String): User!
             getUserByEmail(email: String): User!
-            getPeopleByGroupId(groupid: String): [Person!]
-            getPersonById(id: String): Person
             me: User
         }
     `

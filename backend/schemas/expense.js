@@ -1,4 +1,4 @@
-const { UserInputError, AuthenticationError } = require('apollo-server')
+const { UserInputError, AuthenticationError, ForbiddenError } = require('apollo-server')
 const Group = require('../models/group')
 const Expense = require('../models/expense')
 
@@ -30,13 +30,13 @@ const resolvers = {
 				throw new AuthenticationError('not authenticated')
 			}
 			
+			const groupInDB = await Group.findById(args.groupid)
+
+			if (!groupInDB.users.includes(currentUser._id)) {
+				throw new ForbiddenError('not authorized')
+			}
+
 			try {
-
-				let groupInDB = await Group.findById({ _id: args.groupid })
-
-				if (!groupInDB.users.includes(currentUser._id)) {
-					throw new AuthenticationError('user is not a member of the group')
-				}
 
 				let expense = new Expense({
 					group: args.groupid,
@@ -80,15 +80,14 @@ const resolvers = {
 				throw new AuthenticationError('not authenticated')
 			}
 
+			const groupInDB = await Group.findOne({ expenses: args.id })
+
+			if (!groupInDB.users.includes(currentUser._id)) {
+				throw new ForbiddenError('not authorized')
+			}
+
 			try {
 
-				let groupInDB = await Group.findOne({ expenses: args.id })
-
-				if (!groupInDB.users.includes(currentUser._id)) {
-					throw new AuthenticationError('user is not a member of the group')
-				}
-
-			
 				return await Expense.findOneAndDelete({ _id: args.id })
 					
 			} catch (error) {

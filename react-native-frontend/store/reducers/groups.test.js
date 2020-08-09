@@ -7,25 +7,26 @@ describe('test group reducer', () => {
     
 	beforeEach(() => {
 		initialState = {
+			topRightMenuVisible: false,
 			groupToEdit: {
-				topRightMenuVisible: false,
 				title: '',
 				location: '',
 				people: [],
 				users: [],
 				id: null,
-				createdAt: '',
-				lastUpdatedAt: '',
+				lastUpdatedAt: null,
+				createdAt: null,
 				expenses: []
 			},
 			currentPerson: '',
 			expenseToEdit: {
 				id: null,
 				groupid: null,
+				date: null,
+				lastUpdatedAt: null,
+				createdAt: null,
 				description: '',
 				amount: Number(0).toFixed(2),
-				createdAt: '',
-				lastUpdatedAt: '',
 				people: [],
 				details: []
 			},
@@ -35,6 +36,7 @@ describe('test group reducer', () => {
 			saveGroupFail: false,
 			getGroupsFail: false
 		}
+		
 	})
 
 	it('should return the initial state', () => {
@@ -51,7 +53,11 @@ describe('test group reducer', () => {
 			location: 'l1',
 			people: ['p1'],
 			users: ['u1'],
-			id: 'g1'
+			expenses: [],
+			id: 'g1',
+			lastUpdatedAt: null,
+			createdAt: null,
+			
 		}
 
 		expect(
@@ -61,7 +67,10 @@ describe('test group reducer', () => {
 			})
 		).toEqual(
 			{
-				groupToEdit: group
+				groupToEdit: group,
+				expenseToEdit: {
+					groupid: group.id 
+				}
 			}
 		)		
 	})

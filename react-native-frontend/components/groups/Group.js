@@ -59,7 +59,7 @@ const Group = ({ group, removeExpense }) => {
 				<FlatList 
 					data={calculateBalances()} 
 					style={styles.list}
-					keyExtractor={item=> item.person.id}
+					keyExtractor={item=> `${item.person.id}-personListItem`}
 					renderItem={itemData => <PersonListItem 
 						item={itemData.item} 
 					/>} 

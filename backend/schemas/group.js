@@ -1,4 +1,4 @@
-const { UserInputError, AuthenticationError } = require('apollo-server')
+const { UserInputError, AuthenticationError, ForbiddenError } = require('apollo-server')
 const Group = require('../models/group')
 
 const typeDef = `
@@ -98,13 +98,13 @@ const resolvers = {
 				throw new AuthenticationError('not authenticated')
 			}
 
+			const groupInDB = await Group.findOne({ _id: args.id, users: currentUser._id })
+
+			if (!groupInDB) {
+				throw new ForbiddenError('not authorized')
+			}
+
 			try {
-
-				let groupInDB = await Group.findById({ _id: args.id })
-
-				if (!groupInDB.users.includes(currentUser._id)) {
-					throw new AuthenticationError('user is not a member of the group')
-				}
 
 				let groupToUpdate = {
 					...args,
@@ -145,6 +145,12 @@ const resolvers = {
 				throw new AuthenticationError('not authenticated')
 			}
 
+			const groupInDB = await Group.findOne({ _id: args.id, users: currentUser._id })
+
+			if (!groupInDB) {
+				throw new ForbiddenError('not authorized')
+			}
+
 			try {
 
 				const filter = {
@@ -176,6 +182,12 @@ const resolvers = {
 
 			if (!currentUser) {
 				throw new AuthenticationError('not authenticated')
+			}
+
+			const groupInDB = await Group.findOne({ _id: args.groupid, users: currentUser._id })
+
+			if (!groupInDB) {
+				throw new ForbiddenError('not authorized')
 			}
 
 			try {
@@ -215,13 +227,13 @@ const resolvers = {
 				throw new AuthenticationError('not authenticated')
 			}
 
+			const groupInDB = await Group.findOne({ _id: args.groupid, users: currentUser._id })
+
+			if (!groupInDB) {
+				throw new ForbiddenError('not authorized')
+			}
+
 			try {
-
-				let groupInDB = await Group.findById({ _id: args.groupid })
-
-				if (!groupInDB.users.includes(currentUser._id)) {
-					throw new AuthenticationError('user is not a member of the group')
-				}
 
 				const savedGroup = await Group
 					.findByIdAndUpdate(

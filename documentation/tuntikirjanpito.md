@@ -25,4 +25,5 @@
 | 5.8. |   8  | Maksujen ja velkojen algoritmin korjauksia, frontendin refaktorointia, ryhmämuokkauksen screenin kehittämistä |
 | 8.8. |   6  | Ryhmien muokkauksen ja luomisen refaktorointi, mongoosen pre-middlewaren opiskelu, ryhmiin liittyvien dokumenttien poisto ryhmää poistettaessa |
 | 9.8. |   4  | Testien korjaus |
-| yht   | 156   | | 
+| 10.8. |   6  | Ryhmän balance & totals redux -storeen, expenses-listanäkymän rakennusta, ryhmälistan sorttaus |
+| yht   | 162   | | 

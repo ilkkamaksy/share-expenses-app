@@ -30,7 +30,7 @@ const GroupDetailScreen = ({
 	useEffect(() => {
 		setGroupToEdit(group)
 		navigation.setOptions({title: route.params.group.title})
-	}, [])
+	}, [group])
 
 	const createNewExpense = () => {
 		setExpenseToEdit({
@@ -149,13 +149,7 @@ GroupDetailScreen.propTypes = {
 	expenseToEdit: PropTypes.object
 }
 
-const mapStateToProps = state => {
-	return {
-		expenseToEdit: state.groups.expenseToEdit
-	}
-}
-
-const ConnectedGroupDetailScreen = connect(mapStateToProps, {
+const ConnectedGroupDetailScreen = connect(null, {
 	setExpenseToEdit,
 	setExpenseDate,
 	setGroupToEdit

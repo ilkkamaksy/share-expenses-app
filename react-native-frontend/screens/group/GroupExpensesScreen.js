@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import React from 'react'
 import PropTypes from 'prop-types'
+import { ScrollView, StyleSheet, View } from 'react-native'
 
-import EditExpense from '../../components/forms/EditExpense'
-
+import ExpenseList from '../../components/groups/ExpenseList'
 import Hero from '../../components/UI/Hero'
 import Heading from '../../components/UI/Heading'
 import Paragraph from '../../components/UI/Paragraph'
@@ -13,14 +11,12 @@ import Colors from '../../constants/Colors'
 
 import PopupMenuTopRight from '../../components/menus/PopupMenuTopRight'
 
-const EditExpenseScreen = ({ navigation, groupToEdit }) => {
-		
-	useEffect(() => {
-		if (groupToEdit.id) {
-			navigation.setOptions({title: 'Edit expense'})
-		}
-	}, [])
-	
+const GroupExpensesScreen = ({ 
+	route
+}) => {
+
+	const group = route.params.group
+
 	return (
 		<View style={styles.container}>
 
@@ -28,24 +24,23 @@ const EditExpenseScreen = ({ navigation, groupToEdit }) => {
 				
 				<Hero>
 					<Heading style={[styles.header]}>
-						{`Add a new expense to group "${groupToEdit.title}"`}
+						{`All expenses in group "${group.title}"`}
 					</Heading>
 					<Paragraph style={[styles.intro]}>
-						{groupToEdit.location}
+						{group.location}
 					</Paragraph>
 
 				</Hero>
-
 				<ContentContainer>
-					<EditExpense navigation={navigation} />
+					<ExpenseList group={group} />
 				</ContentContainer>
+			
 			
 			</ScrollView>
 
 			<PopupMenuTopRight />
 			
 		</View>
-		
 	)
 }
 
@@ -92,17 +87,9 @@ const styles = StyleSheet.create({
 	}
 })
 
-EditExpenseScreen.propTypes = {
-	navigation: PropTypes.object,
-	groupToEdit: PropTypes.object
+GroupExpensesScreen.propTypes = {
+	route: PropTypes.object
 }
 
-const mapStateToProps = state => {
-	return {
-		groupToEdit: state.groups.groupToEdit
-	}
-}
 
-const ConnectedEditExpenseScreen = connect(mapStateToProps, {})(EditExpenseScreen)
-
-export default ConnectedEditExpenseScreen
+export default GroupExpensesScreen

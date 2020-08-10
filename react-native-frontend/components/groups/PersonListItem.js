@@ -10,7 +10,7 @@ const PersonListItem = ({ item }) => {
 		<View style={styles.item}>
 			
 			<View style={styles.row}>
-				<Text style={styles.title}>{item.person.name}</Text>
+				<Text style={styles.title}>{item.name}</Text>
 				<View>
 					<Text style={item.balance >= 0 ? styles.balancePlus : styles.balanceNegative}>
 						{`${Number(item.balance / 100).toFixed(2)} €`}

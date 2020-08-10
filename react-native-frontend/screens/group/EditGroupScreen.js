@@ -33,7 +33,7 @@ const EditGroupScreen = ({ groupToEdit, navigation }) => {
 		<ScrollView>
 			<Hero>
 				<Heading style={[styles.header]}>
-					{`Edit "${groupToEdit.title}"`}
+					{`Edit group "${groupToEdit.title}"`}
 				</Heading>
 
 

@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { ScrollView, View, Text, StyleSheet } from 'react-native'
+import { useNavigation  } from '@react-navigation/native'
 import { Button, Checkbox } from 'react-native-paper'
 import DateTimePicker from '@react-native-community/datetimepicker'
 
-import { setExpenseDate, setExpenseToEdit, addExpense } from '../../store/actions/groups'
+import { 
+	setExpenseDate, 
+	setExpenseToEdit, 
+	addExpense } from '../../store/actions/groups'
 
 import Colors from '../../constants/Colors'
 import TextInput from '../UI/TextInput'
@@ -20,9 +24,16 @@ const EditExpense = ({
 	groupToEdit
 }) => {
    
+	const navigation = useNavigation()
+
 	useEffect(() =>{
 		setExpenseDate(new Date(Date.now()))
 	}, [])
+
+	const onSaveExpense = () => {
+		addExpense(expenseToEdit)
+		navigation.navigate('GroupItem', { group: groupToEdit })
+	}
 
 	const onChangeDescription = (text) => {
 		setExpenseToEdit({
@@ -242,7 +253,7 @@ const EditExpense = ({
 						disabled={expenseToEdit.description.length > 0 ? false : true} 
 						mode="contained" 
 						color={Colors.primary}
-						onPress={() => addExpense(expenseToEdit)}
+						onPress={onSaveExpense}
 					>
                         Save
 					</Button>

@@ -26,7 +26,9 @@ const initialState = {
 	fetching: true,
 	error: '',
 	saveGroupFail: false,
-	getGroupsFail: false
+	getGroupsFail: false,
+	groupTotals: [],
+	groupBalanceData: []
 }
 
 const groupReducer = (state = initialState, action) => {
@@ -182,6 +184,7 @@ const groupReducer = (state = initialState, action) => {
 			error: '',
 			fetching: false,
 			userGroups: state.userGroups.map(group => group.id === action.group.id ? action.group : group),
+			groupToEdit: action.group
 		}
 	case 'CREATE_EXPENSE_FAIL' :
 		return {
@@ -210,6 +213,21 @@ const groupReducer = (state = initialState, action) => {
 		return {
 			...state,
 			error: action.response
+		}
+	case 'SET_GROUP_TOTALS' :
+		return {
+			...state,
+			groupTotals: action.groupTotals
+		}
+	case 'INIT_GROUP_BALANCEDATA' :
+		return {
+			...state,
+			groupBalanceData: []
+		}
+	case 'SET_GROUP_BALANCEDATA' :
+		return {
+			...state,
+			groupBalanceData: action.groupBalanceData
 		}
 	default: return state
 	}

@@ -1,50 +1,35 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { View, Text, StyleSheet, FlatList } from 'react-native'
 import { Button } from 'react-native-paper'
 import { useNavigation  } from '@react-navigation/native'
 
-import { removeExpense } from '../../store/actions/groups'
+import { removeExpense, setGroupTotals, setGroupBalanceData } from '../../store/actions/groups'
 
 import Colors from '../../constants/Colors'
 
 import PersonListItem from './PersonListItem'
 import ExpenseListItem from './ExpenseListItem'
 
-const Group = ({ group, removeExpense }) => {
-
-	const calculateBalances = () => {
-		
-		const balances = group.people.map(person => {
-
-			let balance = 0 
-		
-			group.expenses.forEach(expense => {
-				if (expense.details.length === 0) {
-					return
-				}
-
-				expense.details.forEach(item => {
-					if (item && item.person === person.id) {
-						balance += item.paid - item.share
-					}
-				})
-			})
-
-			return {
-				person,
-				balance
-			}
-		})
-
-		return balances
-	}
+const Group = ({ 
+	group, 
+	groupTotals, 
+	setGroupTotals, 
+	setGroupBalanceData, 
+	removeExpense 
+}) => {
 
 	const navigation = useNavigation()
-
+	
 	console.log('group', group)
 	
+	useEffect(() => {
+		setGroupTotals(group)
+		setGroupBalanceData(group)
+	}, [group])
+
+
 	return (
 		<View style={styles.container}>
 			
@@ -57,9 +42,9 @@ const Group = ({ group, removeExpense }) => {
 				</View>
 
 				<FlatList 
-					data={calculateBalances()} 
+					data={groupTotals} 
 					style={styles.list}
-					keyExtractor={item=> `${item.person.id}-personListItem`}
+					keyExtractor={item=> `${item.id}-personListItem`}
 					renderItem={itemData => <PersonListItem 
 						item={itemData.item} 
 					/>} 
@@ -81,7 +66,8 @@ const Group = ({ group, removeExpense }) => {
 				{group.expenses.length > 0 && <Text style={styles.subtitle}>Recent expenses</Text>}
 			
 				<FlatList 
-					data={group.expenses.reverse()} 
+					data={group.expenses.reverse().slice(0, 3)} 
+					maxToRenderPerBatch={3}
 					keyExtractor={item=> item.id}
 					renderItem={itemData => <ExpenseListItem 
 						people={group.people}
@@ -90,6 +76,14 @@ const Group = ({ group, removeExpense }) => {
 					/>} 
 				/>
 
+				<Button 
+					labelStyle={styles.summaryButton}
+					mode="text" 
+					color={Colors.primary}
+					onPress={() => navigation.navigate('GroupExpenses', { group: group })}
+				>
+					View all expenses
+				</Button>
 			</View>
 			
 		</View>
@@ -135,17 +129,23 @@ Group.propTypes = {
 	onViewDetail: PropTypes.func,
 	navigation: PropTypes.object,
 	groupToEdit: PropTypes.object,
-	removeExpense: PropTypes.func
+	groupTotals: PropTypes.array,
+	removeExpense: PropTypes.func,
+	setGroupTotals: PropTypes.func,
+	setGroupBalanceData: PropTypes.func
 }
 
 const mapStateToProps = state => {
 	return {
 		groupToEdit: state.groups.groupToEdit,
+		groupTotals: state.groups.groupTotals
 	}
 }
 
 const connectedGroup = connect(mapStateToProps, {
-	removeExpense
+	removeExpense,
+	setGroupTotals,
+	setGroupBalanceData
 })(Group)
 
 export default connectedGroup

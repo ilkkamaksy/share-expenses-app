@@ -6,6 +6,8 @@ import Colors from '../../constants/Colors'
 
 const BalanceListItem = ({ person, debtors, totals }) => {
 
+	console.log('person', person, debtors)
+	
 	return (
 		<View style={styles.item}>			
 			<View style={styles.itemHeader}>

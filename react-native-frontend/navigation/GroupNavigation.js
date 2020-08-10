@@ -12,6 +12,7 @@ import CreateGroupScreen from '../screens/group/CreateGroupScreen'
 import AddGroupPeopleScreen from '../screens/group/AddGroupPeopleScreen'
 import EditGroupScreen from '../screens/group/EditGroupScreen'
 import EditExpenseScreen from '../screens/group/EditExpenseScreen'
+import GroupExpensesScreen from '../screens/group/GroupExpensesScreen'
 
 const GroupStack = createStackNavigator()
 
@@ -47,6 +48,14 @@ function GroupNavigator() {
 			<GroupStack.Screen
 				name="GroupItem"
 				component={GroupDetailScreen}
+				options={{
+					navigation: ({route}) => ({ group: route.params.group }),
+				}}
+			/>
+
+			<GroupStack.Screen
+				name="GroupExpenses"
+				component={GroupExpensesScreen}
 				options={{
 					navigation: ({route}) => ({ group: route.params.group }),
 				}}

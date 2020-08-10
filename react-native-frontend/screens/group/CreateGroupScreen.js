@@ -16,7 +16,7 @@ const CreateGroupScreen = ({ navigation }) => {
 		<ScrollView>
 			<Hero>
 				<Heading style={[styles.header]}>
-					Edit group details
+					Add a new group
 				</Heading>
 				<Paragraph style={[styles.intro]}>
 					Add a name and an optional location for your group.

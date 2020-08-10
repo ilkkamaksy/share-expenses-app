@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { FlatList, StyleSheet, View, Text, TouchableOpacity, Modal, TouchableHighlight } from 'react-native'
+import { FlatList, StyleSheet, View, Text, TouchableOpacity, Modal } from 'react-native'
 import { ActivityIndicator, Checkbox } from 'react-native-paper'
 
 
@@ -59,7 +59,7 @@ const GroupList = ({
 			<Modal visible={modalVisible} style={styles.modalView}>
 				<View style={styles.modalContent}>
 
-					<Heading style={styles.modalHeading}>Sort your groups</Heading>
+					<Heading style={[styles.modalHeading]}>Sort your groups</Heading>
 
 					<Checkbox.Item 
 						label="Most recently updated first"

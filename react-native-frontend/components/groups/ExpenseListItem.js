@@ -39,7 +39,7 @@ const ExpenseListItem = ({ people, expense, removeExpense }) => {
 			})}
 			<Button 
 				onPress={removeExpense} 
-				mode="contained"
+				mode="text"
 				color={Colors.primary}
 			>
 				Remove expense
@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
 		fontSize: 13,
 		marginBottom: 6,
 		color: Colors.coffee,
+		whiteSpace: 'nowrap'
 	},
 })
 

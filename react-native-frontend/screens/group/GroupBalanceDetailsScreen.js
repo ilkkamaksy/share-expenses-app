@@ -23,7 +23,7 @@ const GroupBalanceDetailScreen = ({ route }) => {
 				
 				<Hero>
 					<Heading style={[styles.header]}>
-						{group.title}
+						{`Balance summary for group "${group.title}"`}
 					</Heading>
 					<Paragraph style={[styles.intro]}>
 						{group.location}

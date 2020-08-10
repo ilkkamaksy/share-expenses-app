@@ -25,8 +25,18 @@ const resolvers = {
 			if (!currentUser) {
 				throw new AuthenticationError('not authenticated')
 			}
+
+			let sort = { lastUpdatedAt: -1 }
+
+			if (args.sortBy && args.sortBy === 'createdAt') {
+				sort = { createdAt: args.order ? args.order : -1 }
+			} 
 			
-			return Group.find({ users: { $in: [ currentUser._id ] } }, null, {sort: { lastUpdatedAt: -1 }})
+			if (args.sortBy && args.sortBy === 'title') {
+				sort = { title: args.order ? args.order : 1 }
+			}
+			
+			return Group.find({ users: { $in: [ currentUser._id ] } }, null, { sort })
 				.populate('owner', { email: 1, firstname: 1, lastname: 1 })
 				.populate('users')
 				.populate('people')

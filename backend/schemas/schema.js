@@ -8,7 +8,7 @@ const expense = require('./expense')
 
 const Query = `
         type Query {
-            getGroups: [Group]
+            getGroups(sortBy: String, order: Float): [Group]
             getUserById(id: String): User!
             getUserByEmail(email: String): User!
             me: User

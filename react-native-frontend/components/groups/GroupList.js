@@ -1,12 +1,15 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { FlatList, StyleSheet, View, Text, TouchableOpacity } from 'react-native'
-import GroupListItem from './GroupListItem'
-import { ActivityIndicator } from 'react-native-paper'
-import FilterList from '../icons/FilterList'
+import { FlatList, StyleSheet, View, Text, TouchableOpacity, Modal, TouchableHighlight } from 'react-native'
+import { ActivityIndicator, Checkbox } from 'react-native-paper'
+
 
 import { getGroups, setGroupToEdit } from '../../store/actions/groups'
+
+import Heading from '../UI/Heading'
+import GroupListItem from './GroupListItem'
+import FilterList from '../icons/FilterList'
 
 import Colors from '../../constants/Colors'
 	
@@ -17,11 +20,28 @@ const GroupList = ({
 	navigation
 }) => {
 	
+	const [modalVisible, setModalVisible] = useState(false)
+	const [sortBy, setSortBy] = useState('lastUpdatedAt')
+	const [selectedSortingText, setSelectedSortingText] = useState('Most recently updated first')
 	useEffect(() => {
 		getGroups()
 	}, [])
 
-	
+	const onSetSortingOption = (sortingOption) => {
+		getGroups(sortingOption)
+		setSortBy(sortingOption.sortBy)
+		setModalVisible(!modalVisible)
+
+		if (sortingOption.sortBy === 'createdAt') {
+			setSelectedSortingText('Most recently created first')
+		} else if (sortingOption.sortBy === 'title') {
+			setSelectedSortingText('From A to Z by title')
+		} else {
+			setSelectedSortingText('Most recently updated first')
+		}
+
+	}
+
 	if (fetching) {
 		return (
 			<ActivityIndicator animating={true} color={Colors.primary} />
@@ -31,10 +51,45 @@ const GroupList = ({
 	return (
 		<View style={styles.container}>
 			
-			<TouchableOpacity style={styles.sorting} onPress={() => console.log('pressed')}>
-				<Text style={styles.selectedSortingText}>Most recently updated</Text>
+			<TouchableOpacity style={styles.sorting} onPress={() => setModalVisible(!modalVisible)}>
+				<Text style={styles.selectedSortingText}>{selectedSortingText}</Text>
 				<FilterList size={24} color={Colors.primary} />
 			</TouchableOpacity>
+
+			<Modal visible={modalVisible} style={styles.modalView}>
+				<View style={styles.modalContent}>
+
+					<Heading style={styles.modalHeading}>Sort your groups</Heading>
+
+					<Checkbox.Item 
+						label="Most recently updated first"
+						status={sortBy === 'lastUpdatedAt' ? 'checked' : 'unchecked'}
+						onPress={() => {
+							onSetSortingOption({ sortBy: 'lastUpdatedAt', order: -1 })
+						}}
+						style={{ paddingLeft: 0 }}
+					/>
+
+					<Checkbox.Item 
+						label="Most recently created first"
+						status={sortBy === 'createdAt' ? 'checked' : 'unchecked'}
+						onPress={() => {
+							onSetSortingOption({ sortBy: 'createdAt', order: -1 })
+						}}
+						style={{ paddingLeft: 0 }}
+					/>
+					
+					<Checkbox.Item 
+						label="Sort by title From A to Z"
+						status={sortBy === 'title' ? 'checked' : 'unchecked'}
+						onPress={() => {
+							onSetSortingOption({ sortBy: 'title', order: 1 })
+						}}
+						style={{ paddingLeft: 0 }}
+					/>
+
+				</View>
+			</Modal>
 			
 			<FlatList 
 				data={userGroups} 
@@ -67,7 +122,41 @@ const styles = StyleSheet.create({
 	selectedSortingText: {
 		color: Colors.coffee,
 		fontSize: 14,
-	}
+	},
+	modalContent: {
+		flex: 1,
+		justifyContent: 'flex-start',
+	},
+	modalView: {
+		margin: 0,
+		width: '100%',
+		backgroundColor: 'white',
+		borderRadius: 4,
+		paddingVertical: 20,
+		paddingHorizontal: 30,
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5,
+	},
+	modalHeading: {
+		fontSize: 18,
+		textAlign: 'left',
+		marginBottom: 10
+	},
+	sortingOption: {
+		paddingVertical: 10,
+		borderBottomColor: '#ddd',
+		borderBottomWidth: StyleSheet.hairlineWidth
+	},
+	sortingOptionLabel: {
+		fontSize: 14,
+		color: Colors.coffee
+	},
 })
 
 GroupList.propTypes = {

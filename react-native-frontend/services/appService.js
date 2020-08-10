@@ -99,8 +99,8 @@ const UPDATE_GROUP = `
 `
 
 const GET_GROUPS = `
-	query {
-		getGroups {
+	query getGroups($sortBy: String, $order: Float) {
+		getGroups(sortBy: $sortBy, order: $order) {
 			id
 			lastUpdatedAt
 			createdAt
@@ -318,12 +318,18 @@ export const updateGroup = async (group) => {
 	return await axios.post(apiUrl, data, config)
 }
 
-export const getGroups = async () => {
+export const getGroups = async (args) => {
 	
-	console.log('getGroups', util.token)
+	console.log('getGroups token', util.token)
+
+	const variables = {
+		sortBy: args.sortBy,
+		order: args.order
+	}
 
 	const data = {
-		query: GET_GROUPS
+		query: GET_GROUPS,
+		variables
 	}
 
 	const config = {

@@ -92,14 +92,14 @@ export const saveGroup = (group) =>  {
 	}
 }
 
-export const getGroups = () =>  {
+export const getGroups = (sort = { sortBy: 'lastUpdatedAt', order: -1 }) =>  {
 	return async dispatch => {
 
 		dispatch({
 			type: 'INIT_GET_GROUPS',
 		})
 		
-		const response = await appService.getGroups()
+		const response = await appService.getGroups(sort)
 		
 		if (response.data.data.getGroups === null || response === null) {
 			return dispatch({

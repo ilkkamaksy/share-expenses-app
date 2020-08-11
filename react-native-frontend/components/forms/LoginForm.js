@@ -70,6 +70,7 @@ const LoginForm = ({ email, password, loginUser, setEmail, setPassword, error, n
 						mode="contained" 
 						onPress={submitHandler} 
 						color={Colors.primary}
+						labelStyle={{color: Colors.white}}
 					>
                         Login
 					</Button>

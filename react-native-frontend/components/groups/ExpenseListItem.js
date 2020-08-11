@@ -29,9 +29,9 @@ const ExpenseListItem = ({ people, expense, removeExpense }) => {
 					<View key={item.person}>
 						<Text style={styles.columnTitle}>{getPersonName(item.person)}</Text>
 						<View style={styles.row}>
-							<Text style={[styles.expenseDetail, styles.column]}>{`Share: ${Number(item.share / 100).toFixed(2)} €`}</Text>
-							<Text style={[styles.expenseDetail, styles.column]}>{`Paid: ${Number(item.paid / 100).toFixed(2)} €`}</Text>
-							<Text style={[styles.expenseDetail, styles.column]}>{`Balance: ${Number((item.paid - item.share) / 100).toFixed(2)} €`}</Text>
+							<Text numberOfLines={1} style={[styles.expenseDetail, styles.column]}>{`Share: ${Number(item.share / 100).toFixed(2)} €`}</Text>
+							<Text numberOfLines={1} style={[styles.expenseDetail, styles.column]}>{`Paid: ${Number(item.paid / 100).toFixed(2)} €`}</Text>
+							<Text numberOfLines={1} style={[styles.expenseDetail, styles.column]}>{`Balance: ${Number((item.paid - item.share) / 100).toFixed(2)} €`}</Text>
 						</View>
 					</View>
 
@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
 		fontSize: 13,
 		marginBottom: 6,
 		color: Colors.coffee,
-		whiteSpace: 'nowrap'
 	},
 })
 

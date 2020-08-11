@@ -5,17 +5,23 @@ import { NavigationContainer } from '@react-navigation/native'
 import { ActivityIndicator } from 'react-native-paper'
 
 import { authenticationCheck } from '../../store/actions/user'
-import WelcomeNavigator from '../../navigation/WelcomeNavigation'
-import GroupNavigator from '../../navigation/GroupNavigation'
+import WelcomeNavigation from '../../navigation/WelcomeNavigation'
+import GroupNavigation from '../../navigation/GroupNavigation'
 import Colors from '../../constants/Colors'
 
-const AppNavigation = props => {
+const AppNavigation = ({
+	authenticationCheck,
+	loading,
+	userdata,
+	loginFail,
+	registerFail,
+}) => {
 
 	useEffect(() => {
-		props.authenticationCheck()
+		authenticationCheck()
 	}, [])
 
-	if (props.loading) {
+	if (loading) {
 		return (
 			<ActivityIndicator animating={true} color={Colors.primary} />
 		)
@@ -24,10 +30,10 @@ const AppNavigation = props => {
 	return (
 		
 		<NavigationContainer>
-			{props.userdata === null ? (
-				<WelcomeNavigator activeScreen={props.loginFail ? 'Login' : props.registerFail ? 'Register' : 'Splash'} />
+			{userdata === null ? (
+				<WelcomeNavigation activeScreen={loginFail ? 'Login' : registerFail ? 'Register' : 'Splash'} />
 			) : (
-				<GroupNavigator />
+				<GroupNavigation />
 			) 
 			} 
 		</NavigationContainer>        

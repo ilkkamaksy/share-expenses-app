@@ -32,8 +32,8 @@ const Home = props => {
 					mode="contained"
 					style={[
 						styles.button,
-						{color: Colors.white}
 					]}
+					labelStyle={{color: Colors.white}}
 					onPress={loginButtonHandler} 
 					color={Colors.primary}
 				>
@@ -56,23 +56,6 @@ const styles = StyleSheet.create({
 	button: {
 		width: 140,
 		marginVertical: 10,
-	},
-	
-	forgotPassword: {
-		width: '100%',
-		alignItems: 'flex-end',
-		marginBottom: 24,
-	},
-	row: {
-		flexDirection: 'row',
-		marginTop: 4,
-	},
-	label: {
-		color: Colors.primary,
-	},
-	link: {
-		fontWeight: 'bold',
-		color: Colors.primary,
 	},
 })
 

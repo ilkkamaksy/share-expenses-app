@@ -65,6 +65,7 @@ const RegisterForm = props => {
 						mode="contained" 
 						onPress={submitHandler} 
 						color={Colors.primary}
+						labelStyle={{color: Colors.white}}
 					>
                         Sign up!
 					</Button>

@@ -34,7 +34,9 @@ describe('test group reducer', () => {
 			fetching: true,
 			error: '',
 			saveGroupFail: false,
-			getGroupsFail: false
+			getGroupsFail: false,
+			groupTotals: [],
+			groupBalanceData: []
 		}
 		
 	})
@@ -45,6 +47,21 @@ describe('test group reducer', () => {
 		)
 	})
 
+	it('should handle TOGGLE_TOP_RIGHT_MENU', () => {
+
+		const visibility = true
+
+		expect(
+			reducer([], {
+				type: 'TOGGLE_TOP_RIGHT_MENU',
+				visibility
+			})
+		).toEqual(
+			{
+				topRightMenuVisible: visibility,
+			}
+		)		
+	})
 
 	it('should handle SET_GROUP_TO_EDIT', () => {
 
@@ -267,6 +284,19 @@ describe('test group reducer', () => {
 
 	it('should handle REMOVE_GROUP_SUCCESS', () => {
 
+		const group = {
+			title: 'group title',
+			location: 'l1',
+			people: ['p1'],
+			users: ['u1'],
+			id: 'g1'
+		}
+
+		initialState = {
+			...initialState,
+			userGroups: [...initialState.userGroups, group]
+		}
+		
 		const removedGroupId = 'g1'
 
 		expect(
@@ -277,7 +307,7 @@ describe('test group reducer', () => {
 		).toEqual(
 			{
 				...initialState,
-				userGroups: initialState.userGroups.filter(group => group.id !== removedGroupId)
+				userGroups: []
 			}
 		)		
 	})
@@ -332,12 +362,22 @@ describe('test group reducer', () => {
 
 	it('should handle UPDATE_GROUP_SUCCESS', () => {
 
-		const group = {
-			title: 'new group title',
+		let group = {
+			title: 'original group title',
 			location: 'new location',
 			people: ['p1'],
 			users: ['u1'],
 			id: 'g1'
+		}
+
+		initialState = {
+			...initialState,
+			userGroups: [...initialState.userGroups, group]
+		}
+
+		group = {
+			...group,
+			title: 'new group title',
 		}
 		
 		expect(
@@ -348,7 +388,15 @@ describe('test group reducer', () => {
 		).toEqual(
 			{
 				...initialState,
-				userGroups: initialState.userGroups.map(group => group.id === group.id ? group : group),
+				userGroups: [
+					{
+						title: 'new group title',
+						location: 'new location',
+						people: ['p1'],
+						users: ['u1'],
+						id: 'g1'
+					}			
+				],
 				groupToEdit: group,
 				saveGroupFail: false,
 				error: '',
@@ -356,13 +404,14 @@ describe('test group reducer', () => {
 		)		
 	})
 
+	
 	it('should handle ADD_PERSON_TO_GROUP_SUCCESS and REMOVE_PERSON_SUCCESS', () => {
 
 		const person = {
 			name: 'new person',
 			id: 'p2',
 		}
-		
+
 		expect(
 			reducer(initialState, {
 				type: 'ADD_PERSON_TO_GROUP_SUCCESS',
@@ -374,7 +423,15 @@ describe('test group reducer', () => {
 				groupToEdit: {...initialState.groupToEdit, people: [...initialState.groupToEdit.people, person]}
 			}
 		)
-		
+
+		initialState = {
+			...initialState,
+			groupToEdit: {
+				...initialState.groupToEdit,
+				people: [...initialState.groupToEdit.people, person]
+			}
+		}
+
 		const id = 'p2'
 
 		expect(
@@ -399,6 +456,12 @@ describe('test group reducer', () => {
 			users: ['u1', 'u2'],
 			id: 'g1'
 		}
+
+		initialState = {
+			...initialState,
+			userGroups: [...initialState.userGroups, group],
+			groupToEdit: group
+		}
 		
 		expect(
 			reducer(initialState, {
@@ -414,4 +477,150 @@ describe('test group reducer', () => {
 		)		
 	})
 
+	it('should handle INIT_CREATE_EXPENSE', () => {
+
+		expect(
+			reducer(initialState, {
+				type: 'INIT_CREATE_EXPENSE'
+			})
+		).toEqual(
+			{
+				...initialState,
+				fetching: true,
+				saveGroupFail: false,
+				error: ''
+			}
+		)		
+	})
+
+	it('should handle SET_EXPENSE_TO_EDIT', () => {
+
+		const expense = {
+			id: 'e1',
+			groupid: 'g1',
+			date: null,
+			lastUpdatedAt: null,
+			createdAt: null,
+			description: 'desc',
+			amount: Number(0).toFixed(2),
+			people: ['p1', 'p2'],
+			details: []
+		}
+		
+		expect(
+			reducer(initialState, {
+				type: 'SET_EXPENSE_TO_EDIT',
+				expense
+			})
+		).toEqual(
+			{
+				...initialState,
+				expenseToEdit: expense,
+			}
+		)		
+	})
+
+	it('should handle SET_EXPENSE_DATE', () => {
+
+		const date = new Date(Date.now())
+		
+		expect(
+			reducer(initialState, {
+				type: 'SET_EXPENSE_DATE',
+				date
+			})
+		).toEqual(
+			{
+				...initialState,
+				expenseToEdit: {
+					...initialState.expenseToEdit,
+					date
+				},
+			}
+		)		
+	})
+
+	it('should handle CREATE_EXPENSE_SUCCESS', () => {
+
+		const expense = {
+			id: 'e1',
+			groupid: 'g1',
+			date: null,
+			lastUpdatedAt: null,
+			createdAt: null,
+			description: 'desc',
+			amount: Number(0).toFixed(2),
+			people: ['p1', 'p2'],
+			details: []
+		}
+
+		let modifiedGroup = {
+			title: 'group title',
+			location: 'new location',
+			people: ['p1', 'p2', 'p3'],
+			users: ['u1', 'u2'],
+			id: 'g1',
+			expenses: []
+		}
+
+		initialState = {
+			...initialState,
+			groupToEdit: modifiedGroup,
+			userGroups: [modifiedGroup]
+		}
+
+		modifiedGroup = {
+			...modifiedGroup,
+			expenses: [expense]
+		}
+
+		expect(
+			reducer(initialState, {
+				type: 'CREATE_EXPENSE_SUCCESS',
+				group: modifiedGroup
+			})
+		).toEqual(
+			{
+				...initialState,
+				saveGroupFail: false,
+				error: '',
+				fetching: false,
+				userGroups: initialState.userGroups.map(group => group.id === modifiedGroup.id ? modifiedGroup : group),
+				groupToEdit: modifiedGroup
+			}
+		)		
+	})
+
+	it('should handle CREATE_EXPENSE_FAIL', () => {
+
+		const response = 'error'
+
+		expect(
+			reducer(initialState, {
+				type: 'CREATE_EXPENSE_FAIL',
+				response
+			})
+		).toEqual(
+			{
+				...initialState,
+				saveGroupFail: true,
+				error: response,
+				fetching: false
+			}
+		)		
+	})
+
+	it('should handle INIT_REMOVE_EXPENSE', () => {
+
+		expect(
+			reducer(initialState, {
+				type: 'INIT_REMOVE_EXPENSE',
+			})
+		).toEqual(
+			{
+				...initialState,
+				error: ''
+			}
+		)		
+	})
 })

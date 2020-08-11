@@ -11,6 +11,7 @@ import {
 	setExpenseToEdit, 
 	addExpense } from '../../store/actions/groups'
 
+import Heading from '../UI/Heading'
 import Colors from '../../constants/Colors'
 import TextInput from '../UI/TextInput'
 import DecimalInput from '../UI/DecimalInput'
@@ -133,6 +134,10 @@ const EditExpense = ({
 				<Text>{error}</Text>
 			</View>
 			
+			<Heading style={[{ textAlign: 'left', fontSize: 12, color: Colors.secondary, textTransform: 'uppercase', paddingBottom: 5 }]}>
+				Add a new expense
+			</Heading>
+
 			<View style={styles.form}>
 				<View style={styles.formControl}>
 					<TextInput 
@@ -145,9 +150,8 @@ const EditExpense = ({
 				</View>
 
 				<View style={styles.formControl}>
-					<Text>Amount</Text>
 					<DecimalInput
-						label="Amount" 
+						label="Total amount" 
 						style={styles.input} 
 						value={convertCurrencyValueToText(expenseToEdit.amount)}
 						placeholder="0.00" 
@@ -157,7 +161,9 @@ const EditExpense = ({
 				</View>
 				
 				<View style={styles.section}>
-					<Text>Select people</Text>
+					<Heading style={[{ textAlign: 'left', fontSize: 12, color: Colors.secondary, textTransform: 'uppercase', paddingBottom: 5 }]}>
+						Who were in?
+					</Heading>
 					{groupToEdit.people.map(person => {
 						return (
 							<View key={person.id} style={styles.formControl}>
@@ -167,6 +173,7 @@ const EditExpense = ({
 									onPress={() => {
 										togglePerson(person)
 									}}
+									style={{ paddingLeft: 0 }}
 								/>
 							</View>
 						)
@@ -195,7 +202,7 @@ const EditExpense = ({
 								<View key={person.id} style={styles.formControl}>
 									<Text>{`${person.name} paid`}</Text>
 									<DecimalInput
-										label="Share" 
+										label="Paid" 
 										style={styles.input} 
 										// value={person.name}
 										placeholder="0.00" 
@@ -210,17 +217,25 @@ const EditExpense = ({
 						)
 					})}
 				</View>
-				
-				
 
 				<View style={styles.formControl}>
+					<Heading style={[{ textAlign: 'left', fontSize: 12, color: Colors.secondary, textTransform: 'uppercase', paddingBottom: 5 }]}>
+						When was this?
+					</Heading>
 					<View style={styles.row}>
-						<View style={styles.rowItem}>
-							<Text>{`When: ${expenseToEdit.date.toLocaleDateString()}, at ${expenseToEdit.date.toLocaleTimeString()}`}</Text>
+						<View style={[styles.column, { width: '70%'}]}>
+							<Text>{`${expenseToEdit.date.toLocaleDateString()}, at ${expenseToEdit.date.toLocaleTimeString()}`}</Text>
 						</View>
-						<View style={styles.rowItem}>
-							<Button style={styles.rowItem} compact={true} mode="text" uppercase={false} onPress={showDatepicker}>
-								(Change)
+						<View style={[styles.column], { width: '30%' }}>
+							<Button 
+								style={styles.column} 
+								compact={true} 
+								mode="text" 
+								uppercase={false} 
+								onPress={showDatepicker}
+								labelStyle={{ color: Colors.primary, fontSize: 12 }}
+							>
+								Change
 							</Button> 
 						</View>
 					</View>
@@ -272,8 +287,8 @@ const styles = StyleSheet.create({
 		flexWrap: 'nowrap',
 		justifyContent: 'space-between'
 	}, 
-	rowItem: {
-		flex: 0
+	column: {
+		flex: 1
 	}
 })
 

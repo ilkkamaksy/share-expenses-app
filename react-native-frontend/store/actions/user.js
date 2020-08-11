@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native'
+// import { AsyncStorage } from 'react-native'
 	
 import userService from '../../services/userService'
 import util from '../../services/util'
@@ -22,7 +22,7 @@ export const registerUser = (credentials = null) =>  {
 		}
 		
 	
-		await AsyncStorage.setItem('loggedAppUser', JSON.stringify(response.data.data.register))
+		// await AsyncStorage.setItem('loggedAppUser', JSON.stringify(response.data.data.register))
 	
 		util.setToken(response.data.data.register.token)
 		dispatch({
@@ -50,7 +50,7 @@ export const loginUser = (credentials = null) =>  {
 		}
 	
 	
-		await AsyncStorage.setItem('loggedAppUser', JSON.stringify(response.data.data.login))
+		// await AsyncStorage.setItem('loggedAppUser', JSON.stringify(response.data.data.login))
 	
 		util.setToken(response.data.data.login.token)
 		dispatch({
@@ -89,9 +89,8 @@ export const authenticationCheck = () => {
         
 		let userdata = null
 		
-		let loggedInUser = await AsyncStorage.getItem('loggedAppUser')
+		let loggedInUser = null // await AsyncStorage.getItem('loggedAppUser')
 
-		// loggedInUser = ''
 		if (loggedInUser) {
 			userdata = JSON.parse(loggedInUser)
 			util.setToken(userdata.token)

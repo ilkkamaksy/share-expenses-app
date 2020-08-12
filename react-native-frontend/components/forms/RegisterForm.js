@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { ScrollView, View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Button } from 'react-native-paper'
 import { connect } from 'react-redux'
 
@@ -19,11 +19,13 @@ const RegisterForm = props => {
 	}
 
 	return (
-		<ScrollView>
+		<View>
 
+			{error.length > 0 && 
 			<Paragraph style={[{ color: Colors.error }]}>
 				{error}
 			</Paragraph>
+			}
 
 			<View style={styles.form}>
 				<View style={styles.formControl}>
@@ -41,7 +43,7 @@ const RegisterForm = props => {
 						textContentType="emailAddress"
 						keyboardType="email-address"
 						underlineColor="transparent"
-						mode="flat"
+						mode="outlined"
 					/>
 				</View>
 				<View style={styles.formControl}>
@@ -56,7 +58,7 @@ const RegisterForm = props => {
 						error={!!password.error}
 						errorText=""
 						underlineColor="transparent"
-						mode="flat"
+						mode="outlined"
 					/>
 				</View>
 				<View style={styles.formControl}>
@@ -79,7 +81,7 @@ const RegisterForm = props => {
 				</View>
 
 			</View>
-		</ScrollView>
+		</View>
 	)
 }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { ScrollView, View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Button } from 'react-native-paper'
 import { connect } from 'react-redux'
 
@@ -18,12 +18,14 @@ const LoginForm = ({ email, password, loginUser, setEmail, setPassword, error, n
 	}
 
 	return (
-		<ScrollView>
+		<View>
 
+			{error.length > 0 && 
 			<Paragraph style={[{ color: Colors.error }]}>
 				{error}
 			</Paragraph>
-			
+			}
+
 			<View style={styles.form}>
 				<View style={styles.formControl}>
 					<TextInput 
@@ -39,7 +41,7 @@ const LoginForm = ({ email, password, loginUser, setEmail, setPassword, error, n
 						textContentType="emailAddress"
 						keyboardType="email-address"
 						underlineColor="transparent"
-						mode="flat"
+						mode="outlined"
 					/>
 				</View>
 				<View style={styles.formControl}>
@@ -55,7 +57,7 @@ const LoginForm = ({ email, password, loginUser, setEmail, setPassword, error, n
 						error={!!password.error}
 						errorText=""
 						underlineColor="transparent"
-						mode="flat"
+						mode="outlined"
 					/>
 				</View>
 				<View style={styles.forgotPassword}>
@@ -79,12 +81,12 @@ const LoginForm = ({ email, password, loginUser, setEmail, setPassword, error, n
 				<View style={styles.row}>
 					<Text style={styles.label}>Don’t have an account? </Text>
 					<TouchableOpacity onPress={() => navigation.navigate('Register')}>
-						<Text style={styles.link}>Sign up</Text>
+						<Text style={styles.link}>Sign up!</Text>
 					</TouchableOpacity>
 				</View>
                 
 			</View>
-		</ScrollView>
+		</View>
 	)
 }
 

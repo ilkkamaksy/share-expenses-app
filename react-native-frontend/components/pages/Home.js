@@ -21,13 +21,13 @@ const Home = props => {
 	}
 
 	return (
-		<Background>
-			<Logo />
-			<Heading>Welcome to ShareExpenses</Heading>
-			<Paragraph>
-				An easy way to track shared expenses with your friends and family.
+		<View>
+
+			<Heading style={[{ color: Colors.primary }]}>Hey there!</Heading>
+			<Paragraph style={[{ color: Colors.lightCoffee, fontSize: 14.5 }]}>
+					ShareExpenses is an easy way to track shared expenses with your friends and family. Step right in to get started!
 			</Paragraph>
-			<View style={styles.container}>
+			<View style={styles.centered}>
 				<Button 
 					mode="contained"
 					style={[
@@ -43,20 +43,25 @@ const Home = props => {
 					mode="outlined"
 					style={styles.button}
 					onPress={registerButtonHandler} 
-					color={Colors.primary}
+					color={Colors.white}
+					labelStyle={{color: Colors.primary}}
 				>
                     Register
 				</Button>
 			</View>
-		</Background>
+
+		</View>
 	)
 }
 
 const styles = StyleSheet.create({
 	button: {
 		width: 140,
-		marginVertical: 10,
+		marginVertical: 5,
 	},
+	centered: {
+		alignItems: 'center'
+	}
 })
 
 Home.propTypes = {

@@ -9,8 +9,8 @@ import {
 const Background = ({ children }) => (
 	<ImageBackground
 		// eslint-disable-next-line no-undef
-		source={require('../../assets/cool-background.png')}
-		resizeMode="cover"
+		source={require('../../assets/pattern.png')}
+		resizeMode="repeat"
 		style={styles.background}
 	>
 		<View style={styles.container} behavior="padding">

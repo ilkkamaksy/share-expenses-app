@@ -24,10 +24,10 @@ const GroupExpensesScreen = ({
 				
 				<Hero>
 					<Heading style={[styles.header]}>
-						{`All expenses in group "${group.title}"`}
+						All expenses
 					</Heading>
 					<Paragraph style={[styles.intro]}>
-						{group.location}
+						{`Group "${group.title}"`}
 					</Paragraph>
 
 				</Hero>
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
 	intro: {
 		textAlign: 'left',
 		color: Colors.white,
-		fontSize: 14
+		fontSize: 17
 	},
 	container: {
 		backgroundColor: Colors.white,

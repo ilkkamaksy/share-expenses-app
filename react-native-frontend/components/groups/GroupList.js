@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { FlatList, StyleSheet, View, Text, TouchableOpacity, Modal } from 'react-native'
-import { ActivityIndicator, Checkbox } from 'react-native-paper'
-
+import { ActivityIndicator, Checkbox, Button } from 'react-native-paper'
 
 import { getGroups, setGroupToEdit } from '../../store/actions/groups'
 
@@ -59,7 +58,7 @@ const GroupList = ({
 			<Modal visible={modalVisible} style={styles.modalView}>
 				<View style={styles.modalContent}>
 
-					<Heading style={[styles.modalHeading]}>Sort your groups</Heading>
+					<Heading style={[styles.modalHeading]}>Sort groups</Heading>
 
 					<Checkbox.Item 
 						label="Most recently updated first"
@@ -88,6 +87,15 @@ const GroupList = ({
 						style={{ paddingLeft: 0 }}
 					/>
 
+					<Button 
+						style={styles.closeModalButton}
+						mode="contained" 
+						onPress={() => setModalVisible(!modalVisible)} 
+						color={Colors.primary}
+						labelStyle={{color: Colors.white}}
+					>
+                        Close
+					</Button>
 				</View>
 			</Modal>
 			
@@ -126,6 +134,8 @@ const styles = StyleSheet.create({
 	modalContent: {
 		flex: 1,
 		justifyContent: 'flex-start',
+		marginVertical: '40%',
+		marginHorizontal: 40
 	},
 	modalView: {
 		margin: 0,
@@ -146,7 +156,11 @@ const styles = StyleSheet.create({
 	modalHeading: {
 		fontSize: 18,
 		textAlign: 'left',
-		marginBottom: 10
+		marginBottom: 5,
+		paddingBottom: 15,
+		color: Colors.primary,
+		borderBottomColor: '#ddd',
+		borderBottomWidth: StyleSheet.hairlineWidth
 	},
 	sortingOption: {
 		paddingVertical: 10,
@@ -157,6 +171,9 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		color: Colors.coffee
 	},
+	closeModalButton: {
+		marginTop: 40
+	}
 })
 
 GroupList.propTypes = {

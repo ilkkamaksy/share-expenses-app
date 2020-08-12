@@ -16,7 +16,7 @@ const Heading = ({ children, style }) => (
 const styles = StyleSheet.create({
 	header: {
 		textAlign: 'center',
-		fontSize: 26,
+		fontSize: 24,
 		color: Colors.coffee,
 		fontWeight: 'bold',
 		paddingVertical: 8,

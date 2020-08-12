@@ -23,10 +23,10 @@ const GroupBalanceDetailScreen = ({ route }) => {
 				
 				<Hero>
 					<Heading style={[styles.header]}>
-						{`Balance summary for group "${group.title}"`}
+						Balance summary
 					</Heading>
 					<Paragraph style={[styles.intro]}>
-						{group.location}
+						{`Group "${group.title}"`}
 					</Paragraph>
 					
 				</Hero>
@@ -57,7 +57,8 @@ const styles = StyleSheet.create({
 	intro: {
 		textAlign: 'left',
 		color: Colors.white,
-		fontSize: 14
+		fontSize: 17,
+		fontWeight: 'normal'
 	},
 	container: {
 		backgroundColor: Colors.white,

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { createStackNavigator } from '@react-navigation/stack'
 
 import ToggleMenu from '../components/menus/ToggleMenu'
@@ -16,11 +17,11 @@ import GroupExpensesScreen from '../screens/group/GroupExpensesScreen'
 
 const GroupStack = createStackNavigator()
 
-function GroupNavigator() {
+function GroupNavigation({ activeScreen = 'GroupList' }) {
 
 	return (
 		<GroupStack.Navigator 
-			initialRouteName="GroupList"
+			initialRouteName={activeScreen}
 			headerMode="screen"
 			screenOptions={{
 				headerTitle: '',
@@ -105,4 +106,8 @@ function GroupNavigator() {
 	)
 }
 
-export default GroupNavigator
+GroupNavigation.propTypes = {
+	activeScreen: PropTypes.string
+}
+
+export default GroupNavigation

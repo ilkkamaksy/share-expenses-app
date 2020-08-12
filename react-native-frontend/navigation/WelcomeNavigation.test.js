@@ -45,7 +45,7 @@ describe('Testing Welcome navigation', () => {
 
 		const { findByText } = render(component)
 
-		const header = await findByText('Welcome to ShareExpenses')
+		const header = await findByText('Hey there!')
 		const register = await findByText('Register')
 		const login = await findByText('Login')
         

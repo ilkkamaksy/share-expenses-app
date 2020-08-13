@@ -28,5 +28,5 @@
 | 10.8. |   6  | Ryhmän balance & totals redux -storeen, expenses-listanäkymän rakennusta, ryhmälistan sorttaus |
 | 11.8. |   6  | Testejä frontendiin: balances, totals, navigation |
 | 12.8. |   7  | Visuaalisen ilmeen uudistamista, screen-testien lisäystä frontendiin |
-| 13.8. |   5  | Screen-testien lisäystä frontendiin |
-| yht   | 180   | | 
+| 13.8. |   7  | Screen-testien lisäystä frontendiin ja turvallisten token-refreshing -tapojen opiskelua |
+| yht   | 182   | | 

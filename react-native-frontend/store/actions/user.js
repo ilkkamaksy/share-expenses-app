@@ -1,7 +1,7 @@
 // import { AsyncStorage } from 'react-native'
 	
 import userService from '../../services/userService'
-import util from '../../services/util'
+import auth from '../../utils/auth'
 import '../reducers/user'
 // import { emailValidator, passwordValidator } from '../../utils/validate'
 
@@ -24,7 +24,7 @@ export const registerUser = (credentials = null) =>  {
 	
 		// await AsyncStorage.setItem('loggedAppUser', JSON.stringify(response.data.data.register))
 	
-		util.setToken(response.data.data.register.token)
+		auth.setToken(response.data.data.register.token)
 		dispatch({
 			type: 'REGISTER_SUCCESS',
 			userdata: response.data.data.register
@@ -52,7 +52,7 @@ export const loginUser = (credentials = null) =>  {
 	
 		// await AsyncStorage.setItem('loggedAppUser', JSON.stringify(response.data.data.login))
 	
-		util.setToken(response.data.data.login.token)
+		auth.setToken(response.data.data.login.token)
 		dispatch({
 			type: 'LOGIN_SUCCESS',
 			userdata: response.data.data.login
@@ -89,23 +89,24 @@ export const authenticationCheck = () => {
         
 		let userdata = null
 		
-		let loggedInUser = null // await AsyncStorage.getItem('loggedAppUser')
+		let token = auth.getToken() // await AsyncStorage.getItem('loggedAppUser')
 
-		if (loggedInUser) {
-			userdata = JSON.parse(loggedInUser)
-			util.setToken(userdata.token)
+		if (token) {
+			userdata = JSON.parse(token)
+			auth.setToken(userdata.token)
 		}
 		
 		dispatch({
 			type: 'AUTHENTICATION_CHECK_DONE',
 			userdata: userdata
 		})
+
 	}
 }
 
 export const logoutUser = () => {
 	return async dispatch => {
-		util.setToken('')
+		auth.setToken('')
 		dispatch({
 			type: 'LOGGING_OUT'
 		})

@@ -1,7 +1,7 @@
 import axios from 'axios'
 const apiUrl = 'http://192.168.1.17:4000/graphql'
 
-import util from './util' 
+import auth from '../utils/auth' 
 
 const CREATE_GROUP = `
 	mutation createGroup(
@@ -286,7 +286,7 @@ export const saveGroup = async (group) => {
 
 	const config = {
 		headers: {
-			'Authorization': util.token
+			'Authorization': auth.token
 		}
 	}
 
@@ -311,7 +311,7 @@ export const updateGroup = async (group) => {
 
 	const config = {
 		headers: {
-			'Authorization': util.token
+			'Authorization': auth.token
 		}
 	}
 
@@ -320,7 +320,7 @@ export const updateGroup = async (group) => {
 
 export const getGroups = async (args) => {
 	
-	console.log('getGroups token', util.token)
+	console.log('getGroups token', auth.token)
 
 	const variables = {
 		sortBy: args.sortBy,
@@ -334,7 +334,7 @@ export const getGroups = async (args) => {
 
 	const config = {
 		headers: {
-			'Authorization': util.token
+			'Authorization': auth.token
 		}
 	}
 
@@ -353,7 +353,7 @@ export const removeGroup = async id => {
 
 	const config = {
 		headers: {
-			'Authorization': util.token
+			'Authorization': auth.token
 		}
 	}
 
@@ -374,7 +374,7 @@ export const addPersonToGroup = async (args) => {
 
 	const config = {
 		headers: {
-			'Authorization': util.token
+			'Authorization': auth.token
 		}
 	}
 
@@ -394,7 +394,7 @@ export const updatePerson = async (args) => {
 
 	const config = {
 		headers: {
-			'Authorization': util.token
+			'Authorization': auth.token
 		}
 	}
 
@@ -413,7 +413,7 @@ export const removePerson = async id => {
 
 	const config = {
 		headers: {
-			'Authorization': util.token
+			'Authorization': auth.token
 		}
 	}
 
@@ -444,7 +444,7 @@ export const addExpense = async (args) => {
 
 	const config = {
 		headers: {
-			'Authorization': util.token
+			'Authorization': auth.token
 		}
 	}
 
@@ -464,7 +464,7 @@ export const removeExpense = async id => {
 
 	const config = {
 		headers: {
-			'Authorization': util.token
+			'Authorization': auth.token
 		}
 	}
 

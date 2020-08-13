@@ -4,8 +4,6 @@ import { View, StyleSheet } from 'react-native'
 import { Button } from 'react-native-paper'
 import { connect } from 'react-redux'
 
-import Logo from '../UI/Logo'
-import Background from '../UI/Background'
 import Paragraph from '../UI/Paragraph'
 import Heading from '../UI/Heading'
 import Colors from '../../constants/Colors'

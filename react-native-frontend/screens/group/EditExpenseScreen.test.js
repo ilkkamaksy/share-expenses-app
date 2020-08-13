@@ -1,7 +1,7 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 import { NavigationContainer } from '@react-navigation/native'
-import { render, fireEvent } from 'react-native-testing-library'
+import { render } from 'react-native-testing-library'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -15,7 +15,7 @@ jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper')
 
 jest.mock('react-native-vector-icons')
 
-describe('Testing GroupDetailsScreen', () => {
+describe('Testing EditExpenseScreen', () => {
 
 	let initialState
 	let store
@@ -102,67 +102,15 @@ describe('Testing GroupDetailsScreen', () => {
 		component = (
 			<Provider store={store}>
 				<NavigationContainer>
-					<GroupNavigation activeScreen="GroupItem" />
+					<GroupNavigation activeScreen="EditExpense" />
 				</NavigationContainer>        
 			</Provider>	
 		)
 	})
-    
-	test('screen contains group overview when a group has no expenses', async () => {
 
-		group = {
-			...group,
-			expenses: []
-		}
-
-		initialState = {
-			...initialState,
-			groups: {
-				...initialState.groups,
-				userGroups: [group],
-				groupToEdit: group
-			},
-		}
-
-		store = mockStore(initialState)
-        
-		component = (
-			<Provider store={store}>
-				<NavigationContainer>
-					<GroupNavigation activeScreen="GroupItem" />
-				</NavigationContainer>        
-			</Provider>	
-		)
+	test('screen contains form to edit expense details, amount, participants and date', async () => {
 
 		const { findByText } = render(component)
-		const overviewTitle = await findByText('Overview')
-    
-		expect(overviewTitle).toBeTruthy()
-		
-	})
-
-	test('screen contains group overview and recent expenses when a group has expenses', async () => {
-
-		const { findByText } = render(component)
-		const overviewTitle = await findByText('Overview')
-		const overviewSummaryButton = await findByText('View summary')
-		const recentExpensesTitle = await findByText('Recent expenses')
-		const viewExpensesButton = await findByText('View all expenses')
-    
-		expect(overviewTitle).toBeTruthy()
-		expect(overviewSummaryButton).toBeTruthy()
-		expect(recentExpensesTitle).toBeTruthy()
-		expect(viewExpensesButton).toBeTruthy()
-		
-	})
-
-	test('clicking create expense FAB takes you to the EditExpenseScreen', async () => {
-
-		const { getByA11yLabel, findByText } = render(component)
-		const toClick = await getByA11yLabel('Add a new expense')
-
-		await fireEvent(toClick, 'press')
-		
 		const title = await findByText('Add a new expense')
 		const expenseDetailsTitle = await findByText('Expense details')
 		const participantsTitle = await findByText('Who were in?')
@@ -172,38 +120,6 @@ describe('Testing GroupDetailsScreen', () => {
 		expect(expenseDetailsTitle).toBeTruthy()
 		expect(participantsTitle).toBeTruthy()
 		expect(setDateTitle).toBeTruthy()
-
-	})
-
-	test('clicking edit group takes you to the EditGroupScreen', async () => {
-
-		const { findByText } = render(component)
-		const toClick = await findByText('Edit Group')
-
-		await fireEvent(toClick, 'press')
-		
-		const editDetailsTab = await findByText('Edit Details')
-		const editPeopleTab = await findByText('Edit People')
-		const editUsersTab = await findByText('Edit Users')
-
-		expect(editDetailsTab).toBeTruthy()
-		expect(editPeopleTab).toBeTruthy()
-		expect(editUsersTab).toBeTruthy()
-
-	})
-
-	test('clicking View all Expenses takes you to the GroupExpensesScreen', async () => {
-
-		const { findByText } = render(component)
-		const toClick = await findByText('View all expenses')
-
-		await fireEvent(toClick, 'press')
-		
-		const title = await findByText('All expenses')
-		const subTitle = await findByText('Group expenses')
-
-		expect(title).toBeTruthy()
-		expect(subTitle).toBeTruthy()
 
 	})
 })

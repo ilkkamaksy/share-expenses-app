@@ -49,9 +49,6 @@ function GroupNavigation({ activeScreen = 'GroupList' }) {
 			<GroupStack.Screen
 				name="GroupItem"
 				component={GroupDetailScreen}
-				options={{
-					navigation: ({route}) => ({ group: route.params.group }),
-				}}
 			/>
 
 			<GroupStack.Screen

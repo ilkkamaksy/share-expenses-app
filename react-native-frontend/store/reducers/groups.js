@@ -1,13 +1,13 @@
 const initialState = {
 	topRightMenuVisible: false,
 	groupToEdit: {
+		id: null,
+		lastUpdatedAt: null,
+		createdAt: null,
 		title: '',
 		location: '',
 		people: [],
 		users: [],
-		id: null,
-		lastUpdatedAt: null,
-		createdAt: null,
 		expenses: []
 	},
 	currentPerson: '',
@@ -167,7 +167,7 @@ const groupReducer = (state = initialState, action) => {
 	case 'DONE_EDITING_GROUP' : 
 		return {
 			...state,
-			userGroups: state.userGroups.map(group => group.id === action.group.id ? action.group : group)
+			userGroups: state.userGroups.map(group => group.id === action.group.id ? action.group : group),
 		}
 	case 'INIT_CREATE_EXPENSE' :
 		return {

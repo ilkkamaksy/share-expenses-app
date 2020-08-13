@@ -11,7 +11,6 @@ jest.mock('react-native-paper')
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
 
-
 const createTestProps = (props) => ({
 	navigation: {
 		navigate: jest.fn()
@@ -99,15 +98,7 @@ describe('GroupList test', () => {
 		const groups = await getAllByText('some group')
 
 		fireEvent(groups[0], 'press')
-		expect(props.navigation.navigate).toHaveBeenCalledWith('GroupItem', { 
-			group: { 
-				id: 'g1', 
-				owner: { 
-					id: 'u1' 
-				}, 
-				title: 'some group',
-				lastUpdatedAt: JSON.stringify('1595398910709')
-			}})
+		expect(props.navigation.navigate).toHaveBeenCalledWith('GroupItem')
 
 	})
     

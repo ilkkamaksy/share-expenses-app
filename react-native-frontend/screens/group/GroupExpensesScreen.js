@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connect, useSelector } from 'react-redux'
 import { ScrollView, StyleSheet, View } from 'react-native'
 
 import ExpenseList from '../../components/groups/ExpenseList'
@@ -12,10 +13,10 @@ import Colors from '../../constants/Colors'
 import PopupMenuTopRight from '../../components/menus/PopupMenuTopRight'
 
 const GroupExpensesScreen = ({ 
-	route
+	groupToEdit
 }) => {
 
-	const group = route.params.group
+	const group = useSelector(state => state.groups.userGroups.find(group => group.id === groupToEdit.id))
 
 	return (
 		<View style={styles.container}>
@@ -88,8 +89,15 @@ const styles = StyleSheet.create({
 })
 
 GroupExpensesScreen.propTypes = {
-	route: PropTypes.object
+	groupToEdit: PropTypes.object,
 }
 
+const mapStateToProps = state => {
+	return {
+		groupToEdit: state.groups.groupToEdit
+	}
+}
 
-export default GroupExpensesScreen
+const ConnectedGroupExpensesScreen = connect(mapStateToProps, {})(GroupExpensesScreen)
+
+export default ConnectedGroupExpensesScreen

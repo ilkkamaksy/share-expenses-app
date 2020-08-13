@@ -135,7 +135,7 @@ const EditExpense = ({
 			</View>
 			
 			<Heading style={[{ textAlign: 'left', fontSize: 12, color: Colors.secondary, textTransform: 'uppercase', paddingBottom: 5 }]}>
-				Add a new expense
+				Expense details
 			</Heading>
 
 			<View style={styles.form}>

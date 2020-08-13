@@ -22,7 +22,7 @@ const GroupBalanceDetails = ({
 	return (
 		<View style={styles.container}>
 
-			<Text style={styles.subtitle}>Balance summary</Text>
+			<Text style={styles.subtitle}>Balance details</Text>
 			
 			<FlatList 
 				data={group.people} 

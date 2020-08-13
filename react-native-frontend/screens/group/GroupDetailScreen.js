@@ -3,7 +3,7 @@ import { connect, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { ScrollView, StyleSheet, View, TouchableOpacity, Text } from 'react-native'
 
-import { setGroupToEdit, setExpenseToEdit, setExpenseDate } from '../../store/actions/groups'
+import { setExpenseToEdit } from '../../store/actions/groups'
 
 import Group from '../../components/groups/Group'
 import Hero from '../../components/UI/Hero'
@@ -20,22 +20,20 @@ import PopupMenuTopRight from '../../components/menus/PopupMenuTopRight'
 
 const GroupDetailScreen = ({ 
 	navigation, 
-	route, 
-	setGroupToEdit,
+	groupToEdit, 
 	setExpenseToEdit 
 }) => {
 
-	const group = useSelector(state => state.groups.userGroups.find(group => group.id === route.params.group.id))
+	const group = useSelector(state => state.groups.userGroups.find(group => group.id === groupToEdit.id))
 
 	useEffect(() => {
-		setGroupToEdit(group)
-		navigation.setOptions({title: route.params.group.title})
+		navigation.setOptions({ title: group.title })
 	}, [group])
 
 	const createNewExpense = () => {
 		setExpenseToEdit({
 			id: null,
-			groupid: route.params.group.id,
+			groupid: group.id,
 			date: new Date(Date.now()),
 			lastUpdatedAt: null,
 			createdAt: null,
@@ -92,7 +90,7 @@ const GroupDetailScreen = ({
 			</ScrollView>
 
 			<PopupMenuTopRight />
-			<FloatingActionButton onPress={createNewExpense} />
+			<FloatingActionButton onPress={createNewExpense} labelText="Add a new expense" />
 		</View>
 	)
 }
@@ -141,18 +139,20 @@ const styles = StyleSheet.create({
 })
 
 GroupDetailScreen.propTypes = {
-	route: PropTypes.object,
 	navigation: PropTypes.object,
-	setGroupToEdit: PropTypes.func,
+	groupToEdit: PropTypes.object,
 	setExpenseToEdit: PropTypes.func,
-	setExpenseDate: PropTypes.func,
 	expenseToEdit: PropTypes.object
 }
 
-const ConnectedGroupDetailScreen = connect(null, {
-	setExpenseToEdit,
-	setExpenseDate,
-	setGroupToEdit
+const mapStateToProps = state => {
+	return {
+		groupToEdit: state.groups.groupToEdit
+	}
+}
+
+const ConnectedGroupDetailScreen = connect(mapStateToProps, {
+	setExpenseToEdit
 })(GroupDetailScreen)
 
 export default ConnectedGroupDetailScreen

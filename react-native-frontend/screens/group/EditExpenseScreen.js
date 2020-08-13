@@ -28,10 +28,10 @@ const EditExpenseScreen = ({ navigation, groupToEdit }) => {
 				
 				<Hero>
 					<Heading style={[styles.header]}>
-						{`Add a new expense to group "${groupToEdit.title}"`}
+						Add a new expense
 					</Heading>
 					<Paragraph style={[styles.intro]}>
-						{groupToEdit.location}
+						{`Group "${groupToEdit.title}"`}
 					</Paragraph>
 
 				</Hero>

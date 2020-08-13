@@ -14,6 +14,7 @@ import Colors from '../../constants/Colors'
 	
 const GroupList = ({ 
 	getGroups, 
+	setGroupToEdit,
 	fetching, 
 	userGroups,
 	navigation
@@ -22,11 +23,13 @@ const GroupList = ({
 	const [modalVisible, setModalVisible] = useState(false)
 	const [sortBy, setSortBy] = useState('lastUpdatedAt')
 	const [selectedSortingText, setSelectedSortingText] = useState('Most recently updated first')
+	
 	useEffect(() => {
 		getGroups()
 	}, [])
 
 	const onSetSortingOption = (sortingOption) => {
+		
 		getGroups(sortingOption)
 		setSortBy(sortingOption.sortBy)
 		setModalVisible(!modalVisible)
@@ -38,7 +41,11 @@ const GroupList = ({
 		} else {
 			setSelectedSortingText('Most recently updated first')
 		}
+	}
 
+	const onPressGroupItem = (group) => {
+		setGroupToEdit(group)
+		navigation.navigate('GroupItem')
 	}
 
 	if (fetching) {
@@ -104,11 +111,7 @@ const GroupList = ({
 				keyExtractor={item=> item.id}
 				renderItem={itemData => <GroupListItem 
 					item={itemData.item} 
-					onViewDetail={() => {
-						navigation.navigate('GroupItem', {
-							group: itemData.item
-						})
-					}}
+					onViewDetail={() => onPressGroupItem(itemData.item)}
 				/>} 
 			/>
 
@@ -199,7 +202,7 @@ const connectedGroupList = connect(
 	mapStateToProps, 
 	{
 		getGroups,
-		setGroupToEdit
+		setGroupToEdit,
 	}
 )(GroupList)
 

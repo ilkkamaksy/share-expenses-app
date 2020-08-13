@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connect, useSelector } from 'react-redux'
 import { ScrollView, StyleSheet, View } from 'react-native'
 
 import GroupBalanceDetails from '../../components/groups/GroupBalanceDetails'
@@ -12,9 +13,9 @@ import Colors from '../../constants/Colors'
 
 import PopupMenuTopRight from '../../components/menus/PopupMenuTopRight'
 
-const GroupBalanceDetailScreen = ({ route }) => {
+const GroupBalanceDetailScreen = ({ groupToEdit }) => {
 
-	const group = route.params.group
+	const group = useSelector(state => state.groups.userGroups.find(group => group.id === groupToEdit.id))
 
 	return (
 		<View style={styles.container}>
@@ -68,7 +69,15 @@ const styles = StyleSheet.create({
 })
 
 GroupBalanceDetailScreen.propTypes = {
-	route: PropTypes.object,
+	groupToEdit: PropTypes.object,
 }
 
-export default GroupBalanceDetailScreen
+const mapStateToProps = state => {
+	return {
+		groupToEdit: state.groups.groupToEdit
+	}
+}
+
+const ConnectedGroupBalanceDetailScreen = connect(mapStateToProps, {})(GroupBalanceDetailScreen)
+
+export default ConnectedGroupBalanceDetailScreen

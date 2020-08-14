@@ -1,7 +1,8 @@
+/* eslint-disable indent */
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { View, Text, StyleSheet, FlatList } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { Button } from 'react-native-paper'
 import { useNavigation  } from '@react-navigation/native'
 
@@ -36,19 +37,21 @@ const Group = ({
 			<View style={styles.section}>
 				<Text style={styles.subtitle}>Overview</Text>
 
-				<View style={styles.row}>
+				<View style={[styles.row, { borderBottomColor: '#ccc', borderBottomWidth: StyleSheet.hairlineWidth }]}>
 					<Text style={styles.columnTitle}>Person</Text>
 					<Text style={styles.columnTitle}>Balance</Text>
 				</View>
 
-				<FlatList 
-					data={groupTotals} 
-					style={styles.list}
-					keyExtractor={item=> `${item.id}-personListItem`}
-					renderItem={itemData => <PersonListItem 
-						item={itemData.item} 
-					/>} 
-				/>
+				<View style={styles.personList}>
+				{groupTotals.map(item => {
+					return (
+						<PersonListItem 
+							key={`${item.id}-personListItem`}
+							item={item}
+						/>
+					)
+				})}
+				</View>
 
 				<Button 
 					labelStyle={styles.summaryButton}
@@ -63,19 +66,19 @@ const Group = ({
 
 			<View style={styles.section}>
 
-				{group.expenses.length > 0 && <Text style={styles.subtitle}>Recent expenses</Text>}
+				{group.expenses.length > 0 && <Text style={styles.subtitle}>Most recent expense</Text>}
 			
-				<FlatList 
-					data={group.expenses.reverse().slice(0, 3)} 
-					maxToRenderPerBatch={3}
-					keyExtractor={item=> item.id}
-					renderItem={itemData => <ExpenseListItem 
-						people={group.people}
-						expense={itemData.item} 
-						removeExpense={() => removeExpense(itemData.item.id)}
-					/>} 
-				/>
-
+				{group.expenses.reverse().slice(0, 1).map(expense => {
+					return (
+						<ExpenseListItem 
+							key={expense.id}
+							people={group.people}
+							expense={expense} 
+							removeExpense={() => removeExpense(expense.id)}
+						/>
+					)
+				})}
+			
 				<Button 
 					labelStyle={styles.summaryButton}
 					mode="text" 
@@ -101,11 +104,14 @@ const styles = StyleSheet.create({
 		borderBottomColor: '#f2f2f2',
 		borderBottomWidth: StyleSheet.hairlineWidth,
 	},
+	personList: {
+		marginBottom: 20
+	},
 	list: {
 		marginBottom: 20
 	},
 	columnTitle: {
-		fontSize: 14,
+		fontSize: 15,
 		marginBottom: 12,
 		fontWeight: 'bold',
 		color: Colors.coffee
@@ -120,7 +126,7 @@ const styles = StyleSheet.create({
 	},
 	summaryButton: {
 		fontSize: 12,
-		fontWeight: 'bold'
+		fontWeight: 'bold',
 	}
 })
 

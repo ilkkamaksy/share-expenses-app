@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { FlatList, StyleSheet, View, Text, TouchableOpacity, Modal } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity, Modal } from 'react-native'
 import { ActivityIndicator, Checkbox, Button } from 'react-native-paper'
 
 import { getGroups, setGroupToEdit } from '../../store/actions/groups'
@@ -106,14 +106,15 @@ const GroupList = ({
 				</View>
 			</Modal>
 			
-			<FlatList 
-				data={userGroups} 
-				keyExtractor={item=> item.id}
-				renderItem={itemData => <GroupListItem 
-					item={itemData.item} 
-					onViewDetail={() => onPressGroupItem(itemData.item)}
-				/>} 
-			/>
+			{userGroups.map(group => {
+				return (
+					<GroupListItem 
+						key={group.id}
+						item={group} 
+						onViewDetail={() => onPressGroupItem(group)}
+					/>
+				)
+			})}
 
 		</View>
 		

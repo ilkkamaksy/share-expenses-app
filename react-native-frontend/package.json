@@ -6,7 +6,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "test": "jest --verbose --runInBand --collectCoverage --detectOpenHandles",
+    "test": "jest --runInBand --collectCoverage --detectOpenHandles",
     "citest": "eslint . && jest --verbose --runInBand --collectCoverage && codecov",
     "lint": "eslint ."
   },
@@ -42,7 +42,8 @@
     "react-text-mask": "^5.4.3",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "text-mask-addons": "^3.8.0"
+    "text-mask-addons": "^3.8.0",
+    "expo-secure-store": "~9.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
@@ -52,12 +53,14 @@
     "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "^7.4.0",
     "eslint-plugin-react": "^7.20.3",
-    "jest": "^26.1.0",
+    "jest": "^26.4.0",
     "jest-enzyme": "^7.1.2",
+    "jest-expo": "^38.0.2",
     "jest-transform-stub": "^2.0.0",
     "react-native-testing-library": "^2.1.0",
     "react-test-renderer": "^16.13.1",
     "redux-mock-store": "^1.5.4"
   },
   "private": true
+  
 }

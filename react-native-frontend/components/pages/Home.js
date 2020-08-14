@@ -23,7 +23,7 @@ const Home = props => {
 
 			<Heading style={[{ color: Colors.primary }]}>Hey there!</Heading>
 			<Paragraph style={[{ color: Colors.lightCoffee, fontSize: 14.5 }]}>
-					ShareExpenses is an easy way to track shared expenses with your friends and family. Step right in to get started!
+					Track shared expenses with your friends and family. Step right in to get started!
 			</Paragraph>
 			<View style={styles.centered}>
 				<Button 

@@ -32,8 +32,6 @@ const EditGroupInfo = ({
 	const [existingGroupToEdit, setExistingGroupToEdit] = useState({})
 	const [modalVisible, setModalVisible] = useState(false)
 
-	console.log('groupToEdit', groupToEdit)
-	console.log('user', user)
 	useEffect(() => {
 		setExistingGroupToEdit(groupToEdit)
 	}, [])

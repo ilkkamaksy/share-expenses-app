@@ -320,8 +320,6 @@ export const updateGroup = async (group) => {
 
 export const getGroups = async (args) => {
 	
-	console.log('getGroups token', auth.token)
-
 	const variables = {
 		sortBy: args.sortBy,
 		order: args.order

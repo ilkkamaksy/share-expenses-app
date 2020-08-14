@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { View, Text, StyleSheet, FlatList } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { ActivityIndicator } from 'react-native-paper'
 
 import Colors from '../../constants/Colors'
@@ -17,22 +17,21 @@ const GroupBalanceDetails = ({
 		return <ActivityIndicator animating={true} color={Colors.primary} />
 	}
 
-	console.log('final----', groupBalanceData)
-
 	return (
 		<View style={styles.container}>
 
 			<Text style={styles.subtitle}>Balance details</Text>
 			
-			<FlatList 
-				data={group.people} 
-				keyExtractor={item => item.id}
-				renderItem={itemData => <BalanceListItem 
-					person={itemData.item}
-					debtors={groupBalanceData.filter(item => item.debtor.id === itemData.item.id)}
-					totals={groupTotals.find(item => item.id === itemData.item.id)}
-				/>} 
-			/>
+			{group.people.map(person => {
+				return (
+					<BalanceListItem 
+						key={person.id}
+						person={person}
+						debtors={groupBalanceData.filter(item => item.debtor.id === person.id)}
+						totals={groupTotals.find(item => item.id === person.id)}
+					/>
+				)
+			})}
 			
 		</View>
 	)

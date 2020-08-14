@@ -177,7 +177,6 @@ const groupReducer = (state = initialState, action) => {
 			error: ''
 		}
 	case 'CREATE_EXPENSE_SUCCESS' :
-		console.log('create expense success', action.group)
 		return {
 			...state,
 			saveGroupFail: false,

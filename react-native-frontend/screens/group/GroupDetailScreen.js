@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
 	},
 	actions: {
 		position: 'absolute',
-		bottom: 10,
+		bottom: 12,
 		width: '100%'
 	}, 
 	actionLinkContainer: {
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
 	actionLink: {
 		textTransform: 'uppercase',
 		color: Colors.white,
-		fontSize: 10,
+		fontSize: 12,
 		fontWeight: 'bold',
 		marginLeft: 4,
 		letterSpacing: 0.3

@@ -29,4 +29,5 @@
 | 11.8. |   6  | Testejä frontendiin: balances, totals, navigation |
 | 12.8. |   7  | Visuaalisen ilmeen uudistamista, screen-testien lisäystä frontendiin |
 | 13.8. |   7  | Screen-testien lisäystä frontendiin ja turvallisten token-refreshing -tapojen opiskelua |
-| yht   | 182   | | 
+| 14.8. |   5  | ExpoSecureStoren käyttöönotto, tuntitolkulla jestin ja jest-expon herjojen selvittelyä |
+| yht   | 187   | | 

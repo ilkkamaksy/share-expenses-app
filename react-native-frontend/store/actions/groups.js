@@ -246,9 +246,7 @@ export const removeExpense = id =>  {
 		})
 
 		const response = await appService.removeExpense(id)
-		
-		console.log('response', response)
-
+	
 		if (response.data.data.removeExpense === null || response === null) {
 			return dispatch({
 				type: 'REMOVE_EXPENSE_FAIL',

@@ -51,7 +51,6 @@ const EditGroupPeople = ({
 	}
 
 	console.log(contactList)
-	console.log('groupToEdit', groupToEdit)
    
 	return (
 		<ScrollView>

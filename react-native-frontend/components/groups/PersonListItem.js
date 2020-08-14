@@ -23,11 +23,10 @@ const PersonListItem = ({ item }) => {
 
 const styles = StyleSheet.create({
 	item: {
-		borderBottomColor: '#eee',
+		borderBottomColor: '#ddd',
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		flex: 1,
-		paddingTop: 8,
-		paddingBottom: 8,
+		paddingVertical: 10,
 		width: '100%',
 		maxWidth: 340,
 		alignSelf: 'center',
@@ -54,7 +53,7 @@ const styles = StyleSheet.create({
 })
 
 PersonListItem.propTypes = {
-	item: PropTypes.object
+	item: PropTypes.array
 }
 
 export default PersonListItem

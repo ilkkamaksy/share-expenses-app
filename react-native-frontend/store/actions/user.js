@@ -1,5 +1,6 @@
-// import { AsyncStorage } from 'react-native'
-	
+
+import * as SecureStore from 'expo-secure-store'
+
 import userService from '../../services/userService'
 import auth from '../../utils/auth'
 import '../reducers/user'
@@ -21,10 +22,9 @@ export const registerUser = (credentials = null) =>  {
 			})
 		}
 		
-	
-		// await AsyncStorage.setItem('loggedAppUser', JSON.stringify(response.data.data.register))
-	
+		await SecureStore.setItemAsync('loggedIn', JSON.stringify(response.data.data.register))
 		auth.setToken(response.data.data.register.token)
+
 		dispatch({
 			type: 'REGISTER_SUCCESS',
 			userdata: response.data.data.register
@@ -49,10 +49,9 @@ export const loginUser = (credentials = null) =>  {
 			})
 		}
 	
-	
-		// await AsyncStorage.setItem('loggedAppUser', JSON.stringify(response.data.data.login))
-	
+		await SecureStore.setItemAsync('loggedIn', JSON.stringify(response.data.data.login))
 		auth.setToken(response.data.data.login.token)
+
 		dispatch({
 			type: 'LOGIN_SUCCESS',
 			userdata: response.data.data.login
@@ -62,8 +61,6 @@ export const loginUser = (credentials = null) =>  {
 
 export const setEmail = (email) => {
 	return dispatch => {
-
-		
 		dispatch({
 			type: 'SET_USERNAME',
 			email
@@ -88,8 +85,8 @@ export const authenticationCheck = () => {
 		})
         
 		let userdata = null
-		
-		let token = auth.getToken() // await AsyncStorage.getItem('loggedAppUser')
+		// await SecureStore.deleteItemAsync('loggedIn')
+		let token = await SecureStore.getItemAsync('loggedIn')
 
 		if (token) {
 			userdata = JSON.parse(token)
@@ -111,7 +108,7 @@ export const logoutUser = () => {
 			type: 'LOGGING_OUT'
 		})
 		
-		await window.localStorage.removeItem('loggedAppUser')
+		await SecureStore.deleteItemAsync('loggedIn')
 		
 		dispatch({
 			type: 'LOGOUT_DONE'

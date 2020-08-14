@@ -43,9 +43,6 @@ const EditExpense = ({
 		})
 	}
 
-	console.log('EditExpense.js ---- groupToEdit ', groupToEdit)
-	console.log('EditExpense.js ---- expenseToEdit ', expenseToEdit)
-
 	const convertCurrencyValueToText = (value) => {
 		return value 
 			? Number(value / 100).toFixed(2).toString().replace('.', ',') 
@@ -104,8 +101,6 @@ const EditExpense = ({
 				: item)
 		})
 	}
-
-	console.log('expenseToEdit', expenseToEdit)
 
 	const [showDatePicker, setShowDatePicker] = useState(false)
 	const [showTimePicker, setShowTimePicker] = useState(false)

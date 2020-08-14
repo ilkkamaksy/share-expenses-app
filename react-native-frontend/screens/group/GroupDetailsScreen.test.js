@@ -5,6 +5,9 @@ import { render, fireEvent } from 'react-native-testing-library'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import calculateTotals from '../../utils/calculateTotals'
+import calculateBalances from '../../utils/calculateBalances'
+
 import GroupNavigation from '../../navigation/GroupNavigation'
 
 const middlewares = [thunk]
@@ -93,7 +96,8 @@ describe('Testing GroupDetailsScreen', () => {
 					description: 'desc',
 					people: [],
 					details: []
-				}
+				},
+				groupTotals: [calculateTotals(group)]
 			},
 		}
 
@@ -146,7 +150,7 @@ describe('Testing GroupDetailsScreen', () => {
 		const { findByText } = render(component)
 		const overviewTitle = await findByText('Overview')
 		const overviewSummaryButton = await findByText('View summary')
-		const recentExpensesTitle = await findByText('Recent expenses')
+		const recentExpensesTitle = await findByText('Most recent expense')
 		const viewExpensesButton = await findByText('View all expenses')
     
 		expect(overviewTitle).toBeTruthy()

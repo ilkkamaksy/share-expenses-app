@@ -56,12 +56,14 @@ describe('Group test', () => {
 			users: ['u1'],
 			lastUpdatedAt: null,
 			createdAt: null,
-			expenses: [{ ...expense }]
+			expenses: [{ ...expense }],
+
 		}
 
 		store = mockStore({
 			groups: {
-				userGroups: [{ ...group }]
+				userGroups: [{ ...group }],
+				groupTotals: []
 			}
 		})
         

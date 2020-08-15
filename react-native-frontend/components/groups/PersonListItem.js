@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
 })
 
 PersonListItem.propTypes = {
-	item: PropTypes.array
+	item: PropTypes.object
 }
 
 export default PersonListItem

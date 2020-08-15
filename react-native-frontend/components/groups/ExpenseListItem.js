@@ -20,18 +20,18 @@ const ExpenseListItem = ({ people, expense, removeExpense }) => {
 		<View style={styles.item}>			
 			<View>
 				<Text style={styles.title}>{expense.description}</Text>
-				<Text style={styles.description}>{`${formatDate(expense.dateTime)}`}</Text>
-				<Text style={styles.description}>{`Total amount: ${Number(expense.amount / 100).toFixed(2)} €`}</Text>
+				<Text style={styles.date}>{`Date: ${formatDate(expense.dateTime)}`}</Text>
+				<Text style={styles.amount}>{`Total amount: ${Number(expense.amount / 100).toFixed(2)} €`}</Text>
 				
 			</View>
 			{expense.details.map(item => {
 				return (
 					<View key={item.person}>
 						<Text style={styles.columnTitle}>{getPersonName(item.person)}</Text>
-						<View style={styles.row}>
-							<Text numberOfLines={1} style={[styles.expenseDetail, styles.column]}>{`Share: ${Number(item.share / 100).toFixed(2)} €`}</Text>
-							<Text numberOfLines={1} style={[styles.expenseDetail, styles.column]}>{`Paid: ${Number(item.paid / 100).toFixed(2)} €`}</Text>
-							<Text numberOfLines={1} style={[styles.expenseDetail, styles.column]}>{`Balance: ${Number((item.paid - item.share) / 100).toFixed(2)} €`}</Text>
+						<View style={styles.expenseDetailsContainer}>
+							<Text numberOfLines={1} style={styles.expenseDetail}>{`Share: ${Number(item.share / 100).toFixed(2)} €`}</Text>
+							<Text numberOfLines={1} style={styles.expenseDetail}>{`Paid: ${Number(item.paid / 100).toFixed(2)} €`}</Text>
+							<Text numberOfLines={1} style={styles.expenseDetail}>{`Balance: ${Number((item.paid - item.share) / 100).toFixed(2)} €`}</Text>
 						</View>
 					</View>
 
@@ -50,7 +50,7 @@ const ExpenseListItem = ({ people, expense, removeExpense }) => {
 
 const styles = StyleSheet.create({
 	item: {
-		backgroundColor: '#fafafa',
+		backgroundColor: Colors.white,
 		borderBottomColor: '#eee',
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		flex: 1,
@@ -59,6 +59,16 @@ const styles = StyleSheet.create({
 		width: '100%',
 		maxWidth: 340,
 		alignSelf: 'center',
+		borderRadius: 4,
+		shadowColor: '#666',
+		shadowOffset: {
+			width: 0,
+			height: 1,
+		},
+		shadowOpacity: 0.22,
+		shadowRadius: 2.22,
+		
+		elevation: 3,
 	},
 	row: {
 		flexDirection: 'row',
@@ -70,29 +80,38 @@ const styles = StyleSheet.create({
 		width: '30%'
 	},
 	title: {
-		fontSize: 14,
+		fontSize: 16,
 		marginBottom: 6,
 		color: Colors.coffee,
-		fontWeight: 'bold'
+		fontWeight: 'bold',
+		textTransform: 'capitalize'
 	},
-	description: {
-		fontSize: 13,
-		marginBottom: 10,
-		paddingBottom: 10,
-		color: Colors.coffee,
-		borderBottomColor: '#f2f2f2',
+	date: {
+		fontSize: 14,
+		color: Colors.lightCoffee,
+		marginBottom: 5,
+	},
+	amount: {
+		fontSize: 14,
+		marginBottom: 15,
+		paddingBottom: 15,
+		color: Colors.lightCoffee,
+		borderBottomColor: '#bbb',
 		borderBottomWidth: StyleSheet.hairlineWidth,
 	},
 	columnTitle: {
-		fontSize: 13,
+		fontSize: 14,
 		marginBottom: 8,
 		color: Colors.coffee,
 		fontWeight: 'bold'
 	},
+	expenseDetailsContainer: {
+		marginBottom: 20
+	},
 	expenseDetail: {
-		fontSize: 13,
+		fontSize: 14,
 		marginBottom: 6,
-		color: Colors.coffee,
+		color: Colors.lightCoffee,
 	},
 })
 

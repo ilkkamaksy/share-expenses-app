@@ -104,8 +104,8 @@ const styles = StyleSheet.create({
 	actionLink: {
 		textTransform: 'uppercase',
 		color: Colors.white,
-		fontSize: 13,
-		fontWeight: 'normal',
+		fontSize: 12,
+		fontWeight: 'bold',
 		marginLeft: 4,
 		letterSpacing: 0.3
 	}

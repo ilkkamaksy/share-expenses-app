@@ -34,6 +34,8 @@ const EditExpenseScreen = ({ navigation, groupToEdit }) => {
 						{`Group "${groupToEdit.title}"`}
 					</Paragraph>
 
+					<PopupMenuTopRight />
+
 				</Hero>
 
 				<ContentContainer>
@@ -42,8 +44,6 @@ const EditExpenseScreen = ({ navigation, groupToEdit }) => {
 			
 			</ScrollView>
 
-			<PopupMenuTopRight />
-			
 		</View>
 		
 	)

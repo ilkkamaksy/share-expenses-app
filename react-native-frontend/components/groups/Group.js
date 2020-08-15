@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
 		textTransform: 'uppercase'
 	},
 	summaryButton: {
-		fontSize: 12,
+		fontSize: 14,
 		fontWeight: 'bold',
 	}
 })

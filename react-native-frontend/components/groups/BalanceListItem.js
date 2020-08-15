@@ -19,7 +19,7 @@ const BalanceListItem = ({ person, debtors, totals }) => {
 				<View style={styles.row}>
 					<View style={styles.column}>
 						{debtors.filter(debtor => debtor.balance < 0).length > 0 &&  
-							<Text style={styles.receivablesTitle}>Payables</Text> 
+							<Text style={styles.receivablesTitle}>{`${person.name} owes`}</Text> 
 						}
 						{debtors.map(item => {
 							if (item.balance < 0) {
@@ -43,7 +43,7 @@ const BalanceListItem = ({ person, debtors, totals }) => {
 const styles = StyleSheet.create({
 	item: {
 		backgroundColor: Colors.white,
-		borderBottomColor: '#eee',
+		borderBottomColor: '#ccc',
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		flex: 1,
 		marginBottom: 20,
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
 		width: '50%'
 	},
 	title: {
-		fontSize: 14,
+		fontSize: 15,
 		marginBottom: 6,
 		color: Colors.coffee,
 		fontWeight: 'bold'
@@ -76,17 +76,11 @@ const styles = StyleSheet.create({
 		marginBottom: 4,
 		color: Colors.coffee,
 	},
-	columnTitle: {
-		fontSize: 13,
-		marginBottom: 8,
-		color: Colors.coffee,
-		fontWeight: 'bold'
-	},
 	receivablesTitle: {
-		fontSize: 10,
+		fontSize: 12,
 		textTransform: 'uppercase',
 		marginBottom: 6,
-		letterSpacing: 1,
+		letterSpacing: 0.5,
 		color: Colors.secondary,
 		fontWeight: 'bold'
 	},

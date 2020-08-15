@@ -77,6 +77,8 @@ const GroupDetailScreen = ({
 							</TouchableOpacity>
 						</View>
 					</View>
+
+					<PopupMenuTopRight />
 					
 				</Hero>
 				<ContentContainer>
@@ -89,7 +91,7 @@ const GroupDetailScreen = ({
 			
 			</ScrollView>
 
-			<PopupMenuTopRight />
+			
 			<FloatingActionButton onPress={createNewExpense} labelText="Add a new expense" />
 		</View>
 	)

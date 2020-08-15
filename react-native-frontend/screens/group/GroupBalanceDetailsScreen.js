@@ -29,7 +29,8 @@ const GroupBalanceDetailScreen = ({ groupToEdit }) => {
 					<Paragraph style={[styles.intro]}>
 						{`Group "${group.title}"`}
 					</Paragraph>
-					
+
+					<PopupMenuTopRight />		
 				</Hero>
 
 				<ContentContainer>
@@ -39,11 +40,10 @@ const GroupBalanceDetailScreen = ({ groupToEdit }) => {
 					/>
 
 				</ContentContainer>
-			
-			
+
 			</ScrollView>
 
-			<PopupMenuTopRight />
+			
 			
 		</View>
 	)

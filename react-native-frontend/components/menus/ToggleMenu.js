@@ -8,10 +8,10 @@ import Colors from '../../constants/Colors'
 
 import { toggleTopRightMenu } from '../../store/actions/groups'
 
-const ToggleMenu = ({ toggleTopRightMenu, topRightMenuVisible }) => {
+const ToggleMenu = ({ toggleTopRightMenu }) => {
 
 	return (
-		<TouchableOpacity onPress={() => toggleTopRightMenu(!topRightMenuVisible)} style={styles.toggleButton}>
+		<TouchableOpacity onPress={() => toggleTopRightMenu(true)} style={styles.toggleButton}>
 			<Ellipsis size={20} color={Colors.white} />
 		</TouchableOpacity>
 	)
@@ -28,13 +28,7 @@ ToggleMenu.propTypes = {
 	toggleTopRightMenu: PropTypes.func
 }
 
-const mapStateToProps = state => {
-	return {
-		topRightMenuVisible: state.groups.topRightMenuVisible
-	}
-}
-
-const connectedToggleMenu = connect(mapStateToProps, {
+const connectedToggleMenu = connect(null, {
 	toggleTopRightMenu
 })(ToggleMenu)
 

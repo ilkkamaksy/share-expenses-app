@@ -203,10 +203,8 @@ describe('Testing GroupDetailsScreen', () => {
 		await fireEvent(toClick, 'press')
 		
 		const title = await findByText('All expenses')
-		const subTitle = await findByText('Group expenses')
 
 		expect(title).toBeTruthy()
-		expect(subTitle).toBeTruthy()
 
 	})
 })

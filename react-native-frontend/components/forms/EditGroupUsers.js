@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { ScrollView, View, Text, StyleSheet } from 'react-native'
+import { ScrollView, View, Text, StyleSheet, Share } from 'react-native'
+import * as Linking from 'expo-linking'
 import { Button } from 'react-native-paper'
 
 import { doneEditing } from '../../store/actions/groups'
@@ -17,8 +18,41 @@ const EditGroupUsers = ({
 }) => {
 
 	
-	const onInviteToGroup = () => {
-		console.log('pressed')
+	const [appUrl, setAppUrl] = useState(null)
+
+	useEffect(() => {
+		const getAppUrl = async () => {
+			const initialUrl = await Linking.makeUrl('/', {
+				group: groupToEdit.id
+			})
+			setAppUrl(initialUrl)
+		}
+		getAppUrl()
+	}, [])
+
+	console.log('appurl', appUrl)
+
+	const onInviteToGroup = async () => {
+		
+		// await Linking.openURL(appUrl)
+		try {
+			const result = await Share.share({
+				message: `Join my group "${groupToEdit.title}" to track our shared expenses on ShareExpenses App: https://expo.io/--/to-exp/${encodeURIComponent(appUrl)}`,
+				subject: 'Invitation to manage a group in ShareExpenses App',
+				title: 'Invitation to manage a group in ShareExpenses App'
+			})
+			if (result.action === Share.sharedAction) {
+				if (result.activityType) {
+				// shared with activity type of result.activityType
+				} else {
+				// shared
+				}
+			} else if (result.action === Share.dismissedAction) {
+				// dismissed
+			}
+		} catch (error) {
+			alert(error.message)
+		}
 	}
     
 	const onDoneEditingGroup = () => {

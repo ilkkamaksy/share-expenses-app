@@ -22,6 +22,8 @@
     "axios": "^0.19.2",
     "expo": "~38.0.8",
     "expo-contacts": "^8.2.1",
+    "expo-linking": "^1.0.3",
+    "expo-secure-store": "~9.0.1",
     "expo-status-bar": "^1.0.2",
     "graphql": "^15.3.0",
     "prop-types": "^15.7.2",
@@ -42,8 +44,7 @@
     "react-text-mask": "^5.4.3",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "text-mask-addons": "^3.8.0",
-    "expo-secure-store": "~9.0.1"
+    "text-mask-addons": "^3.8.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

@@ -1,19 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect, useSelector } from 'react-redux'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { StyleSheet, View, FlatList } from 'react-native'
 
-import ExpenseList from '../../components/groups/ExpenseList'
+import { removeExpense } from '../../store/actions/groups'
+
 import Hero from '../../components/UI/Hero'
 import Heading from '../../components/UI/Heading'
 import Paragraph from '../../components/UI/Paragraph'
-import ContentContainer from '../../components/UI/ContentContainer'
 import Colors from '../../constants/Colors'
 
 import PopupMenuTopRight from '../../components/menus/PopupMenuTopRight'
+import ExpenseListItem from '../../components/groups/ExpenseListItem'
 
 const GroupExpensesScreen = ({ 
-	groupToEdit
+	groupToEdit,
+	removeExpense
 }) => {
 
 	const group = useSelector(state => state.groups.userGroups.find(group => group.id === groupToEdit.id))
@@ -21,25 +23,26 @@ const GroupExpensesScreen = ({
 	return (
 		<View style={styles.container}>
 
-			<ScrollView>
-				
-				<Hero>
-					<Heading style={[styles.header]}>
+			<FlatList 
+				data={group.expenses} 
+				keyExtractor={item=> item.id}
+				renderItem={itemData => <ExpenseListItem 
+					people={group.people}
+					expense={itemData.item} 
+					removeExpense={() => removeExpense(itemData.item.id)}
+				/>}
+				ListHeaderComponent={
+					<Hero style={[{ marginBottom: 30 }]}>
+						<Heading style={[styles.header]}>
 						All expenses
-					</Heading>
-					<Paragraph style={[styles.intro]}>
-						{`Group "${group.title}"`}
-					</Paragraph>
-
-				</Hero>
-				<ContentContainer>
-					<ExpenseList group={group} />
-				</ContentContainer>
+						</Heading>
+						<Paragraph style={[styles.intro]}>
+							{`Group "${group.title}"`}
+						</Paragraph>
+						<PopupMenuTopRight />
+					</Hero>}
+			/>
 			
-			
-			</ScrollView>
-
-			<PopupMenuTopRight />
 			
 		</View>
 	)
@@ -90,6 +93,7 @@ const styles = StyleSheet.create({
 
 GroupExpensesScreen.propTypes = {
 	groupToEdit: PropTypes.object,
+	removeExpense: PropTypes.func
 }
 
 const mapStateToProps = state => {
@@ -98,6 +102,8 @@ const mapStateToProps = state => {
 	}
 }
 
-const ConnectedGroupExpensesScreen = connect(mapStateToProps, {})(GroupExpensesScreen)
+const ConnectedGroupExpensesScreen = connect(mapStateToProps, {
+	removeExpense
+})(GroupExpensesScreen)
 
 export default ConnectedGroupExpensesScreen

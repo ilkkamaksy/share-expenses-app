@@ -33,6 +33,8 @@ const GroupsOverViewScreen = ({ navigation, setGroupToEdit }) => {
 					<Paragraph style={[styles.intro]}>
 					Browse you groups.
 					</Paragraph>
+					
+					<PopupMenuTopRight />
 				</Hero>
 
 				<ContentContainer>
@@ -40,8 +42,6 @@ const GroupsOverViewScreen = ({ navigation, setGroupToEdit }) => {
 				</ContentContainer>
 			
 			</ScrollView>
-
-			<PopupMenuTopRight />
 
 			<FloatingActionButton onPress={createNewGroup} labelText="Add a new group" />
 

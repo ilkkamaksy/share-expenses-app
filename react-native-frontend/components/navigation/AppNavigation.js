@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import * as Linking from 'expo-linking'
 import { NavigationContainer } from '@react-navigation/native'
 import { ActivityIndicator } from 'react-native-paper'
 
@@ -17,9 +18,24 @@ const AppNavigation = ({
 	registerFail,
 }) => {
 
+	const [url, setUrl] = useState(null)
+
 	useEffect(() => {
 		authenticationCheck()
+
+		const getUrlAsync = async () => {
+			const initialUrlObj = await Linking.parseInitialURLAsync()
+			setUrl(initialUrlObj)
+
+			if (initialUrlObj.queryParams.group) {
+				console.log('groupId', initialUrlObj.queryParams.group)
+			}
+		}
+
+		getUrlAsync()
 	}, [])
+
+	console.log('urllll', url)
 
 	if (loading) {
 		return (

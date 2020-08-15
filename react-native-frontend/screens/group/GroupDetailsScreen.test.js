@@ -6,7 +6,6 @@ import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import calculateTotals from '../../utils/calculateTotals'
-import calculateBalances from '../../utils/calculateBalances'
 
 import GroupNavigation from '../../navigation/GroupNavigation'
 

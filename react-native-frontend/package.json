@@ -55,12 +55,10 @@
     "eslint-plugin-react": "^7.20.3",
     "jest": "^26.4.0",
     "jest-enzyme": "^7.1.2",
-    "jest-expo": "^38.0.2",
     "jest-transform-stub": "^2.0.0",
     "react-native-testing-library": "^2.1.0",
     "react-test-renderer": "^16.13.1",
     "redux-mock-store": "^1.5.4"
   },
   "private": true
-  
 }

@@ -79,7 +79,7 @@ const GroupDetailScreen = ({
 					</View>
 
 					<PopupMenuTopRight />
-					
+
 				</Hero>
 				<ContentContainer>
 					<Group 
@@ -133,10 +133,9 @@ const styles = StyleSheet.create({
 	actionLink: {
 		textTransform: 'uppercase',
 		color: Colors.white,
-		fontSize: 12,
+		fontSize: 11,
 		fontWeight: 'bold',
 		marginLeft: 4,
-		letterSpacing: 0.3
 	}
 })
 

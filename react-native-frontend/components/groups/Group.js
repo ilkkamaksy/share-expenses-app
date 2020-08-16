@@ -23,8 +23,6 @@ const Group = ({
 
 	const navigation = useNavigation()
 	
-	console.log('group', group)
-	
 	useEffect(() => {
 		setGroupTotals(group)
 		setGroupBalanceData(group)
@@ -59,7 +57,7 @@ const Group = ({
 					color={Colors.primary}
 					onPress={() => navigation.navigate('GroupBalanceDetails', { group: group })}
 				>
-					View summary
+					View balance details
 				</Button>
 
 			</View>
@@ -111,7 +109,7 @@ const styles = StyleSheet.create({
 		marginBottom: 20
 	},
 	columnTitle: {
-		fontSize: 15,
+		fontSize: 13,
 		marginBottom: 12,
 		fontWeight: 'bold',
 		color: Colors.coffee
@@ -125,7 +123,7 @@ const styles = StyleSheet.create({
 		textTransform: 'uppercase'
 	},
 	summaryButton: {
-		fontSize: 14,
+		fontSize: 11,
 		fontWeight: 'bold',
 	}
 })

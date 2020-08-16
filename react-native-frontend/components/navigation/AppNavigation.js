@@ -26,12 +26,7 @@ const AppNavigation = ({
 		const getUrlAsync = async () => {
 			const initialUrlObj = await Linking.parseInitialURLAsync()
 			setUrl(initialUrlObj)
-
-			if (initialUrlObj.queryParams.group) {
-				console.log('groupId', initialUrlObj.queryParams.group)
-			}
 		}
-
 		getUrlAsync()
 	}, [])
 

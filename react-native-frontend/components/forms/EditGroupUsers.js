@@ -5,61 +5,125 @@ import { ScrollView, View, Text, StyleSheet, Share } from 'react-native'
 import * as Linking from 'expo-linking'
 import { Button } from 'react-native-paper'
 
-import { doneEditing } from '../../store/actions/groups'
+import { 
+	doneEditing, 
+	addInvitation,
+	removeInvitation, 
+	getInvitationsByCurrentUser 
+} from '../../store/actions/groups'
 
 import Heading from '../UI/Heading'
+import Paragraph from '../UI/Paragraph'
 import Colors from '../../constants/Colors'
 
 const EditGroupUsers = ({ 
 	error, 
 	groupToEdit, 
+	ownedInvitations,
 	doneEditing,
+	addInvitation,
+	removeInvitation,
+	getInvitationsByCurrentUser,
 	navigation 
 }) => {
 
-	
 	const [appUrl, setAppUrl] = useState(null)
+	const [currentInvitation, setCurrentInvitation] = useState(null)
+
+	const oldOwnedInvites = ownedInvitations
 
 	useEffect(() => {
 		const getAppUrl = async () => {
-			const initialUrl = await Linking.makeUrl('/', {
-				group: groupToEdit.id
+			const initialUrl = await Linking.makeUrl('groups/', {
+				id: groupToEdit.id
 			})
 			setAppUrl(initialUrl)
 		}
 		getAppUrl()
-	}, [])
-
-	console.log('appurl', appUrl)
-
-	const onInviteToGroup = async () => {
+		if (ownedInvitations.length === 0 || ownedInvitations.length !== oldOwnedInvites.length) {
+			getInvitationsByCurrentUser()
+		}
 		
-		// await Linking.openURL(appUrl)
+		const foundInvite = ownedInvitations.find(invite => invite.group.id === groupToEdit.id)
+		setCurrentInvitation(foundInvite ? foundInvite : null)
+	}, [ownedInvitations])
+
+	console.log('owned', ownedInvitations)
+
+	const onCreateOpenInvitation = async () => {
+		addInvitation(groupToEdit.id)
+	}
+
+	const onRemoveOpenInvitation = () => {
+		const currentInvite = ownedInvitations.find(invite => invite.group.id === groupToEdit.id)
+		removeInvitation(currentInvite.id)
+	}
+
+	const onShareInvitation = async () => {
 		try {
 			const result = await Share.share({
-				message: `Join my group "${groupToEdit.title}" to track our shared expenses on ShareExpenses App: https://expo.io/--/to-exp/${encodeURIComponent(appUrl)}`,
+				message: `Join my group "${groupToEdit.title}" to track our shared expenses on ShareExpenses App: https://suuntastudios.com/shareapp/?to=${encodeURIComponent(appUrl)}`,
 				subject: 'Invitation to manage a group in ShareExpenses App',
 				title: 'Invitation to manage a group in ShareExpenses App'
 			})
 			if (result.action === Share.sharedAction) {
-				if (result.activityType) {
-				// shared with activity type of result.activityType
-				} else {
-				// shared
-				}
+				console.log('invite shared')
 			} else if (result.action === Share.dismissedAction) {
 				// dismissed
+				console.log('invite cancelled')
 			}
 		} catch (error) {
-			alert(error.message)
+			console.log(error.message)
 		}
 	}
-    
+
+	const publicUrlButton = () => {
+		
+		const existingInvite = ownedInvitations.find(invite => invite.group.id === groupToEdit.id)
+		
+		if (ownedInvitations.length === 0 || !existingInvite) {
+			return (
+				<View>
+					<Paragraph style={[{ textAlign: 'left', fontSize: 11, color: Colors.lightCoffee, lineHeight: 20, marginTop: 20 }]}>
+						Create open access invitation and share it with your friends. 
+					</Paragraph>  
+					<Button 
+						disabled={false} 
+						mode="contained" 
+						onPress={() => onCreateOpenInvitation()}
+						color={Colors.secondary}
+						labelStyle={{ color: Colors.white, fontSize: 11 }}
+					>
+					Create open access invitation
+					</Button>
+				</View>
+				
+			)
+		} else {
+			return (
+				<View style={{ marginTop: 20 }}>
+					<Paragraph style={[{ textAlign: 'left', fontSize: 11, color: Colors.lightCoffee, lineHeight: 20 }]}>
+						{`The open access invitation has been created on ${new Date(JSON.parse(existingInvite.createdAt)).toLocaleDateString()}. You can deactivate this invitation by clicking below, after which no one can join the group using it.`}
+					</Paragraph>    
+					<Button 
+						disabled={false} 
+						mode="outlined" 
+						onPress={() => onRemoveOpenInvitation()}
+						color={Colors.error}
+						labelStyle={{ color: Colors.error, fontSize: 11 }}
+					>
+						Delete open access invite
+					</Button>
+				</View>
+			)
+		}
+	}
+
 	const onDoneEditingGroup = () => {
 		doneEditing(groupToEdit)
 		navigation.navigate('GroupItem', { group: groupToEdit })
 	}
-   
+
 	return (
 		<ScrollView>
 
@@ -74,22 +138,28 @@ const EditGroupUsers = ({
 				textTransform: 'uppercase', 
 				paddingBottom: 5 
 			}]}>
-				Invite a friend to this group
+				Invite friends to manage this group
 			</Heading>
 
 			<View style={styles.form}>
 				
 				<View style={styles.formControl}>
-                        
+					<Paragraph style={[{ textAlign: 'left', fontSize: 13, color: Colors.lightCoffee }]}>
+						Invite friends to join in to manage this group by open access invitation. Note that anyone with the invitation can join this group.
+					</Paragraph>    
+
 					<Button 
-						disabled={false} 
+						disabled={currentInvitation ? false : true} 
 						mode="contained" 
-						onPress={() => onInviteToGroup()}
+						onPress={() => onShareInvitation()}
 						color={Colors.secondary}
-						labelStyle={{ color: Colors.white }}
+						labelStyle={{ color: Colors.white, fontSize: 11 }}
 					>
-                            Invite a friend
+						Share open access invite
 					</Button>
+
+					{publicUrlButton()}
+					
 					
 				</View>
 				
@@ -98,9 +168,9 @@ const EditGroupUsers = ({
 					fontSize: 12, 
 					color: Colors.secondary, 
 					textTransform: 'uppercase', 
-					marginTop: 20 
+					marginTop: 60 
 				}]}>
-					Friends managing this group
+					Users in this group
 				</Heading>
 
 				<View style={styles.formControl}>
@@ -174,10 +244,14 @@ EditGroupUsers.propTypes = {
 	error: PropTypes.string,
 	groupToEdit: PropTypes.object,
 	currentPerson: PropTypes.string,
+	ownedInvitations: PropTypes.array,
 	doneEditing: PropTypes.func,
 	setCurrentPerson: PropTypes.func,
 	addPersonToGroup: PropTypes.func,
-	removePerson: PropTypes.func
+	removePerson: PropTypes.func,
+	addInvitation: PropTypes.func,
+	removeInvitation: PropTypes.func,
+	getInvitationsByCurrentUser: PropTypes.func,
 }
 
 const mapStateToProps = (state) => {
@@ -186,6 +260,7 @@ const mapStateToProps = (state) => {
 		fetching: state.groups.fetching,
 		error: state.groups.error,
 		groupToEdit: state.groups.groupToEdit,
+		ownedInvitations: state.groups.ownedInvitations
 	}
 }
 
@@ -193,6 +268,9 @@ const connectedEditGroupUsers = connect(
 	mapStateToProps,
 	{
 		doneEditing,
+		addInvitation,
+		removeInvitation,
+		getInvitationsByCurrentUser
 	}
 )(EditGroupUsers)
 

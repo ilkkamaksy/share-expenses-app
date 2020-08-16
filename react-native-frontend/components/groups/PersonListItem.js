@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 		borderBottomColor: '#ddd',
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		flex: 1,
-		paddingVertical: 10,
+		paddingVertical: 12,
 		width: '100%',
 		maxWidth: 340,
 		alignSelf: 'center',
@@ -37,16 +37,17 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 	},
 	title: {
-		fontSize: 16,
-		marginBottom: 8,
-		color: Colors.coffee
+		fontSize: 13,
+		marginBottom: 2,
+		color: Colors.lightCoffee
 	},
 	balancePlus: {
-		fontSize: 16,
-		marginBottom: 8,
+		fontSize: 13,
+		marginBottom: 2,
+		color: Colors.lightCoffee
 	},
 	balanceNegative: {
-		fontSize: 16,
+		fontSize: 13,
 		marginBottom: 8,
 		color: Colors.primary
 	}

@@ -63,6 +63,8 @@ describe('Testing EditGroupScreen', () => {
 				error: '',
 				saveGroupFail: false,
 				getGroupsFail: false,
+				ownedInvitations: [],
+				receivedInvitation: null
 			},
 		}
 
@@ -115,8 +117,8 @@ describe('Testing EditGroupScreen', () => {
 
 		await fireEvent(toClick, 'press')
 		
-		const formLabel = await findByText('Invite a friend to this group')
-		const listLabel = await findByText('Friends managing this group')
+		const formLabel = await findByText('Invite friends to manage this group')
+		const listLabel = await findByText('Users in this group')
 		
 		expect(formLabel).toBeTruthy()
 		expect(listLabel).toBeTruthy()

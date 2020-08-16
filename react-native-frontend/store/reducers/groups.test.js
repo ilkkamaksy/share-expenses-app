@@ -36,7 +36,9 @@ describe('test group reducer', () => {
 			saveGroupFail: false,
 			getGroupsFail: false,
 			groupTotals: [],
-			groupBalanceData: []
+			groupBalanceData: [],
+			ownedInvitations: [],
+			receivedInvitation: null
 		}
 		
 	})

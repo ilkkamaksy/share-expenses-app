@@ -5,10 +5,13 @@ const user = require('./user')
 const person = require('./person')
 const group = require('./group')
 const expense = require('./expense')
+const invitation = require('./invitation')
 
 const Query = `
         type Query {
             getGroups(sortBy: String, order: Float): [Group]
+            getInvitationsByCurrentUser: [Invitation]
+            getInvitationByGroup(group: String!): Invitation
             getUserById(id: String): User!
             getUserByEmail(email: String): User!
             me: User
@@ -95,12 +98,18 @@ const Mutation = `
             removeExpense(
                 id: String!
             ): Expense
+            createInvitation(
+                groupid: String!
+            ): Invitation
+            removeInvitation(
+                id: String!
+            ): Invitation
         }
     `
 
 const schema = makeExecutableSchema({
-	typeDefs: [ Query, Mutation, user.typeDef, group.typeDef, person.typeDef, expense.typeDef ],
-	resolvers: merge(user.resolvers, group.resolvers, person.resolvers, expense.resolvers),
+	typeDefs: [ Query, Mutation, user.typeDef, group.typeDef, person.typeDef, expense.typeDef, invitation.typeDef ],
+	resolvers: merge(user.resolvers, group.resolvers, person.resolvers, expense.resolvers, invitation.resolvers),
 })
 
 module.exports = schema

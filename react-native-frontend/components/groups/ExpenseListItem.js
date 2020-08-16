@@ -41,6 +41,7 @@ const ExpenseListItem = ({ people, expense, removeExpense }) => {
 				onPress={removeExpense} 
 				mode="text"
 				color={Colors.primary}
+				labelStyle={{ fontSize: 10 }}
 			>
 				Remove expense
 			</Button>
@@ -80,19 +81,19 @@ const styles = StyleSheet.create({
 		width: '30%'
 	},
 	title: {
-		fontSize: 16,
+		fontSize: 13,
 		marginBottom: 6,
 		color: Colors.coffee,
 		fontWeight: 'bold',
 		textTransform: 'capitalize'
 	},
 	date: {
-		fontSize: 14,
+		fontSize: 12,
 		color: Colors.lightCoffee,
 		marginBottom: 5,
 	},
 	amount: {
-		fontSize: 14,
+		fontSize: 12,
 		marginBottom: 15,
 		paddingBottom: 15,
 		color: Colors.lightCoffee,
@@ -100,8 +101,8 @@ const styles = StyleSheet.create({
 		borderBottomWidth: StyleSheet.hairlineWidth,
 	},
 	columnTitle: {
-		fontSize: 14,
-		marginBottom: 8,
+		fontSize: 13,
+		marginBottom: 10,
 		color: Colors.coffee,
 		fontWeight: 'bold'
 	},
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
 		marginBottom: 20
 	},
 	expenseDetail: {
-		fontSize: 14,
+		fontSize: 12,
 		marginBottom: 6,
 		color: Colors.lightCoffee,
 	},

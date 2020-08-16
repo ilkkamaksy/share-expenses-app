@@ -288,3 +288,93 @@ export const setGroupBalanceData = (group) => {
 		})	
 	}
 }
+
+export const addInvitation = (groupid) => {
+	return async dispatch => {
+		dispatch({
+			type: 'INIT_ADD_INVITATION',
+		})
+
+		const response = await appService.addInvitation(groupid)
+	
+		if (response.data.data.createInvitation === null || response === null) {
+			return dispatch({
+				type: 'ADD_INVITATION_FAIL',
+				response: response.data.errors[0].message
+			})
+		}
+
+		dispatch({
+			type: 'ADD_INVITATION_SUCCESS',
+			invitation: response.data.data.createInvitation
+		})
+	}	
+}
+
+export const removeInvitation = (id) => {
+	return async dispatch => {
+		dispatch({
+			type: 'INIT_REMOVE_INVITATION',
+		})
+
+		const response = await appService.removeInvitation(id)
+	
+		if (response.data.data.removeInvitation === null || response === null) {
+			return dispatch({
+				type: 'REMOVE_INVITATION_FAIL',
+				response: response.data.errors[0].message
+			})
+		}
+
+		dispatch({
+			type: 'REMOVE_INVITATION_SUCCESS',
+			invitation: response.data.data.removeInvitation
+		})
+	}	
+}
+
+export const getInvitationsByCurrentUser = () => {
+	return async dispatch => {
+
+		dispatch({
+			type: 'INIT_GET_OWNED_INVITATIONS',
+		})
+
+		const response = await appService.getInvitationsByCurrentUser()
+	
+		if (response.data.data.getInvitationsByCurrentUser === null || response === null) {
+			return dispatch({
+				type: 'GET_OWNED_INVITATIONS_FAIL',
+				response: response.data.errors[0].message
+			})
+		}
+
+		dispatch({
+			type: 'GET_OWNED_INVITATIONS_SUCCESS',
+			invitations: response.data.data.getInvitationsByCurrentUser
+		})
+	}	
+}
+
+export const getInvitationByUserAndGroup = (groupid) => {
+	return async dispatch => {
+
+		dispatch({
+			type: 'INIT_GET_OPEN_INVITATION',
+		})
+
+		const response = await appService.getInvitationsByCurrentUser(groupid)
+	
+		if (response.data.data.getInvitationByUserAndGroup === null || response === null) {
+			return dispatch({
+				type: 'GET_OPEN_INVITATION_FAIL',
+				response: response.data.errors[0].message
+			})
+		}
+
+		dispatch({
+			type: 'GET_OPEN_INVITATION_SUCCESS',
+			invitations: response.data.data.getInvitationByUserAndGroup
+		})
+	}	
+}

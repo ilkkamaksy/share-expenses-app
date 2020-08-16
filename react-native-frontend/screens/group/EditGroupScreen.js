@@ -5,6 +5,7 @@ import { ScrollView, StyleSheet, View, TouchableOpacity, Text } from 'react-nati
 
 import Hero from '../../components/UI/Hero'
 import Heading from '../../components/UI/Heading'
+import Paragraph from '../../components/UI/Paragraph'
 import ContentContainer from '../../components/UI/ContentContainer'
 import Colors from '../../constants/Colors'
 
@@ -33,8 +34,12 @@ const EditGroupScreen = ({ groupToEdit, navigation }) => {
 		<ScrollView>
 			<Hero>
 				<Heading style={[styles.header]}>
-					{`Edit group "${groupToEdit.title}"`}
+					Edit group
 				</Heading>
+
+				<Paragraph style={[styles.intro]}>
+					{`Group "${groupToEdit.title}"`}
+				</Paragraph>
 
 
 				<View style={styles.actions}>
@@ -104,10 +109,9 @@ const styles = StyleSheet.create({
 	actionLink: {
 		textTransform: 'uppercase',
 		color: Colors.white,
-		fontSize: 12,
+		fontSize: 11,
 		fontWeight: 'bold',
 		marginLeft: 4,
-		letterSpacing: 0.3
 	}
 })
 

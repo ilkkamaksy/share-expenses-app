@@ -31,4 +31,5 @@
 | 13.8. |   7  | Screen-testien lisäystä frontendiin ja turvallisten token-refreshing -tapojen opiskelua |
 | 14.8. |   5  | ExpoSecureStoren käyttöönotto, tuntitolkulla jestin ja jest-expon herjojen selvittelyä |
 | 15.8. |   7  | React Nativen Linking & DeepLinking -opiskelua, group invites- toteutuksen aloitus |
-| yht   | 194   | | 
+| 16.8. |   8  | Group invites- toteutuksen jatkoa, open access-linkki jakometodina |
+| yht   | 202   | | 

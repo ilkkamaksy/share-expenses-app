@@ -10,7 +10,7 @@ const FloatingActionButton = props => {
 		<FAB
 			style={styles.fab}
 			color={Colors.white}
-			small
+			small={false}
 			icon="plus"
 			onPress={() => props.onPress()}
 			accessibilityLabel={props.labelText ? props.labelText : 'FAB'}

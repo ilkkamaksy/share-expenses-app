@@ -148,12 +148,10 @@ describe('Testing GroupDetailsScreen', () => {
 
 		const { findByText } = render(component)
 		const overviewTitle = await findByText('Overview')
-		const overviewSummaryButton = await findByText('View summary')
 		const recentExpensesTitle = await findByText('Most recent expense')
 		const viewExpensesButton = await findByText('View all expenses')
     
 		expect(overviewTitle).toBeTruthy()
-		expect(overviewSummaryButton).toBeTruthy()
 		expect(recentExpensesTitle).toBeTruthy()
 		expect(viewExpensesButton).toBeTruthy()
 		

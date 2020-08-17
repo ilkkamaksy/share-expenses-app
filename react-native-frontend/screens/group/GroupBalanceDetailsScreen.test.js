@@ -89,6 +89,11 @@ describe('Testing GroupBalanceDetailsScreen', () => {
 			},
 			navigation: {
 				topRightMenuVisible: false
+			},
+			invitations: {
+				ownedInvitations: [],
+				openAccessInvitation: null,
+				fetching: false,
 			}
 		}
 

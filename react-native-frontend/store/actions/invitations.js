@@ -9,7 +9,7 @@ export const addInvitation = (groupid) => {
 
 		const response = await inviteService.createInvitation(groupid)
 	
-		if (response.data.data.createInvitation === null || response === null) {
+		if (!response || response.data.errors) {
 			return dispatch({
 				type: 'ADD_INVITATION_FAIL',
 				response: response.data.errors[0].message
@@ -31,7 +31,7 @@ export const removeInvitation = (id) => {
 
 		const response = await inviteService.removeInvitation(id)
 	
-		if (response.data.data.removeInvitation === null || response === null) {
+		if (!response || response.data.errors) {
 			return dispatch({
 				type: 'REMOVE_INVITATION_FAIL',
 				response: response.data.errors[0].message
@@ -53,8 +53,8 @@ export const getInvitationsByCurrentUser = () => {
 		})
 
 		const response = await inviteService.getInvitationsByCurrentUser()
-	
-		if (response.data.data.getInvitationsByCurrentUser === null || response === null) {
+		
+		if (!response || response.data.errors) {
 			return dispatch({
 				type: 'GET_OWNED_INVITATIONS_FAIL',
 				response: response.data.errors[0].message
@@ -77,7 +77,7 @@ export const getInvitationByGroup = (groupid) => {
 
 		const response = await inviteService.getInvitationByGroup(groupid)
 	
-		if (response.data.data.getInvitationByGroup === null || response === null) {
+		if (!response || response.data.errors) {
 			return dispatch({
 				type: 'GET_OPEN_INVITATION_FAIL',
 				response: response.data.errors[0].message
@@ -86,7 +86,29 @@ export const getInvitationByGroup = (groupid) => {
 
 		dispatch({
 			type: 'GET_OPEN_INVITATION_SUCCESS',
-			invitations: response.data.data.getInvitationByGroup
+			invitation: response.data.data.getInvitationByGroup
+		})
+	}	
+}
+
+export const acceptGroupInvite = (inviteid) => {
+	return async dispatch => {
+		dispatch({
+			type: 'INIT_ACCEPT_INVITATION',
+		})
+
+		const response = await inviteService.acceptGroupInvite(inviteid)
+	
+		if (!response || response.data.errors) {
+			return dispatch({
+				type: 'ACCEPT_INVITATION_FAIL',
+				response: response.data.errors[0].message
+			})
+		}
+
+		dispatch({
+			type: 'ACCEPT_INVITATION_SUCCESS',
+			group: response.data.data.acceptGroupInvite
 		})
 	}	
 }

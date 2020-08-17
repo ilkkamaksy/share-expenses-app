@@ -32,4 +32,5 @@
 | 14.8. |   5  | ExpoSecureStoren käyttöönotto, tuntitolkulla jestin ja jest-expon herjojen selvittelyä |
 | 15.8. |   7  | React Nativen Linking & DeepLinking -opiskelua, group invites- toteutuksen aloitus |
 | 16.8. |   8  | Group invites- toteutuksen jatkoa, open access-linkki jakometodina |
-| yht   | 202   | | 
+| 17.8. |   8  | Group invites- toteutuksen jatkoa, avoimen kutsun hyväksyminen, refaktorointi |
+| yht   | 210   | | 

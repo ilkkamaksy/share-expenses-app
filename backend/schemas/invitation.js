@@ -119,6 +119,47 @@ const resolvers = {
 				})
 			}
 		},
+		// args
+		// inviteid: String!
+		acceptGroupInvite: async (root, args, context) => {
+
+			const currentUser = context.currentUser
+
+			if (!currentUser) {
+				throw new AuthenticationError('not authenticated')
+			}
+
+			const inviteInDB = await Invitation.findOne({ _id: args.inviteid })
+		
+			if (!inviteInDB) {
+				throw new ForbiddenError('not authorized')
+			}
+
+			try {
+
+				const filter = { 
+					_id: inviteInDB.group
+				}
+
+				const update = { $addToSet: { users: currentUser._id }}
+
+				return await Group
+					.findOneAndUpdate(
+						filter, 
+						update,
+						{ new: true }
+					)
+					.populate('owner', { email: 1, firstname: 1, lastname: 1 })
+					.populate('users')
+					.populate('people')
+					.populate('expenses')
+
+			} catch (error) {
+				throw new UserInputError(error.message, {
+					invalidArgs: args
+				})
+			}
+		},
 	}
 }
 

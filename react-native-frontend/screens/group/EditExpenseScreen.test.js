@@ -97,6 +97,11 @@ describe('Testing EditExpenseScreen', () => {
 			},
 			navigation: {
 				topRightMenuVisible: false
+			},
+			invitations: {
+				ownedInvitations: [],
+				openAccessInvitation: null,
+				fetching: false,
 			}
 		}
 

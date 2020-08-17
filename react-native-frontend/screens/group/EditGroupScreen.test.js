@@ -63,12 +63,11 @@ describe('Testing EditGroupScreen', () => {
 				error: '',
 				saveGroupFail: false,
 				getGroupsFail: false,
-				ownedInvitations: [],
-				receivedInvitation: null
 			},
 			invitations: {
 				ownedInvitations: [],
-				receivedInvitation: null
+				openAccessInvitation: null,
+				fetching: false,
 			},
 			navigation: {
 				topRightMenuVisible: false

@@ -34,6 +34,11 @@ describe('Testing AppNavigation when user not logged in', () => {
 				error: '',
 				loginFail: false,
 				registerFail: false
+			},
+			invitations: {
+				ownedInvitations: [],
+				openAccessInvitation: null,
+				fetching: false,
 			}
 		})
         
@@ -92,6 +97,11 @@ describe('Testing AppNavigation when user not logged in', () => {
 				error: 'Error message',
 				loginFail: true,
 				registerFail: false
+			},
+			invitations: {
+				ownedInvitations: [],
+				openAccessInvitation: null,
+				fetching: false,
 			}
 		})
         
@@ -119,6 +129,11 @@ describe('Testing AppNavigation when user not logged in', () => {
 				error: 'Error message',
 				loginFail: false,
 				registerFail: true
+			},
+			invitations: {
+				ownedInvitations: [],
+				openAccessInvitation: null,
+				fetching: false,
 			}
 		})
         
@@ -191,6 +206,11 @@ describe('Testing AppNavigation when user is logged in', () => {
 			},
 			navigation: {
 				topRightMenuVisible: false
+			},
+			invitations: {
+				ownedInvitations: [],
+				openAccessInvitation: null,
+				fetching: false,
 			}
 		})
 		

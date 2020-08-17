@@ -50,10 +50,12 @@ const GET_INVITATION_BY_GROUP = `
 			  id
 			  createdAt
 			  owner {
-				  id
+                  id
+                  email
 			  }
 			  group {
-				  id
+                  id
+                  title
 			  }
 		}
   }
@@ -73,6 +75,46 @@ query {
 	}
 }
 `
+
+const ACCEPT_GROUP_INVITATION = `
+	mutation acceptGroupInvite(
+        $inviteid: String!
+	) {
+		acceptGroupInvite(
+            inviteid: $inviteid
+		) {
+            id
+			lastUpdatedAt
+			createdAt
+			title
+			location
+			owner {
+				id
+			}
+			users {
+				id
+				email
+			}
+			people {
+				id
+				name
+			}
+			expenses {
+				id
+				dateTime
+				amount
+				description
+				details {
+					person
+					share
+					paid
+					balance
+				}
+			}
+		}
+  }
+`
+
 
 export const createInvitation = async groupid => {
 	
@@ -138,6 +180,26 @@ export const getInvitationsByCurrentUser = async () => {
 	
 	const data = {
 		query: GET_INVITATIONS_BY_CURRENT_USER
+	}
+
+	const config = {
+		headers: {
+			'Authorization': auth.token
+		}
+	}
+
+	return await axios.post(apiUrl, data, config)
+}
+
+export const acceptGroupInvite = async (inviteid) => {
+	
+	const variables = { 
+		inviteid
+	}
+
+	const data = {
+		query: ACCEPT_GROUP_INVITATION,
+		variables: variables
 	}
 
 	const config = {

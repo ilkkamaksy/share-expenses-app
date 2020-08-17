@@ -5,27 +5,33 @@ import { StyleSheet, View, Text, TouchableOpacity, Modal } from 'react-native'
 import { ActivityIndicator, Checkbox, Button } from 'react-native-paper'
 
 import { getGroups, setGroupToEdit } from '../../store/actions/groups'
+import { acceptGroupInvite } from '../../store/actions/invitations'
 
 import Heading from '../UI/Heading'
 import GroupListItem from './GroupListItem'
 import FilterList from '../icons/FilterList'
+import Banner from '../UI/Banner'
 
 import Colors from '../../constants/Colors'
 	
 const GroupList = ({ 
 	getGroups, 
 	setGroupToEdit,
+	acceptGroupInvite,
 	fetching, 
 	userGroups,
+	openAccessInvitation,
 	navigation
 }) => {
 	
 	const [modalVisible, setModalVisible] = useState(false)
 	const [sortBy, setSortBy] = useState('lastUpdatedAt')
 	const [selectedSortingText, setSelectedSortingText] = useState('Most recently updated first')
-	
+	const [bannerVisible, setBannerVisible] = useState(false)
+
 	useEffect(() => {
 		getGroups()
+		setBannerVisible(openAccessInvitation ? true : false)
 	}, [])
 
 	const onSetSortingOption = (sortingOption) => {
@@ -48,6 +54,16 @@ const GroupList = ({
 		navigation.navigate('GroupItem')
 	}
 
+	const onAcceptInvite = async () => {
+		await acceptGroupInvite(openAccessInvitation.id)
+		setBannerVisible(!bannerVisible)
+		getGroups()
+	}
+
+	const onRejectInvite = () => {
+		setBannerVisible(!bannerVisible)
+	}
+
 	if (fetching) {
 		return (
 			<ActivityIndicator animating={true} color={Colors.primary} />
@@ -57,6 +73,18 @@ const GroupList = ({
 	return (
 		<View style={styles.container}>
 			
+			{openAccessInvitation &&
+				<Banner 
+					visible={bannerVisible}
+					textContent={`Join group "${openAccessInvitation.group.title}" via invitation by ${openAccessInvitation.owner.email}?`} 
+					leftButtonCallback={onAcceptInvite} 
+					leftButtonText="Yes"
+					rightButtonCallback={onRejectInvite}
+					rightButtonText="Nope"
+				/>
+			}
+			
+
 			<TouchableOpacity style={styles.sorting} onPress={() => setModalVisible(!modalVisible)}>
 				<Text style={styles.selectedSortingText}>{selectedSortingText}</Text>
 				<FilterList size={24} color={Colors.primary} />
@@ -182,11 +210,12 @@ const styles = StyleSheet.create({
 
 GroupList.propTypes = {
 	navigation: PropTypes.object,
-	getGroups: PropTypes.func,
-	setGroupToEdit: PropTypes.func,
-	removeGroup: PropTypes.func,
 	fetching: PropTypes.bool,
 	userGroups: PropTypes.array,
+	openAccessInvitation: PropTypes.object,
+	getGroups: PropTypes.func,
+	setGroupToEdit: PropTypes.func,
+	acceptGroupInvite: PropTypes.func,
 }
 
 const mapStateToProps = state => {
@@ -195,7 +224,8 @@ const mapStateToProps = state => {
 		fetching: state.groups.fetching,
 		error: state.groups.error,
 		getGroupsFail: state.groups.getGroupsFail,
-		userGroups: state.groups.userGroups
+		userGroups: state.groups.userGroups,
+		openAccessInvitation: state.invitations.openAccessInvitation
 	}
 }
 
@@ -204,6 +234,7 @@ const connectedGroupList = connect(
 	{
 		getGroups,
 		setGroupToEdit,
+		acceptGroupInvite
 	}
 )(GroupList)
 

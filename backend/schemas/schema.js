@@ -104,6 +104,9 @@ const Mutation = `
             removeInvitation(
                 id: String!
             ): Invitation
+            acceptGroupInvite(
+                inviteid: String!
+            ): Group
         }
     `
 

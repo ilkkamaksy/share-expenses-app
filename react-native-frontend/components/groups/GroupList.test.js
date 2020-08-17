@@ -71,6 +71,11 @@ describe('GroupList test', () => {
 					id: 'u1',
 					email: 'test@test.com'
 				}
+			},
+			invitations: {
+				ownedInvitations: [],
+				openAccessInvitation: null,
+				fetching: false,
 			}
 		})
         

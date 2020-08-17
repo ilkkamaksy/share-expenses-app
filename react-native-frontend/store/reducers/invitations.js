@@ -1,6 +1,7 @@
 const initialState = {
 	ownedInvitations: [],
-	receivedInvitation: null
+	openAccessInvitation: null,
+	fetching: false,	
 }
 
 const inviteReducer = (state = initialState, action) => {
@@ -46,9 +47,11 @@ const inviteReducer = (state = initialState, action) => {
 	case 'INIT_GET_OWNED_INVITATIONS' :
 		return {
 			...state,
-			error: ''
+			error: '',
+			fetching: true
 		}
 	case 'GET_OWNED_INVITATIONS_SUCCESS' :
+		console.log('************************action***********', action.invitations)
 		return {
 			...state,
 			error: '',
@@ -72,9 +75,27 @@ const inviteReducer = (state = initialState, action) => {
 			...state,
 			error: '',
 			fetching: false,
-			receivedInvitations: action.invitation
+			openAccessInvitation: action.invitation
 		}
 	case 'GET_OPEN_INVITATION_FAIL' :
+		return {
+			...state,
+			error: action.response,
+			fetching: false
+		}
+	case 'INIT_ACCEPT_INVITATION' :
+		return {
+			...state,
+			fetching: true,
+			error: ''
+		}
+	case 'ACCEPT_INVITATION_SUCCESS' :
+		return {
+			...state,
+			error: '',
+			fetching: false,
+		}
+	case 'ACCEPT_INVITATION_FAIL' :
 		return {
 			...state,
 			error: action.response,

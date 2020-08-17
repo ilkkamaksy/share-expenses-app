@@ -69,6 +69,11 @@ describe('Testing GroupsOverviewScreen', () => {
 			},
 			navigation: {
 				topRightMenuVisible: false
+			},
+			invitations: {
+				ownedInvitations: [],
+				openAccessInvitation: null,
+				fetching: false,
 			}
 		}
 

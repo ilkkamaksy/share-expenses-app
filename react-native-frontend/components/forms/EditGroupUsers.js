@@ -31,8 +31,6 @@ const EditGroupUsers = ({
 	const [appUrl, setAppUrl] = useState(null)
 	const [currentInvitation, setCurrentInvitation] = useState(null)
 
-	const oldOwnedInvites = ownedInvitations
-
 	useEffect(() => {
 		const getAppUrl = async () => {
 			const initialUrl = await Linking.makeUrl('groups/', {
@@ -41,23 +39,20 @@ const EditGroupUsers = ({
 			setAppUrl(initialUrl)
 		}
 		getAppUrl()
-		if (ownedInvitations.length === 0 || ownedInvitations.length !== oldOwnedInvites.length) {
-			getInvitationsByCurrentUser()
-		}
 		
+		getInvitationsByCurrentUser()
 		const foundInvite = ownedInvitations.find(invite => invite.group.id === groupToEdit.id)
 		setCurrentInvitation(foundInvite ? foundInvite : null)
-	}, [ownedInvitations])
 
-	console.log('owned', ownedInvitations)
+	}, [ownedInvitations.length])
 
 	const onCreateOpenInvitation = async () => {
-		addInvitation(groupToEdit.id)
+		await addInvitation(groupToEdit.id)
 	}
 
-	const onRemoveOpenInvitation = () => {
-		const currentInvite = ownedInvitations.find(invite => invite.group.id === groupToEdit.id)
-		removeInvitation(currentInvite.id)
+	const onRemoveOpenInvitation = async () => {
+		await removeInvitation(currentInvitation.id)
+		setCurrentInvitation(null)
 	}
 
 	const onShareInvitation = async () => {
@@ -80,9 +75,7 @@ const EditGroupUsers = ({
 
 	const publicUrlButton = () => {
 		
-		const existingInvite = ownedInvitations.find(invite => invite.group.id === groupToEdit.id)
-		
-		if (ownedInvitations.length === 0 || !existingInvite) {
+		if (!currentInvitation) {
 			return (
 				<View>
 					<Paragraph style={[{ textAlign: 'left', fontSize: 11, color: Colors.lightCoffee, lineHeight: 20, marginTop: 20 }]}>
@@ -104,7 +97,7 @@ const EditGroupUsers = ({
 			return (
 				<View style={{ marginTop: 20 }}>
 					<Paragraph style={[{ textAlign: 'left', fontSize: 11, color: Colors.lightCoffee, lineHeight: 20 }]}>
-						{`The open access invitation has been created on ${new Date(JSON.parse(existingInvite.createdAt)).toLocaleDateString()}. You can deactivate this invitation by clicking below, after which no one can join the group using it.`}
+						{`The open access invitation has been created on ${new Date(JSON.parse(currentInvitation.createdAt)).toLocaleDateString()}. You can deactivate this invitation by clicking below, after which no one can join the group using it.`}
 					</Paragraph>    
 					<Button 
 						disabled={false} 
@@ -241,7 +234,6 @@ const styles = StyleSheet.create({
 EditGroupUsers.propTypes = {
 	navigation: PropTypes.object,
 	user: PropTypes.object,
-	fetching: PropTypes.bool,
 	error: PropTypes.string,
 	groupToEdit: PropTypes.object,
 	currentPerson: PropTypes.string,
@@ -258,7 +250,6 @@ EditGroupUsers.propTypes = {
 const mapStateToProps = (state) => {
 	return {
 		user: state.user.user,
-		fetching: state.groups.fetching,
 		error: state.groups.error,
 		groupToEdit: state.groups.groupToEdit,
 		ownedInvitations: state.invitations.ownedInvitations

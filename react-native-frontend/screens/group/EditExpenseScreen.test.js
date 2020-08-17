@@ -95,6 +95,9 @@ describe('Testing EditExpenseScreen', () => {
 					details: []
 				}
 			},
+			navigation: {
+				topRightMenuVisible: false
+			}
 		}
 
 		store = mockStore(initialState)

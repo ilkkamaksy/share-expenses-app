@@ -66,6 +66,13 @@ describe('Testing EditGroupScreen', () => {
 				ownedInvitations: [],
 				receivedInvitation: null
 			},
+			invitations: {
+				ownedInvitations: [],
+				receivedInvitation: null
+			},
+			navigation: {
+				topRightMenuVisible: false
+			}
 		}
 
 		store = mockStore(initialState)

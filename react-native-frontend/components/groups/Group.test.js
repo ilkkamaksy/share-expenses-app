@@ -41,7 +41,9 @@ describe('Group test', () => {
 			createdAt: null,
 			description: 'desc',
 			amount: Number(10).toFixed(2),
-			people: ['p1'],
+			people: [
+				{ id: 'p1', name: 'person 1' }
+			],
 			details: []
 		}
 
@@ -52,11 +54,15 @@ describe('Group test', () => {
 				id: 'u1'
 			}, 
 			location: 'somewhere',
-			people: ['p1'],
-			users: ['u1'],
+			people: [
+				{ id: 'p1', name: 'person 1' }
+			],
+			users: [
+				{ id: 'u1', email: 'a@a.fi' }
+			],
 			lastUpdatedAt: null,
 			createdAt: null,
-			expenses: [{ ...expense }],
+			expenses: [expense],
 
 		}
 

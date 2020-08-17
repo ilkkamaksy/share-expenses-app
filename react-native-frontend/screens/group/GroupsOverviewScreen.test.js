@@ -15,8 +15,8 @@ jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper')
 
 jest.mock('react-native-vector-icons')
 
-import { getGroups } from '../../services/appService'
-jest.mock('../../services/appService')
+import * as groupService from '../../services/groupService'
+jest.mock('../../services/groupService')
 
 describe('Testing GroupsOverviewScreen', () => {
 
@@ -67,6 +67,9 @@ describe('Testing GroupsOverviewScreen', () => {
 				saveGroupFail: false,
 				getGroupsFail: false,
 			},
+			navigation: {
+				topRightMenuVisible: false
+			}
 		}
 
 		store = mockStore(initialState)
@@ -88,7 +91,7 @@ describe('Testing GroupsOverviewScreen', () => {
 		
 		expect(groups.length).toEqual(1)
 		expect(title).toBeTruthy()	
-		expect(getGroups).toHaveBeenCalledTimes(1)
+		expect(groupService.getGroups).toHaveBeenCalledTimes(1)
 		
 	})
 

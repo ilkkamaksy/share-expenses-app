@@ -83,6 +83,9 @@ describe('Testing GroupExpensesScreen', () => {
 				saveGroupFail: false,
 				getGroupsFail: false,
 			},
+			navigation: {
+				topRightMenuVisible: false
+			}
 		}
 
 

@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { ScrollView, View, Text, StyleSheet, Platform } from 'react-native'
-import { Button } from 'react-native-paper'
+import { Button, ActivityIndicator } from 'react-native-paper'
 
+import { doneEditing } from '../../store/actions/groups'
+	
 import { 
 	setCurrentPerson, 
-	addPersonToGroup, 
-	removePerson, 
-	doneEditing } from '../../store/actions/groups'
-	
+	addPerson, 
+	removePerson 
+} from '../../store/actions/people'
+
 import contactsService from '../../services/contactsService'
 
 import Heading from '../UI/Heading'
@@ -18,10 +20,11 @@ import Colors from '../../constants/Colors'
 
 const EditGroupPeople = ({ 
 	error, 
+	fetching,
 	groupToEdit, 
 	currentPerson, 
 	setCurrentPerson, 
-	addPersonToGroup, 
+	addPerson, 
 	removePerson,
 	doneEditing,
 	navigation 
@@ -38,9 +41,9 @@ const EditGroupPeople = ({
 		})()
 	}, [])
     
-	const onAddPersonToGroup = () => {
+	const onAddPerson = () => {
 		if (!groupToEdit.people.includes(currentPerson) && currentPerson.trim().length > 0) {
-			addPersonToGroup({ name: currentPerson.trim(), groupid: groupToEdit.id })
+			addPerson({ name: currentPerson.trim(), groupid: groupToEdit.id })
 			setCurrentPerson('')
 		}
 	}
@@ -80,12 +83,14 @@ const EditGroupPeople = ({
 						
 				</View>
 
-				<View style={styles.formControl}>
+				<View style={[styles.formControl, { position: 'relative' }]}>
                         
+					{fetching && <ActivityIndicator animating={true} color={Colors.primary} style={{ position: 'absolute', top: 10, width: '100%' }} />}
+
 					<Button 
-						disabled={currentPerson.length === 0 ? true : false} 
+						disabled={currentPerson.length === 0 || fetching} 
 						mode="contained" 
-						onPress={() => onAddPersonToGroup()}
+						onPress={() => onAddPerson()}
 						color={Colors.secondary}
 						labelStyle={{ color: Colors.white }}
 					>
@@ -160,7 +165,7 @@ EditGroupPeople.propTypes = {
 	currentPerson: PropTypes.string,
 	doneEditing: PropTypes.func,
 	setCurrentPerson: PropTypes.func,
-	addPersonToGroup: PropTypes.func,
+	addPerson: PropTypes.func,
 	removePerson: PropTypes.func
 }
 
@@ -179,7 +184,7 @@ const connectedEditGroupPeople = connect(
 	{
 		doneEditing,
 		setCurrentPerson,
-		addPersonToGroup,
+		addPerson,
 		removePerson
 	}
 )(EditGroupPeople)

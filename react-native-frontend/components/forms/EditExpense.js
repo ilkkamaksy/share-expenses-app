@@ -9,7 +9,8 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import { 
 	setExpenseDate, 
 	setExpenseToEdit, 
-	addExpense } from '../../store/actions/groups'
+	addExpense 
+} from '../../store/actions/expenses'
 
 import Heading from '../UI/Heading'
 import Colors from '../../constants/Colors'

@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
@@ -6,7 +5,8 @@ import { View, Text, StyleSheet } from 'react-native'
 import { Button } from 'react-native-paper'
 import { useNavigation  } from '@react-navigation/native'
 
-import { removeExpense, setGroupTotals, setGroupBalanceData } from '../../store/actions/groups'
+import { setGroupTotals, setGroupBalanceData } from '../../store/actions/groups'
+import { removeExpense } from '../../store/actions/expenses'
 
 import Colors from '../../constants/Colors'
 
@@ -41,14 +41,14 @@ const Group = ({
 				</View>
 
 				<View style={styles.personList}>
-				{groupTotals.map(item => {
-					return (
-						<PersonListItem 
-							key={`${item.id}-personListItem`}
-							item={item}
-						/>
-					)
-				})}
+					{groupTotals.map(item => {
+						return (
+							<PersonListItem 
+								key={`${item.id}-personListItem`}
+								item={item}
+							/>
+						)
+					})}
 				</View>
 
 				<Button 

@@ -87,6 +87,9 @@ describe('Testing GroupBalanceDetailsScreen', () => {
 				groupTotals: calculateTotals(group),
 				groupBalanceData: calculateBalances(group)
 			},
+			navigation: {
+				topRightMenuVisible: false
+			}
 		}
 
 		store = mockStore(initialState)

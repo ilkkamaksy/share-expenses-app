@@ -5,12 +5,13 @@ import { ScrollView, View, Text, StyleSheet, Share } from 'react-native'
 import * as Linking from 'expo-linking'
 import { Button } from 'react-native-paper'
 
+import { doneEditing } from '../../store/actions/groups'
+
 import { 
-	doneEditing, 
 	addInvitation,
 	removeInvitation, 
 	getInvitationsByCurrentUser 
-} from '../../store/actions/groups'
+} from '../../store/actions/invitations'
 
 import Heading from '../UI/Heading'
 import Paragraph from '../UI/Paragraph'
@@ -260,7 +261,7 @@ const mapStateToProps = (state) => {
 		fetching: state.groups.fetching,
 		error: state.groups.error,
 		groupToEdit: state.groups.groupToEdit,
-		ownedInvitations: state.groups.ownedInvitations
+		ownedInvitations: state.invitations.ownedInvitations
 	}
 }
 

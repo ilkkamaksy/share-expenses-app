@@ -1,6 +1,6 @@
 import React from 'react'
 import { Provider } from 'react-redux'
-import { render, fireEvent, act } from 'react-native-testing-library'
+import { render, fireEvent } from 'react-native-testing-library'
 import thunk from 'redux-thunk'
 
 import configureStore from 'redux-mock-store'
@@ -15,8 +15,8 @@ jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper')
 
 jest.mock('react-native-vector-icons')
 
-import { getGroups } from '../../services/appService'
-jest.mock('../../services/appService')
+import * as groupService from '../../services/groupService'
+jest.mock('../../services/groupService')
 
 describe('Testing AppNavigation when user not logged in', () => {
 
@@ -189,6 +189,9 @@ describe('Testing AppNavigation when user is logged in', () => {
 				saveGroupFail: false,
 				getGroupsFail: false
 			},
+			navigation: {
+				topRightMenuVisible: false
+			}
 		})
 		
 		component = (
@@ -206,32 +209,9 @@ describe('Testing AppNavigation when user is logged in', () => {
 		
 		expect(groups.length).toEqual(1)
 		expect(title).toBeTruthy()	
-		expect(getGroups).toHaveBeenCalledTimes(1)
+		expect(groupService.getGroups).toHaveBeenCalledTimes(1)
 		
 	})
-
-	// test('clicking a group takes you to the group details screen', async () => {
-
-	// 	const { findByText } = render(component)
-	// 	const toClick = await findByText('some group')
-
-	// 	await fireEvent(toClick, 'press')
-		
-	// 	const subTitle = await findByText('Overview')
-
-	// 	expect(subTitle).toBeTruthy()
-	// })
-
-	// test('clicking create group takes you to the create group screen', async () => {
-
-	// 	const { getByA11yLabel, findByText } = render(component)
-	// 	const toClick = await getByA11yLabel('Add a new group')
-
-	// 	await fireEvent(toClick, 'press')
-		
-	// 	const title = await findByText('Add a new group')
-
-	// 	expect(title).toBeTruthy()
-	// })
+	
 })
 

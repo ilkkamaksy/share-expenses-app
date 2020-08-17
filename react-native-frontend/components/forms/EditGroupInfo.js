@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { ScrollView, View, Text, StyleSheet, TouchableHighlight } from 'react-native'
-import { Button } from 'react-native-paper'
+import { Button, ActivityIndicator } from 'react-native-paper'
 
 import { 
 	setGroupTitle, 
 	setGroupLocation, 
-	saveGroup, 
+	createGroup, 
 	updateGroup,
 	removeGroup 
 } from '../../store/actions/groups'
@@ -20,10 +20,11 @@ import Colors from '../../constants/Colors'
 const EditGroupInfo = ({ 
 	user,
 	error, 
+	fetching,
 	groupToEdit, 
 	setGroupTitle, 
 	setGroupLocation, 
-	saveGroup, 
+	createGroup, 
 	updateGroup,
 	removeGroup,
 	navigation 
@@ -47,7 +48,7 @@ const EditGroupInfo = ({
 
 	const onSaveGroup = async () => {
 		if (!groupToEdit.id) {
-			await saveGroup(groupToEdit)
+			await createGroup(groupToEdit)
 			navigation.navigate('AddGroupPeople')
 		} else {
 			await updateGroup(groupToEdit)
@@ -134,15 +135,18 @@ const EditGroupInfo = ({
 					/>
 				</View>
 			
-				<View style={styles.formControl}>
+				<View style={[styles.formControl, { position: 'relative' }]}>
+					
+					{fetching && <ActivityIndicator animating={true} color={Colors.primary} style={{ position: 'absolute', top: 20, width: '100%' }} />}
+					
 					<Button 
-						disabled={validateForm()} 
+						disabled={validateForm() || fetching} 
 						mode="contained" 
 						onPress={onSaveGroup}
 						color={Colors.primary}
 						labelStyle={{ color: Colors.white }}
 						style={styles.button}
-					>
+					>	
 						{!groupToEdit.id ? 'Save & start adding people' : 'Save changes'}
 					</Button>
 				</View>
@@ -214,7 +218,7 @@ EditGroupInfo.propTypes = {
 	groupToEdit: PropTypes.object,
 	setGroupTitle: PropTypes.func,
 	setGroupLocation: PropTypes.func,
-	saveGroup: PropTypes.func,
+	createGroup: PropTypes.func,
 	updateGroup: PropTypes.func,
 	setGroupToEdit: PropTypes.func,
 	removeGroup: PropTypes.func
@@ -234,7 +238,7 @@ const connectedEditGroupInfo = connect(
 	{
 		setGroupTitle,
 		setGroupLocation,
-		saveGroup,
+		createGroup,
 		updateGroup,
 		removeGroup
 	}

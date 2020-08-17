@@ -3,7 +3,7 @@ import { connect, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { ScrollView, StyleSheet, View, TouchableOpacity, Text } from 'react-native'
 
-import { setExpenseToEdit } from '../../store/actions/groups'
+import { setExpenseToEdit } from '../../store/actions/expenses'
 
 import Group from '../../components/groups/Group'
 import Hero from '../../components/UI/Hero'

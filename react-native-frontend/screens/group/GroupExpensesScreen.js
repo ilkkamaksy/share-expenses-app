@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect, useSelector } from 'react-redux'
 import { StyleSheet, View, FlatList } from 'react-native'
 
-import { removeExpense } from '../../store/actions/groups'
+import { removeExpense } from '../../store/actions/expenses'
 
 import Hero from '../../components/UI/Hero'
 import Heading from '../../components/UI/Heading'

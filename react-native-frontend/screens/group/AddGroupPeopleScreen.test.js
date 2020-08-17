@@ -58,6 +58,9 @@ describe('Testing CreateGroupScreen', () => {
 				saveGroupFail: false,
 				getGroupsFail: false,
 			},
+			navigation: {
+				topRightMenuVisible: false
+			}
 		}
 
 		store = mockStore(initialState)

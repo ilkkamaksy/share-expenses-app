@@ -1,5 +1,4 @@
 const initialState = {
-	topRightMenuVisible: false,
 	groupToEdit: {
 		id: null,
 		lastUpdatedAt: null,
@@ -28,18 +27,11 @@ const initialState = {
 	saveGroupFail: false,
 	getGroupsFail: false,
 	groupTotals: [],
-	groupBalanceData: [],
-	ownedInvitations: [],
-	receivedInvitation: null
+	groupBalanceData: []
 }
 
 const groupReducer = (state = initialState, action) => {
 	switch (action.type) {
-	case 'TOGGLE_TOP_RIGHT_MENU' : 
-		return {
-			...state,
-			topRightMenuVisible: action.visibility
-		}
 	case 'SET_GROUP_TO_EDIT' : 
 		return {
 			...state,
@@ -135,12 +127,14 @@ const groupReducer = (state = initialState, action) => {
 	case 'INIT_UPDATE_GROUP' : 
 		return {
 			...state,
-			error: ''
+			error: '',
+			fetching: true
 		}
 	case 'UPDATE_GROUP_FAIL' : 
 		return {
 			...state,
-			error: action.response
+			error: action.response,
+			fetching: false
 		}
 	case 'UPDATE_GROUP_SUCCESS' :
 		return {
@@ -149,6 +143,7 @@ const groupReducer = (state = initialState, action) => {
 			groupToEdit: action.group,
 			saveGroupFail: false,
 			error: '',
+			fetching: false
 		}
 	case 'ADD_PERSON_TO_GROUP_SUCCESS' : 
 		return {
@@ -157,6 +152,7 @@ const groupReducer = (state = initialState, action) => {
 				...state.groupToEdit, 
 				people: [...state.groupToEdit.people, action.person]
 			},
+			fetching: false
 		}
 	case 'REMOVE_PERSON_SUCCESS' : 
 		return {
@@ -164,7 +160,8 @@ const groupReducer = (state = initialState, action) => {
 			groupToEdit: {
 				...state.groupToEdit, 
 				people: state.groupToEdit.people.filter(person => person.id !== action.id)
-			}
+			},
+			fetching: false
 		}
 	case 'DONE_EDITING_GROUP' : 
 		return {
@@ -176,7 +173,7 @@ const groupReducer = (state = initialState, action) => {
 			...state,
 			fetching: true,
 			saveGroupFail: false,
-			error: ''
+			error: '',
 		}
 	case 'CREATE_EXPENSE_SUCCESS' :
 		return {
@@ -197,7 +194,8 @@ const groupReducer = (state = initialState, action) => {
 	case 'INIT_REMOVE_EXPENSE' :
 		return {
 			...state,
-			error: ''
+			error: '',
+			fetching: true
 		}
 	case 'REMOVE_EXPENSE_SUCCESS' :
 		return {
@@ -208,12 +206,14 @@ const groupReducer = (state = initialState, action) => {
 					...group,
 					expenses
 				}
-			})
+			}),
+			fetching: false
 		}
 	case 'REMOVE_EXPENSE_FAIL' :
 		return {
 			...state,
-			error: action.response
+			error: action.response,
+			fetching: false
 		}
 	case 'SET_GROUP_TOTALS' :
 		return {
@@ -229,80 +229,6 @@ const groupReducer = (state = initialState, action) => {
 		return {
 			...state,
 			groupBalanceData: action.groupBalanceData
-		}
-	case 'INIT_ADD_INVITATION' :
-		return {
-			...state,
-			fetching: true,
-			error: ''
-		}
-	case 'ADD_INVITATION_SUCCESS' :
-		return {
-			...state,
-			error: '',
-			fetching: false,
-			ownedInvitations: [...state.ownedInvitations, action.invitation],
-		}
-	case 'ADD_INVITATION_FAIL' :
-		return {
-			...state,
-			error: action.response,
-			fetching: false
-		}
-	case 'INIT_REMOVE_INVITATION' :
-		return {
-			...state,
-			fetching: true,
-			error: ''
-		}
-	case 'REMOVE_INVITATION_SUCCESS' :
-		return {
-			...state,
-			error: '',
-			fetching: false,
-			ownedInvitations: state.ownedInvitations.filter(invite => invite.id !== action.invitation.id),
-		}
-	case 'REMOVE_INVITATION_FAIL' :
-		return {
-			...state,
-			error: action.response,
-			fetching: false
-		}
-	case 'INIT_GET_OWNED_INVITATIONS' :
-		return {
-			...state,
-			error: ''
-		}
-	case 'GET_OWNED_INVITATIONS_SUCCESS' :
-		return {
-			...state,
-			error: '',
-			fetching: false,
-			ownedInvitations: action.invitations,
-		}
-	case 'GET_OWNED_INVITATIONS_FAIL' :
-		return {
-			...state,
-			error: action.response,
-			fetching: false
-		}
-	case 'INIT_GET_OPEN_INVITATION' :
-		return {
-			...state,
-			error: ''
-		}
-	case 'GET_OPEN_INVITATION_SUCCESS' :
-		return {
-			...state,
-			error: '',
-			fetching: false,
-			receivedInvitations: action.invitation
-		}
-	case 'GET_OPEN_INVITATION_FAIL' :
-		return {
-			...state,
-			error: action.response,
-			fetching: false
 		}
 	default: return state
 	}

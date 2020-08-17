@@ -1,5 +1,4 @@
 import reducer from './groups'
-import * as actions from '../actions/groups'
 
 describe('test group reducer', () => {
 
@@ -7,7 +6,6 @@ describe('test group reducer', () => {
     
 	beforeEach(() => {
 		initialState = {
-			topRightMenuVisible: false,
 			groupToEdit: {
 				title: '',
 				location: '',
@@ -37,8 +35,6 @@ describe('test group reducer', () => {
 			getGroupsFail: false,
 			groupTotals: [],
 			groupBalanceData: [],
-			ownedInvitations: [],
-			receivedInvitation: null
 		}
 		
 	})
@@ -47,22 +43,6 @@ describe('test group reducer', () => {
 		expect(reducer(undefined, {})).toEqual(
 			initialState
 		)
-	})
-
-	it('should handle TOGGLE_TOP_RIGHT_MENU', () => {
-
-		const visibility = true
-
-		expect(
-			reducer([], {
-				type: 'TOGGLE_TOP_RIGHT_MENU',
-				visibility
-			})
-		).toEqual(
-			{
-				topRightMenuVisible: visibility,
-			}
-		)		
 	})
 
 	it('should handle SET_GROUP_TO_EDIT', () => {
@@ -349,6 +329,11 @@ describe('test group reducer', () => {
 
 		const error = 'fail'
 
+		initialState = {
+			...initialState,
+			fetching: false
+		}
+
 		expect(
 			reducer(initialState, {
 				type: 'UPDATE_GROUP_FAIL',
@@ -357,6 +342,7 @@ describe('test group reducer', () => {
 		).toEqual(
 			{
 				...initialState,
+				fetching: false,
 				error
 			}
 		)		
@@ -374,6 +360,7 @@ describe('test group reducer', () => {
 
 		initialState = {
 			...initialState,
+			fetching: false,
 			userGroups: [...initialState.userGroups, group]
 		}
 
@@ -390,6 +377,7 @@ describe('test group reducer', () => {
 		).toEqual(
 			{
 				...initialState,
+				fetching: false,
 				userGroups: [
 					{
 						title: 'new group title',
@@ -414,6 +402,11 @@ describe('test group reducer', () => {
 			id: 'p2',
 		}
 
+		initialState = {
+			...initialState,
+			fetching: false
+		}
+		
 		expect(
 			reducer(initialState, {
 				type: 'ADD_PERSON_TO_GROUP_SUCCESS',
@@ -422,6 +415,7 @@ describe('test group reducer', () => {
 		).toEqual(
 			{
 				...initialState,
+				fetching: false,
 				groupToEdit: {...initialState.groupToEdit, people: [...initialState.groupToEdit.people, person]}
 			}
 		)

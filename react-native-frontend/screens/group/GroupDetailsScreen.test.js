@@ -38,9 +38,9 @@ describe('Testing GroupDetailsScreen', () => {
 			createdAt: date,
 			description: 'desc',
 			people: [
-				{ id: 'p1', name: 'Person 1'}, 
-				{ id: 'p2', name: 'Person 2'},
-				{ id: 'p3', name: 'Person 3'}
+				{ id: 'p1', name: 'person 1'}, 
+				{ id: 'p2', name: 'person 2'},
+				{ id: 'p3', name: 'person 3'}
 			],
 			details: [
 				{ person: 'p1', share: 2000, paid: 6000, balance: 4000 },
@@ -98,6 +98,9 @@ describe('Testing GroupDetailsScreen', () => {
 				},
 				groupTotals: [calculateTotals(group)]
 			},
+			navigation: {
+				topRightMenuVisible: false
+			}
 		}
 
 		store = mockStore(initialState)

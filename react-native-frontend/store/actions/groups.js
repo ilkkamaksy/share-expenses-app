@@ -1,16 +1,7 @@
-import * as appService from '../../services/appService'
+import * as groupService from '../../services/groupService'
 import calculateTotals from '../../utils/calculateTotals'
 import calculateBalances from '../../utils/calculateBalances'
 import '../reducers/groups'
-
-export const toggleTopRightMenu = visibility => {
-	return dispatch => {
-		dispatch({
-			type: 'TOGGLE_TOP_RIGHT_MENU',
-			visibility
-		})
-	}
-}
 
 export const setGroupToEdit = group => {
 	return dispatch => {
@@ -39,15 +30,6 @@ export const setGroupLocation = (location) => {
 	}
 }
 
-export const setCurrentPerson = (person) => {
-	return async dispatch => {
-		dispatch({
-			type: 'SET_CURRENT_PERSON',
-			person
-		})
-	}
-}
-
 export const updateGroup = (group) =>  {
 	return async dispatch => {
 
@@ -55,7 +37,7 @@ export const updateGroup = (group) =>  {
 			type: 'INIT_UPDATE_GROUP',
 		})
 
-		const response = await appService.updateGroup(group)
+		const response = await groupService.updateGroup(group)
 		
 		if (response.data.data.updateGroup === null || response === null) {
 			return dispatch({
@@ -71,14 +53,14 @@ export const updateGroup = (group) =>  {
 	}
 }
 
-export const saveGroup = (group) =>  {
+export const createGroup = (group) =>  {
 	return async dispatch => {
 
 		dispatch({
 			type: 'INIT_CREATE_GROUP',
 		})
 
-		const response = await appService.saveGroup(group)
+		const response = await groupService.createGroup(group)
 		
 		if (response.data.data.createGroup === null || response === null) {
 			return dispatch({
@@ -101,7 +83,7 @@ export const getGroups = (sort = { sortBy: 'lastUpdatedAt', order: -1 }) =>  {
 			type: 'INIT_GET_GROUPS',
 		})
 		
-		const response = await appService.getGroups(sort)
+		const response = await groupService.getGroups(sort)
 		
 		if (response.data.data.getGroups === null || response === null) {
 			return dispatch({
@@ -124,7 +106,7 @@ export const removeGroup = id =>  {
 			type: 'INIT_REMOVE_GROUP',
 		})
 
-		const response = await appService.removeGroup(id)
+		const response = await groupService.removeGroup(id)
 		
 		if (response.data.data.removeGroup === null || response === null) {
 			return dispatch({
@@ -140,123 +122,11 @@ export const removeGroup = id =>  {
 	}
 }
 
-export const addPersonToGroup = ({ name, groupid }) =>  {
-	return async dispatch => {
-
-		dispatch({
-			type: 'INIT_UPDATE_GROUP',
-		})
-
-		const response = await appService.addPersonToGroup({ name, groupid })
-		
-		if (response.data.data.addPersonToGroup === null || response === null) {
-			return dispatch({
-				type: 'UPDATE_GROUP_FAIL',
-				response: response.data.errors[0].message
-			})
-		}
-
-		dispatch({
-			type: 'ADD_PERSON_TO_GROUP_SUCCESS',
-			person: response.data.data.addPersonToGroup
-		})
-	}
-}
-
-export const removePerson = id => {
-	return async dispatch => {
-
-		dispatch({
-			type: 'INIT_UPDATE_GROUP',
-		})
-
-		const response = await appService.removePerson(id)
-		
-		if (response.data.data.removePerson === null || response === null) {
-			return dispatch({
-				type: 'UPDATE_GROUP_FAIL',
-				response: response.data.errors[0].message
-			})
-		}
-
-		dispatch({
-			type: 'REMOVE_PERSON_SUCCESS',
-			id: response.data.data.removePerson.id
-		})
-	}
-}
-
 export const doneEditing = group => {
 	return dispatch => {
 		dispatch({
 			type: 'DONE_EDITING_GROUP',
 			group
-		})
-	}
-}
-
-export const setExpenseToEdit = expense => {
-	return dispatch => {
-		dispatch({
-			type: 'SET_EXPENSE_TO_EDIT',
-			expense
-		})
-	}
-}
-
-export const setExpenseDate = (date) => {
-	return async dispatch => {
-		dispatch({
-			type: 'SET_EXPENSE_DATE',
-			date
-		})
-	}
-}
-
-export const addExpense = expenseData =>  {
-	return async dispatch => {
-
-		dispatch({
-			type: 'INIT_CREATE_EXPENSE',
-		})
-
-		let data = expenseData
-		delete data.id
-
-		let response = await appService.addExpense(data)
-		
-		if (response.data.data.addExpense === null || response === null) {
-			return dispatch({
-				type: 'CREATE_EXPENSE_FAIL',
-				response: response.data.errors[0].message
-			})
-		}
-
-		dispatch({
-			type: 'CREATE_EXPENSE_SUCCESS',
-			group: response.data.data.addExpense
-		})
-	}
-}
-
-export const removeExpense = id =>  {
-	return async dispatch => {
-		dispatch({
-			type: 'INIT_REMOVE_EXPENSE',
-		})
-
-		const response = await appService.removeExpense(id)
-	
-		if (response.data.data.removeExpense === null || response === null) {
-			return dispatch({
-				type: 'REMOVE_EXPENSE_FAIL',
-				response: response.data.errors[0].message
-			})
-		}
-
-		dispatch({
-			type: 'REMOVE_EXPENSE_SUCCESS',
-			removedExpenseId: id
 		})
 	}
 }
@@ -287,94 +157,4 @@ export const setGroupBalanceData = (group) => {
 			groupBalanceData
 		})	
 	}
-}
-
-export const addInvitation = (groupid) => {
-	return async dispatch => {
-		dispatch({
-			type: 'INIT_ADD_INVITATION',
-		})
-
-		const response = await appService.addInvitation(groupid)
-	
-		if (response.data.data.createInvitation === null || response === null) {
-			return dispatch({
-				type: 'ADD_INVITATION_FAIL',
-				response: response.data.errors[0].message
-			})
-		}
-
-		dispatch({
-			type: 'ADD_INVITATION_SUCCESS',
-			invitation: response.data.data.createInvitation
-		})
-	}	
-}
-
-export const removeInvitation = (id) => {
-	return async dispatch => {
-		dispatch({
-			type: 'INIT_REMOVE_INVITATION',
-		})
-
-		const response = await appService.removeInvitation(id)
-	
-		if (response.data.data.removeInvitation === null || response === null) {
-			return dispatch({
-				type: 'REMOVE_INVITATION_FAIL',
-				response: response.data.errors[0].message
-			})
-		}
-
-		dispatch({
-			type: 'REMOVE_INVITATION_SUCCESS',
-			invitation: response.data.data.removeInvitation
-		})
-	}	
-}
-
-export const getInvitationsByCurrentUser = () => {
-	return async dispatch => {
-
-		dispatch({
-			type: 'INIT_GET_OWNED_INVITATIONS',
-		})
-
-		const response = await appService.getInvitationsByCurrentUser()
-	
-		if (response.data.data.getInvitationsByCurrentUser === null || response === null) {
-			return dispatch({
-				type: 'GET_OWNED_INVITATIONS_FAIL',
-				response: response.data.errors[0].message
-			})
-		}
-
-		dispatch({
-			type: 'GET_OWNED_INVITATIONS_SUCCESS',
-			invitations: response.data.data.getInvitationsByCurrentUser
-		})
-	}	
-}
-
-export const getInvitationByUserAndGroup = (groupid) => {
-	return async dispatch => {
-
-		dispatch({
-			type: 'INIT_GET_OPEN_INVITATION',
-		})
-
-		const response = await appService.getInvitationsByCurrentUser(groupid)
-	
-		if (response.data.data.getInvitationByUserAndGroup === null || response === null) {
-			return dispatch({
-				type: 'GET_OPEN_INVITATION_FAIL',
-				response: response.data.errors[0].message
-			})
-		}
-
-		dispatch({
-			type: 'GET_OPEN_INVITATION_SUCCESS',
-			invitations: response.data.data.getInvitationByUserAndGroup
-		})
-	}	
 }

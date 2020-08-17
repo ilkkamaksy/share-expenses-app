@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { useNavigation  } from '@react-navigation/native'
 
-import { toggleTopRightMenu } from '../../store/actions/groups'
+import { toggleTopRightMenu } from '../../store/actions/nav'
 import { logoutUser } from '../../store/actions/user'
 
 const PopupMenuTopRight = ({ topRightMenuVisible, toggleTopRightMenu, logoutUser }) => {
@@ -89,7 +89,7 @@ PopupMenuTopRight.propTypes = {
 
 const mapStateToProps = state => {
 	return {
-		topRightMenuVisible: state.groups.topRightMenuVisible
+		topRightMenuVisible: state.navigation.topRightMenuVisible
 	}
 }
 

@@ -163,6 +163,21 @@ const groupReducer = (state = initialState, action) => {
 			},
 			fetching: false
 		}
+	case 'LEAVE_GROUP_SUCCESS' : 
+		return {
+			...state,
+			userGroups: state.userGroups.filter(group => group.id !== action.groupid),
+			fetching: false
+		}
+	case 'REMOVE_GROUP_USER_SUCCESS' : 
+		return {
+			...state,
+			groupToEdit: {
+				...state.groupToEdit, 
+				users: state.groupToEdit.users.filter(user => user.id !== action.userid)
+			},
+			fetching: false
+		}
 	case 'DONE_EDITING_GROUP' : 
 		return {
 			...state,

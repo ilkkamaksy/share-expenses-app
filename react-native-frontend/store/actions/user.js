@@ -85,7 +85,7 @@ export const authenticationCheck = () => {
 		})
         
 		let userdata = null
-		// await SecureStore.deleteItemAsync('loggedIn')
+		
 		let token = await SecureStore.getItemAsync('loggedIn')
 
 		if (token) {

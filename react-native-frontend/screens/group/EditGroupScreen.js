@@ -15,6 +15,11 @@ import EditGroupUsers from '../../components/forms/EditGroupUsers'
 
 const EditGroupScreen = ({ groupToEdit, navigation }) => {
 	
+	if (!groupToEdit.id) {
+		navigation.navigate('GroupList')
+		return <></>
+	}
+	
 	const [tab, setTab] = useState('')
 
 	useEffect(() => {

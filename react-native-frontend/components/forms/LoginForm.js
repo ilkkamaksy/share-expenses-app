@@ -18,15 +18,12 @@ const LoginForm = ({
 	setEmail, 
 	setPassword, 
 	error, 
-	openAccessInvitation,
 	navigation 
 }) => {
 
 	const submitHandler = () => {
 		loginUser({email, password})
 	}
-
-	console.log('login openaccess----------', openAccessInvitation )
 
 	return (
 		<View>
@@ -124,7 +121,6 @@ const styles = StyleSheet.create({
 })
 
 LoginForm.propTypes = {
-	openAccessInvitation: PropTypes.object,
 	user: PropTypes.object,
 	email: PropTypes.string,
 	password: PropTypes.string,
@@ -145,7 +141,6 @@ const mapStateToProps = (state) => {
 		loginFail: state.user.loginFail,
 		email: state.user.email,
 		password: state.user.password,
-		openAccessInvitation: state.invitations.openAccessInvitation
 	}
 }
 

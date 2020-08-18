@@ -24,6 +24,11 @@ const GroupDetailScreen = ({
 	setExpenseToEdit 
 }) => {
 
+	if (!groupToEdit.id) {
+		navigation.navigate('GroupList')
+		return <></>
+	}
+
 	const group = useSelector(state => state.groups.userGroups.find(group => group.id === groupToEdit.id))
 
 	useEffect(() => {

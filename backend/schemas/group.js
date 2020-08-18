@@ -231,6 +231,8 @@ const resolvers = {
 		// userid: String!
 		removeGroupUser: async (root, args, context) => {
 
+			console.log('asfsaf', args)
+			
 			const currentUser = context.currentUser
 
 			if (!currentUser) {

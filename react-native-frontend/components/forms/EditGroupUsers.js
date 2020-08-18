@@ -5,12 +5,12 @@ import { ScrollView, View, Text, StyleSheet, Share } from 'react-native'
 import * as Linking from 'expo-linking'
 import { Button } from 'react-native-paper'
 
-import { doneEditing } from '../../store/actions/groups'
+import { doneEditing, removeGroupUser, setGroupToEdit, leaveGroup } from '../../store/actions/groups'
 
 import { 
 	addInvitation,
 	removeInvitation, 
-	getInvitationsByCurrentUser 
+	getInvitationByGroup
 } from '../../store/actions/invitations'
 
 import Heading from '../UI/Heading'
@@ -18,18 +18,21 @@ import Paragraph from '../UI/Paragraph'
 import Colors from '../../constants/Colors'
 
 const EditGroupUsers = ({ 
+	userdata,
 	error, 
 	groupToEdit, 
-	ownedInvitations,
+	openAccessInvitation,
 	doneEditing,
 	addInvitation,
 	removeInvitation,
-	getInvitationsByCurrentUser,
+	getInvitationByGroup,
+	removeGroupUser,
+	leaveGroup,
+	setGroupToEdit,
 	navigation 
 }) => {
 
 	const [appUrl, setAppUrl] = useState(null)
-	const [currentInvitation, setCurrentInvitation] = useState(null)
 
 	useEffect(() => {
 		const getAppUrl = async () => {
@@ -39,78 +42,39 @@ const EditGroupUsers = ({
 			setAppUrl(initialUrl)
 		}
 		getAppUrl()
-		
-		getInvitationsByCurrentUser()
-		const foundInvite = ownedInvitations.find(invite => invite.group.id === groupToEdit.id)
-		setCurrentInvitation(foundInvite ? foundInvite : null)
-
-	}, [ownedInvitations.length])
+		getInvitationByGroup(groupToEdit.id)
+	}, [])
 
 	const onCreateOpenInvitation = async () => {
 		await addInvitation(groupToEdit.id)
+		await getInvitationByGroup(groupToEdit.id)
 	}
 
 	const onRemoveOpenInvitation = async () => {
-		await removeInvitation(currentInvitation.id)
-		setCurrentInvitation(null)
+		await removeInvitation(openAccessInvitation.id)
+		await getInvitationByGroup(groupToEdit.id)
 	}
 
 	const onShareInvitation = async () => {
 		try {
-			const result = await Share.share({
+			await Share.share({
 				message: `Join my group "${groupToEdit.title}" to track our shared expenses on ShareExpenses App: https://suuntastudios.com/shareapp/?to=${encodeURIComponent(appUrl)}`,
 				subject: 'Invitation to manage a group in ShareExpenses App',
 				title: 'Invitation to manage a group in ShareExpenses App'
 			})
-			if (result.action === Share.sharedAction) {
-				console.log('invite shared')
-			} else if (result.action === Share.dismissedAction) {
-				// dismissed
-				console.log('invite cancelled')
-			}
 		} catch (error) {
 			console.log(error.message)
 		}
 	}
 
-	const publicUrlButton = () => {
-		
-		if (!currentInvitation) {
-			return (
-				<View>
-					<Paragraph style={[{ textAlign: 'left', fontSize: 11, color: Colors.lightCoffee, lineHeight: 20, marginTop: 20 }]}>
-						Create open access invitation and share it with your friends. 
-					</Paragraph>  
-					<Button 
-						disabled={false} 
-						mode="contained" 
-						onPress={() => onCreateOpenInvitation()}
-						color={Colors.secondary}
-						labelStyle={{ color: Colors.white, fontSize: 11 }}
-					>
-					Create open access invitation
-					</Button>
-				</View>
-				
-			)
-		} else {
-			return (
-				<View style={{ marginTop: 20 }}>
-					<Paragraph style={[{ textAlign: 'left', fontSize: 11, color: Colors.lightCoffee, lineHeight: 20 }]}>
-						{`The open access invitation has been created on ${new Date(JSON.parse(currentInvitation.createdAt)).toLocaleDateString()}. You can deactivate this invitation by clicking below, after which no one can join the group using it.`}
-					</Paragraph>    
-					<Button 
-						disabled={false} 
-						mode="outlined" 
-						onPress={() => onRemoveOpenInvitation()}
-						color={Colors.error}
-						labelStyle={{ color: Colors.error, fontSize: 11 }}
-					>
-						Delete open access invite
-					</Button>
-				</View>
-			)
-		}
+	const onLeaveGroup = async () => {
+		navigation.navigate('GroupList')
+		await leaveGroup(userdata.user.id, groupToEdit.id)
+		setGroupToEdit(null)
+	}
+
+	const onRemoveGroupUser = async (userid) => {
+		await removeGroupUser(userid, groupToEdit.id)
 	}
 
 	const onDoneEditingGroup = () => {
@@ -143,7 +107,7 @@ const EditGroupUsers = ({
 					</Paragraph>    
 
 					<Button 
-						disabled={currentInvitation ? false : true} 
+						disabled={openAccessInvitation ? false : true} 
 						mode="contained" 
 						onPress={() => onShareInvitation()}
 						color={Colors.secondary}
@@ -152,7 +116,40 @@ const EditGroupUsers = ({
 						Share open access invite
 					</Button>
 
-					{publicUrlButton()}
+					{!openAccessInvitation ?
+			
+						<View>
+							<Paragraph style={[{ textAlign: 'left', fontSize: 11, color: Colors.lightCoffee, lineHeight: 20, marginTop: 20 }]}>
+								Create open access invitation and share it with your friends. 
+							</Paragraph>  
+							<Button 
+								disabled={false} 
+								mode="contained" 
+								onPress={() => onCreateOpenInvitation()}
+								color={Colors.secondary}
+								labelStyle={{ color: Colors.white, fontSize: 11 }}
+							>
+							Create open access invitation
+							</Button>
+						</View>
+						
+						:
+			
+						<View style={{ marginTop: 20 }}>
+							<Paragraph style={[{ textAlign: 'left', fontSize: 11, color: Colors.lightCoffee, lineHeight: 20 }]}>
+								{`The open access invitation has been created on ${new Date(JSON.parse(openAccessInvitation.createdAt)).toLocaleDateString()} at ${new Date(JSON.parse(openAccessInvitation.createdAt)).toLocaleTimeString()} by ${openAccessInvitation.owner.email}. You can deactivate this invitation by clicking below, after which no one can join the group using it.`}
+							</Paragraph>    
+							<Button 
+								disabled={false} 
+								mode="outlined" 
+								onPress={() => onRemoveOpenInvitation()}
+								color={Colors.error}
+								labelStyle={{ color: Colors.error, fontSize: 11 }}
+							>
+								Delete open access invite
+							</Button>
+						</View>
+					}
 					
 					
 				</View>
@@ -164,41 +161,57 @@ const EditGroupUsers = ({
 					textTransform: 'uppercase', 
 					marginTop: 60 
 				}]}>
-					Users in this group
+					Users managing this group
 				</Heading>
 
 				<View style={styles.formControl}>
-					{groupToEdit.users.map(user => { return (
-						<View key={user.id} style={styles.row}>
-							<View style={styles.column}>
-								<Text>{user.email}</Text>
+					{groupToEdit.users.map(user => { 
+						return (
+							<View 
+								key={user.id} 
+								style={[styles.row, { borderBottomColor: '#ddd', borderBottomWidth: StyleSheet.hairlineWidth }]}
+							>
+								<View style={styles.column}>
+									<Text style={{ 
+										fontSize: 13, 
+										color: Colors.lightCoffee, 
+										paddingVertical: 14
+									}}
+									>{user.email}</Text>
+								</View>
+								{userdata.user.id === groupToEdit.owner.id && user.id !== userdata.user.id ?
+									<View style={styles.column}>
+										<Button 
+											labelStyle={{ color: Colors.primary, fontSize: 12 }}
+											compact={true} 
+											mode="text" 
+											uppercase={false} 
+											onPress={() => onRemoveGroupUser(user.id)}>
+										Remove
+										</Button> 
+									</View>
+									: <></>
+								}
+							
 							</View>
-							<View style={styles.column}>
-								<Button 
-									labelStyle={{ color: Colors.primary, fontSize: 12 }}
-									compact={true} 
-									mode="text" 
-									uppercase={false} 
-									onPress={() => console.log('pressed')}>
-								Remove
-								</Button> 
-							</View>
-						</View>
-					)})}
+						)})}
 				</View>
 
-				<View style={styles.formControl}>
-					<Button 
-						mode="outlined" 
-						onPress={onDoneEditingGroup}
-						color={Colors.primary}
-						style={styles.doneButton}
-					>
-                        Leave this group
-					</Button>
-				</View>
+				{userdata.user.id !== groupToEdit.owner.id &&
+					<View style={[styles.formControl, { marginTop: 20 }]}>
+						<Button 
+							mode="outlined" 
+							onPress={onLeaveGroup}
+							color={Colors.primary}
+							style={styles.doneButton}
+						>
+						Leave this group
+						</Button>
+					</View>
+				} 
+				
 
-				<View style={styles.formControl}>
+				<View style={[styles.formControl, { marginTop: 20 }]}>
 					<Button 
 						mode="contained" 
 						onPress={onDoneEditingGroup}
@@ -233,26 +246,25 @@ const styles = StyleSheet.create({
 
 EditGroupUsers.propTypes = {
 	navigation: PropTypes.object,
-	user: PropTypes.object,
+	userdata: PropTypes.object,
 	error: PropTypes.string,
 	groupToEdit: PropTypes.object,
-	currentPerson: PropTypes.string,
-	ownedInvitations: PropTypes.array,
+	openAccessInvitation: PropTypes.object,
 	doneEditing: PropTypes.func,
-	setCurrentPerson: PropTypes.func,
-	addPersonToGroup: PropTypes.func,
-	removePerson: PropTypes.func,
 	addInvitation: PropTypes.func,
 	removeInvitation: PropTypes.func,
-	getInvitationsByCurrentUser: PropTypes.func,
+	getInvitationByGroup: PropTypes.func,
+	removeGroupUser: PropTypes.func,
+	leaveGroup: PropTypes.func,
+	setGroupToEdit: PropTypes.func
 }
 
 const mapStateToProps = (state) => {
 	return {
-		user: state.user.user,
+		userdata: state.user.userdata,
 		error: state.groups.error,
 		groupToEdit: state.groups.groupToEdit,
-		ownedInvitations: state.invitations.ownedInvitations
+		openAccessInvitation: state.invitations.openAccessInvitation
 	}
 }
 
@@ -262,7 +274,10 @@ const connectedEditGroupUsers = connect(
 		doneEditing,
 		addInvitation,
 		removeInvitation,
-		getInvitationsByCurrentUser
+		getInvitationByGroup,
+		removeGroupUser,
+		leaveGroup,
+		setGroupToEdit
 	}
 )(EditGroupUsers)
 

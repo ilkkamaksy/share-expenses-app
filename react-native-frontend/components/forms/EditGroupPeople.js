@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { ScrollView, View, Text, StyleSheet, Platform } from 'react-native'
+import { ScrollView, View, Text, StyleSheet } from 'react-native'
 import { Button, ActivityIndicator } from 'react-native-paper'
 
 import { doneEditing } from '../../store/actions/groups'
@@ -11,8 +11,6 @@ import {
 	addPerson, 
 	removePerson 
 } from '../../store/actions/people'
-
-import contactsService from '../../services/contactsService'
 
 import Heading from '../UI/Heading'
 import TextInput from '../UI/TextInput'
@@ -30,17 +28,6 @@ const EditGroupPeople = ({
 	navigation 
 }) => {
 
-	const [contactList, setContactList] = useState({})
-
-	useEffect(() => {
-		(async () => {
-			const data = Platform.OS === 'ios' || Platform.OS === 'android' ? await contactsService.getContactsFromDevice() : []
-			if (data.length > 0) {
-				setContactList(data.filter(contact => contact.name.length > 0))
-			}
-		})()
-	}, [])
-    
 	const onAddPerson = () => {
 		if (!groupToEdit.people.includes(currentPerson) && currentPerson.trim().length > 0) {
 			addPerson({ name: currentPerson.trim(), groupid: groupToEdit.id })
@@ -52,8 +39,6 @@ const EditGroupPeople = ({
 		doneEditing(groupToEdit)
 		navigation.navigate('GroupItem', { group: groupToEdit })
 	}
-
-	console.log(contactList)
    
 	return (
 		<ScrollView>

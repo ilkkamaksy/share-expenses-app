@@ -87,11 +87,6 @@ const userReducer = (state = initialState, action) => {
 			userdata: null,
 			loginout: true
 		}
-	case 'LOGOUT_DONE' :
-		return {
-			...state,
-			loginout: false
-		}
 	default: return state
 	}
 }

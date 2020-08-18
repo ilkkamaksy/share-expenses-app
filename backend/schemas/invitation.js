@@ -103,9 +103,9 @@ const resolvers = {
 				throw new AuthenticationError('not authenticated')
 			}
 
-			const invitation = await Invitation.findById(args.id)
+			const invitation = await Invitation.findById(args.id).populate('group')
 				
-			if (invitation.owner.toString() !== currentUser._id.toString()) {
+			if (!invitation.group.users.includes(currentUser._id)) {
 				throw new ForbiddenError('not authorized')
 			}
 

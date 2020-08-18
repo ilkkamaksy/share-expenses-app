@@ -131,6 +131,52 @@ export const doneEditing = group => {
 	}
 }
 
+export const removeGroupUser = (userid, groupid) =>  {
+	return async dispatch => {
+
+		dispatch({
+			type: 'INIT_UPDATE_GROUP',
+		})
+
+		const response = await groupService.removeGroupUser(userid, groupid)
+		
+		if (!response || response.data.errors) {
+			return dispatch({
+				type: 'UPDATE_GROUP_FAIL',
+				response: response.data.errors[0].message
+			})
+		}
+
+		dispatch({
+			type: 'REMOVE_GROUP_USER_SUCCESS',
+			userid
+		})
+	}
+}
+
+export const leaveGroup = (userid, groupid) =>  {
+	return async dispatch => {
+
+		dispatch({
+			type: 'INIT_UPDATE_GROUP',
+		})
+
+		const response = await groupService.removeGroupUser(userid, groupid)
+		
+		if (!response || response.data.errors) {
+			return dispatch({
+				type: 'UPDATE_GROUP_FAIL',
+				response: response.data.errors[0].message
+			})
+		}
+
+		dispatch({
+			type: 'LEAVE_GROUP_SUCCESS',
+			groupid
+		})
+	}
+}
+
 export const setGroupTotals = group => {
 	return dispatch => {
 		

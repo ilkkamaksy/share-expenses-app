@@ -168,6 +168,43 @@ const REMOVE_GROUP = `
 		}
 	}
 `
+const REMOVE_GROUP_USER = `
+	mutation removeGroupUser(
+		$groupid: String!
+		$userid: String!
+	) {
+		removeGroupUser(
+			groupid: $groupid
+			userid: $userid
+		) {
+			title
+			owner {
+				email
+				id
+			}
+			users {
+				email
+				id
+			}
+			people {
+				id
+				name
+			}
+			expenses {
+				id
+				dateTime
+				amount
+				description
+				details {
+					person
+					share
+					paid
+					balance
+				}
+			}
+		}
+	}
+`
 
 export const createGroup = async (group) => {
 	
@@ -245,6 +282,28 @@ export const removeGroup = async id => {
 
 	const data = {
 		query: REMOVE_GROUP,
+		variables: variables
+	}
+
+	const config = {
+		headers: {
+			'Authorization': auth.token
+		}
+	}
+
+	return await axios.post(apiUrl, data, config)
+}
+
+export const removeGroupUser = async (userid, groupid) => {
+	const variables = {
+		groupid,
+		userid
+	}
+
+	console.log('variables', variables)
+	
+	const data = {
+		query: REMOVE_GROUP_USER,
 		variables: variables
 	}
 

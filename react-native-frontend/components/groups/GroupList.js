@@ -5,7 +5,7 @@ import { StyleSheet, View, Text, TouchableOpacity, Modal } from 'react-native'
 import { ActivityIndicator, Checkbox, Button } from 'react-native-paper'
 
 import { getGroups, setGroupToEdit } from '../../store/actions/groups'
-import { acceptGroupInvite } from '../../store/actions/invitations'
+import { acceptGroupInvite, rejectGroupInvite, getInvitationByGroup } from '../../store/actions/invitations'
 
 import Heading from '../UI/Heading'
 import GroupListItem from './GroupListItem'
@@ -17,7 +17,10 @@ import Colors from '../../constants/Colors'
 const GroupList = ({ 
 	getGroups, 
 	setGroupToEdit,
+	referrerUrl,
+	getInvitationByGroup,
 	acceptGroupInvite,
+	rejectGroupInvite,
 	fetching, 
 	userGroups,
 	openAccessInvitation,
@@ -28,11 +31,29 @@ const GroupList = ({
 	const [sortBy, setSortBy] = useState('lastUpdatedAt')
 	const [selectedSortingText, setSelectedSortingText] = useState('Most recently updated first')
 	const [bannerVisible, setBannerVisible] = useState(false)
+	const [bannerTextContent, setBannerTextContent] = useState('')
 
 	useEffect(() => {
-		getGroups()
-		setBannerVisible(openAccessInvitation ? true : false)
-	}, [])
+	
+		if (fetching) {
+			getGroups()
+		}
+
+		const getReferrerInvitation = async () => {
+			await getInvitationByGroup(referrerUrl.queryParams.id)
+		}
+
+		if (!fetching && referrerUrl && referrerUrl.queryParams && !openAccessInvitation) {
+			getReferrerInvitation()
+		}
+
+		setBannerVisible(openAccessInvitation && !userGroups.find(group => group.id === openAccessInvitation.group.id) ? true : false)
+
+		if (openAccessInvitation) {
+			setBannerTextContent(`Join group "${openAccessInvitation.group.title}" shared by ${openAccessInvitation.owner.email}?`)
+		}
+
+	}, [fetching, openAccessInvitation])
 
 	const onSetSortingOption = (sortingOption) => {
 		
@@ -56,12 +77,11 @@ const GroupList = ({
 
 	const onAcceptInvite = async () => {
 		await acceptGroupInvite(openAccessInvitation.id)
-		setBannerVisible(!bannerVisible)
 		getGroups()
 	}
 
 	const onRejectInvite = () => {
-		setBannerVisible(!bannerVisible)
+		rejectGroupInvite()
 	}
 
 	if (fetching) {
@@ -73,15 +93,17 @@ const GroupList = ({
 	return (
 		<View style={styles.container}>
 			
-			{openAccessInvitation &&
+			{bannerVisible ?
 				<Banner 
 					visible={bannerVisible}
-					textContent={`Join group "${openAccessInvitation.group.title}" via invitation by ${openAccessInvitation.owner.email}?`} 
-					leftButtonCallback={onAcceptInvite} 
+					textContent={bannerTextContent} 
+					leftButtonCallback={() => onAcceptInvite()} 
 					leftButtonText="Yes"
-					rightButtonCallback={onRejectInvite}
+					rightButtonCallback={() => onRejectInvite()}
 					rightButtonText="Nope"
 				/>
+				:
+				<></>
 			}
 			
 
@@ -213,9 +235,12 @@ GroupList.propTypes = {
 	fetching: PropTypes.bool,
 	userGroups: PropTypes.array,
 	openAccessInvitation: PropTypes.object,
+	referrerUrl: PropTypes.object,
 	getGroups: PropTypes.func,
 	setGroupToEdit: PropTypes.func,
 	acceptGroupInvite: PropTypes.func,
+	rejectGroupInvite: PropTypes.func,
+	getInvitationByGroup: PropTypes.func,
 }
 
 const mapStateToProps = state => {
@@ -225,7 +250,8 @@ const mapStateToProps = state => {
 		error: state.groups.error,
 		getGroupsFail: state.groups.getGroupsFail,
 		userGroups: state.groups.userGroups,
-		openAccessInvitation: state.invitations.openAccessInvitation
+		openAccessInvitation: state.invitations.openAccessInvitation,
+		referrerUrl: state.invitations.referrerUrl
 	}
 }
 
@@ -234,7 +260,9 @@ const connectedGroupList = connect(
 	{
 		getGroups,
 		setGroupToEdit,
-		acceptGroupInvite
+		acceptGroupInvite,
+		rejectGroupInvite,
+		getInvitationByGroup
 	}
 )(GroupList)
 

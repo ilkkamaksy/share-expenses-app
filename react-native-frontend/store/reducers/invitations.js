@@ -1,6 +1,7 @@
 const initialState = {
 	ownedInvitations: [],
 	openAccessInvitation: null,
+	referrerUrl: null,
 	fetching: false,	
 }
 
@@ -51,7 +52,6 @@ const inviteReducer = (state = initialState, action) => {
 			fetching: true
 		}
 	case 'GET_OWNED_INVITATIONS_SUCCESS' :
-		console.log('************************action***********', action.invitations)
 		return {
 			...state,
 			error: '',
@@ -71,6 +71,7 @@ const inviteReducer = (state = initialState, action) => {
 			error: ''
 		}
 	case 'GET_OPEN_INVITATION_SUCCESS' :
+		console.log('invitation reducer success ----', action.invitation)
 		return {
 			...state,
 			error: '',
@@ -78,6 +79,7 @@ const inviteReducer = (state = initialState, action) => {
 			openAccessInvitation: action.invitation
 		}
 	case 'GET_OPEN_INVITATION_FAIL' :
+		console.log('invitation reducer fail ----', action.response)
 		return {
 			...state,
 			error: action.response,
@@ -94,12 +96,25 @@ const inviteReducer = (state = initialState, action) => {
 			...state,
 			error: '',
 			fetching: false,
+			openAccessInvitation: initialState.openAccessInvitation,
+			referrerUrl: initialState.referrerUrl,
 		}
 	case 'ACCEPT_INVITATION_FAIL' :
 		return {
 			...state,
 			error: action.response,
 			fetching: false
+		}
+	case 'REJECT_INVITATION' :
+		return {
+			...state,
+			openAccessInvitation: initialState.openAccessInvitation,
+			referrerUrl: initialState.referrerUrl,
+		}
+	case 'SET_REFERRER_URL' : 
+		return {
+			...state,
+			referrerUrl: action.referrerUrl
 		}
 	default: return state
 	}

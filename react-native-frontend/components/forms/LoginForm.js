@@ -11,11 +11,22 @@ import Colors from '../../constants/Colors'
 import TextInput from '../UI/TextInput'
 import Paragraph from '../UI/Paragraph'
 
-const LoginForm = ({ email, password, loginUser, setEmail, setPassword, error, navigation }) => {
+const LoginForm = ({ 
+	email, 
+	password, 
+	loginUser, 
+	setEmail, 
+	setPassword, 
+	error, 
+	openAccessInvitation,
+	navigation 
+}) => {
 
 	const submitHandler = () => {
 		loginUser({email, password})
 	}
+
+	console.log('login openaccess----------', openAccessInvitation )
 
 	return (
 		<View>
@@ -113,6 +124,7 @@ const styles = StyleSheet.create({
 })
 
 LoginForm.propTypes = {
+	openAccessInvitation: PropTypes.object,
 	user: PropTypes.object,
 	email: PropTypes.string,
 	password: PropTypes.string,
@@ -132,7 +144,8 @@ const mapStateToProps = (state) => {
 		error: state.user.error,
 		loginFail: state.user.loginFail,
 		email: state.user.email,
-		password: state.user.password
+		password: state.user.password,
+		openAccessInvitation: state.invitations.openAccessInvitation
 	}
 }
 

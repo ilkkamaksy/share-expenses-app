@@ -6,7 +6,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { ActivityIndicator } from 'react-native-paper'
 
 import { authenticationCheck } from '../../store/actions/user'
-import { getInvitationByGroup } from '../../store/actions/invitations'
+import { setReferrerUrl } from '../../store/actions/invitations'
 
 import WelcomeNavigation from '../../navigation/WelcomeNavigation'
 import GroupNavigation from '../../navigation/GroupNavigation'
@@ -14,30 +14,24 @@ import Colors from '../../constants/Colors'
 
 const AppNavigation = ({
 	authenticationCheck,
-	getInvitationByGroup,
+	setReferrerUrl,
 	loading,
 	userdata,
 	loginFail,
-	registerFail,
-	openAccessInvitation
+	registerFail
 }) => {
 
 	useEffect(() => {
 		authenticationCheck()
 
-		const getUrlAsync = async () => {
+		const getReferrerUrlAsync = async () => {
 			const initialUrlObj = await Linking.parseInitialURLAsync()
-			if (initialUrlObj.queryParams.id) {
-				console.log('urll', initialUrlObj)
-				await getInvitationByGroup(initialUrlObj.queryParams.id)
-			}
+			setReferrerUrl(initialUrlObj)
 		}
 		
-		getUrlAsync()	
-		
+		getReferrerUrlAsync()	
+			
 	}, [])
-
-	console.log('openaccessinv----------', openAccessInvitation)
 
 	if (loading) {
 		return (
@@ -62,12 +56,13 @@ const AppNavigation = ({
 AppNavigation.propTypes = {
 	authenticationCheck: PropTypes.func,
 	getInvitationByGroup: PropTypes.func,
+	setReferrerUrl: PropTypes.func,
 	userdata: PropTypes.object,
 	loading: PropTypes.bool,
 	error: PropTypes.string,
 	loginFail: PropTypes.bool,
 	registerFail: PropTypes.bool,
-	openAccessInvitation: PropTypes.object
+	referrerUrl: PropTypes.object,
 }
 
 const mapStateToProps = state => {
@@ -77,7 +72,6 @@ const mapStateToProps = state => {
 		error: state.user.error,
 		loginFail: state.user.loginFail,
 		registerFail: state.user.registerFail,
-		openAccessInvitation: state.invitations.openAccessInvitation
 	}
 }
 
@@ -85,7 +79,7 @@ const connectedAppNavigation = connect(
 	mapStateToProps, 
 	{
 		authenticationCheck,
-		getInvitationByGroup
+		setReferrerUrl
 	}
 )(AppNavigation)
 

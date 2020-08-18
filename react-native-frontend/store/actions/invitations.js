@@ -112,3 +112,21 @@ export const acceptGroupInvite = (inviteid) => {
 		})
 	}	
 }
+
+export const rejectGroupInvite = (inviteid) => {
+	return dispatch => {
+		dispatch({
+			type: 'REJECT_INVITATION',
+			inviteid
+		})
+	}	
+}
+
+export const setReferrerUrl = (referrerUrl) => {
+	return dispatch => {
+		dispatch({
+			type: 'SET_REFERRER_URL',
+			referrerUrl
+		})
+	}
+}

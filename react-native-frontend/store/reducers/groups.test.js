@@ -24,7 +24,7 @@ describe('test group reducer', () => {
 				lastUpdatedAt: null,
 				createdAt: null,
 				description: '',
-				amount: Number(0).toFixed(2),
+				amount: 0,
 				people: [],
 				details: []
 			},
@@ -498,7 +498,7 @@ describe('test group reducer', () => {
 			lastUpdatedAt: null,
 			createdAt: null,
 			description: 'desc',
-			amount: Number(0).toFixed(2),
+			amount: 0,
 			people: ['p1', 'p2'],
 			details: []
 		}
@@ -545,7 +545,7 @@ describe('test group reducer', () => {
 			lastUpdatedAt: null,
 			createdAt: null,
 			description: 'desc',
-			amount: Number(0).toFixed(2),
+			amount: 0,
 			people: ['p1', 'p2'],
 			details: []
 		}

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { View, Text, StyleSheet } from 'react-native'
-import { Button } from 'react-native-paper'
+import { Button, Paragraph } from 'react-native-paper'
 import { useNavigation  } from '@react-navigation/native'
 
 import { setGroupTotals, setGroupBalanceData } from '../../store/actions/groups'
@@ -32,7 +32,13 @@ const Group = ({
 	return (
 		<View style={styles.container}>
 			
-			<View style={styles.section}>
+			<View style={[styles.section, { 
+				backgroundColor: '#fbfbfb', 
+				paddingTop: 30,
+				paddingBottom: 40, 
+				paddingHorizontal: 20, 
+				borderRadius: 10 
+			}]}>
 				<Text style={styles.subtitle}>Overview</Text>
 
 				<View style={[styles.row, { borderBottomColor: '#ccc', borderBottomWidth: StyleSheet.hairlineWidth }]}>
@@ -51,44 +57,62 @@ const Group = ({
 					})}
 				</View>
 
-				<Button 
-					labelStyle={styles.summaryButtonLabel}
-					mode="contained" 
-					color={Colors.primary}
-					style={styles.summaryButton}
-					onPress={() => navigation.navigate('GroupBalanceDetails', { group: group })}
-				>
-					View details
-				</Button>
+				{group.expenses.length > 0 &&
+					<Button 
+						labelStyle={styles.summaryButtonLabel}
+						mode="contained" 
+						color={Colors.primary}
+						style={styles.summaryButton}
+						onPress={() => navigation.navigate('GroupBalanceDetails', { group: group })}
+					>
+						View details
+					</Button>
+				}
 
 			</View>
 
-			<View style={[styles.section, { marginTop: 40 }]}>
+			{group.expenses.length > 0 ? 
+				<View style={[styles.section, { paddingTop: 40, borderTopColor: '#ccc', borderTopWidth: StyleSheet.hairlineWidth }]}>
 
-				{group.expenses.length > 0 && <Text style={styles.subtitle}>Most recent expense</Text>}
-			
-				<View style={styles.list}>
-					{group.expenses.reverse().slice(0, 1).map(expense => {
-						return (
-							<ExpenseListItem 
-								key={expense.id}
-								people={group.people}
-								expense={expense} 
-								removeExpense={() => removeExpense(expense.id)}
-							/>
-						)
-					})}
+					<Text style={styles.subtitle}>Most recent expense</Text>
+		
+					<View style={styles.list}>
+						{group.expenses.reverse().slice(0, 1).map(expense => {
+							return (
+								<ExpenseListItem 
+									key={expense.id}
+									people={group.people}
+									expense={expense} 
+									removeExpense={() => removeExpense(expense.id)}
+								/>
+							)
+						})}
+					</View>
+					<Button 
+						labelStyle={styles.summaryButtonLabel}
+						style={[styles.summaryButton, { marginBottom: 20 }]}
+						mode="contained" 
+						color={Colors.primary}
+						onPress={() => navigation.navigate('GroupExpenses', { group: group })}
+					>
+						View all expenses
+					</Button>
 				</View>
-				<Button 
-					labelStyle={styles.summaryButtonLabel}
-					style={[styles.summaryButton, { marginBottom: 20 }]}
-					mode="contained" 
-					color={Colors.primary}
-					onPress={() => navigation.navigate('GroupExpenses', { group: group })}
-				>
-					View all expenses
-				</Button>
-			</View>
+				:
+				<View style={styles.section}>
+					<Text style={[styles.subtitle, { marginBottom: 0 }]}>No expenses yet</Text>
+					<Paragraph style={[{ 
+						textAlign: 'center', 
+						fontSize: 13, 
+						marginBottom: 5, 
+						color: Colors.lightCoffee, 
+						lineHeight: 20 
+					}]}>
+						Add an expense to get started!
+					</Paragraph>
+				</View>
+			}
+			
 			
 		</View>
 	)
@@ -115,7 +139,7 @@ const styles = StyleSheet.create({
 		color: Colors.coffee
 	},
 	subtitle: {
-		color: Colors.secondary,
+		color: Colors.primary,
 		fontSize: 12,
 		fontWeight: 'bold',
 		marginBottom: 16,

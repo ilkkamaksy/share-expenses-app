@@ -8,6 +8,7 @@ import { getGroups, setGroupToEdit } from '../../store/actions/groups'
 import { acceptGroupInvite, rejectGroupInvite, getInvitationByGroup } from '../../store/actions/invitations'
 
 import Heading from '../UI/Heading'
+import Paragraph from '../UI/Paragraph'
 import GroupListItem from './GroupListItem'
 import FilterList from '../icons/FilterList'
 import Banner from '../UI/Banner'
@@ -86,6 +87,37 @@ const GroupList = ({
 	if (fetching) {
 		return (
 			<ActivityIndicator animating={true} color={Colors.primary} />
+		)
+	}
+
+	if (!fetching && userGroups.length === 0) {
+		return (
+			<View style={styles.container}>
+			
+				{bannerVisible ?
+					<Banner 
+						visible={bannerVisible}
+						textContent={bannerTextContent} 
+						leftButtonCallback={() => onAcceptInvite()} 
+						leftButtonText="Yes"
+						rightButtonCallback={() => onRejectInvite()}
+						rightButtonText="Nope"
+					/>
+					:
+					<></>
+				}
+
+				<Text style={[styles.subtitle, { marginBottom: 0, marginTop: 60 }]}>No groups, not yet!</Text>
+				<Paragraph style={[{ 
+					textAlign: 'center', 
+					fontSize: 13, 
+					marginBottom: 5, 
+					color: Colors.lightCoffee, 
+					lineHeight: 20 
+				}]}>
+						Add a group to get started!
+				</Paragraph>
+			</View>
 		)
 	}
 
@@ -226,7 +258,16 @@ const styles = StyleSheet.create({
 	},
 	closeModalButton: {
 		marginTop: 40
-	}
+	},
+	subtitle: {
+		color: Colors.secondary,
+		fontSize: 16,
+		fontWeight: 'bold',
+		marginBottom: 16,
+		paddingBottom: 10,
+		textTransform: 'uppercase',
+		textAlign: 'center'
+	},
 })
 
 GroupList.propTypes = {

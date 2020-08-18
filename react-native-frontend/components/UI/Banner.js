@@ -1,7 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Image, StyleSheet } from 'react-native'
+import { Image, StyleSheet, Text } from 'react-native'
 import { Banner as PaperBanner } from 'react-native-paper'
+
+import Colors from '../../constants/Colors'
+import Paragraph from '../UI/Paragraph'
 
 const Banner = ({ 
 	textContent,
@@ -18,11 +21,11 @@ const Banner = ({
 			visible={visible}
 			actions={[
 				{
-					label: leftButtonText,
+					label: <Text style={{ color: Colors.primary }}>{leftButtonText}</Text>,
 					onPress: leftButtonCallback,
 				},
 				{
-					label: rightButtonText,
+					label: <Text style={{ color: Colors.primary }}>{rightButtonText}</Text>,
 					onPress: rightButtonCallback,
 				},
 			]}
@@ -37,7 +40,10 @@ const Banner = ({
 					}}
 				/>
 			)}>
-			{textContent}
+			<Paragraph style={[{ fontSize: 13, color: Colors.lightCoffee, lineHeight: 20 }]}>
+				{textContent}
+			</Paragraph>
+			
 		</PaperBanner>
 	)
 }

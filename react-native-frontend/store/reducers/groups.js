@@ -17,7 +17,7 @@ const initialState = {
 		lastUpdatedAt: null,
 		createdAt: null,
 		description: '',
-		amount: Number(0).toFixed(2),
+		amount: 0,
 		people: [],
 		details: []
 	},

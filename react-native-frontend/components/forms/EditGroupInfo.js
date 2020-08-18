@@ -108,7 +108,13 @@ const EditGroupInfo = ({
 			}
 			
 
-			<Heading style={[{ textAlign: 'left', fontSize: 12, color: Colors.secondary, textTransform: 'uppercase', paddingBottom: 5 }]}>
+			<Heading style={[{ 
+				textAlign: 'left', 
+				fontSize: 12, 
+				color: Colors.primary, 
+				textTransform: 'uppercase', 
+				paddingBottom: 5 
+			}]}>
 				Edit Group details
 			</Heading>
 

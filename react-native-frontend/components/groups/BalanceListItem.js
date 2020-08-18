@@ -77,10 +77,10 @@ const styles = StyleSheet.create({
 		color: Colors.coffee,
 	},
 	receivablesTitle: {
-		fontSize: 11,
+		fontSize: 10,
 		marginBottom: 6,
 		textTransform: 'uppercase',
-		color: Colors.error,
+		color: Colors.primary,
 		fontWeight: 'bold'
 	},
 	receivablesItem: {

@@ -13,6 +13,7 @@ import {
 } from '../../store/actions/expenses'
 
 import Heading from '../UI/Heading'
+import Paragraph from '../UI/Paragraph'
 import Colors from '../../constants/Colors'
 import TextInput from '../UI/TextInput'
 import DecimalInput from '../UI/DecimalInput'
@@ -126,11 +127,19 @@ const EditExpense = ({
 	return (
 		<ScrollView>
 
-			<View>
-				<Text>{error}</Text>
-			</View>
+			{error.length > 0 && 
+			<Paragraph style={[{ color: Colors.error }]}>
+				{error}
+			</Paragraph>
+			}
 			
-			<Heading style={[{ textAlign: 'left', fontSize: 12, color: Colors.secondary, textTransform: 'uppercase', paddingBottom: 5 }]}>
+			<Heading style={[{ 
+				textAlign: 'left', 
+				fontSize: 12, 
+				color: Colors.primary, 
+				textTransform: 'uppercase', 
+				paddingBottom: 5 
+			}]}>
 				Expense details
 			</Heading>
 
@@ -139,6 +148,7 @@ const EditExpense = ({
 					<TextInput 
 						accessibilityLabel="Description"
 						label="Description" 
+						mode="outlined"
 						style={styles.input} 
 						value={expenseToEdit.description}
 						onChange={value => onChangeDescription(value)}
@@ -147,17 +157,25 @@ const EditExpense = ({
 
 				<View style={styles.formControl}>
 					<DecimalInput
+						accessibilityLabel="Total amount"
 						label="Total amount" 
+						mode="outlined"
 						style={styles.input} 
 						value={convertCurrencyValueToText(expenseToEdit.amount)}
 						placeholder="0.00" 
-						type="text"
 						onChange={text => onChangeAmount(text)}
 					/>
 				</View>
 				
 				<View style={styles.section}>
-					<Heading style={[{ textAlign: 'left', fontSize: 12, color: Colors.secondary, textTransform: 'uppercase', paddingBottom: 5 }]}>
+					
+					<Heading style={[{ 
+						textAlign: 'left', 
+						fontSize: 12, 
+						color: Colors.primary, 
+						textTransform: 'uppercase', 
+						paddingBottom: 5 
+					}]}>
 						Who were in?
 					</Heading>
 					{groupToEdit.people.map(person => {
@@ -215,7 +233,14 @@ const EditExpense = ({
 				</View>
 
 				<View style={styles.formControl}>
-					<Heading style={[{ textAlign: 'left', fontSize: 12, color: Colors.secondary, textTransform: 'uppercase', paddingBottom: 5 }]}>
+					
+					<Heading style={[{ 
+						textAlign: 'left', 
+						fontSize: 12, 
+						color: Colors.primary, 
+						textTransform: 'uppercase', 
+						paddingBottom: 5 
+					}]}>
 						When was this?
 					</Heading>
 					<View style={styles.row}>

@@ -94,7 +94,7 @@ const EditGroupUsers = ({
 			<Heading style={[{ 
 				textAlign: 'left', 
 				fontSize: 12, 
-				color: Colors.secondary, 
+				color: Colors.primary, 
 				textTransform: 'uppercase', 
 				paddingBottom: 5 
 			}]}>
@@ -112,7 +112,7 @@ const EditGroupUsers = ({
 						disabled={openAccessInvitation ? false : true} 
 						mode="contained" 
 						onPress={() => onShareInvitation()}
-						color={Colors.secondary}
+						color={Colors.primary}
 						labelStyle={{ color: Colors.white, fontSize: 11 }}
 					>
 						Share open access invite
@@ -132,7 +132,7 @@ const EditGroupUsers = ({
 								disabled={false} 
 								mode="contained" 
 								onPress={() => onCreateOpenInvitation()}
-								color={Colors.secondary}
+								color={Colors.primary}
 								labelStyle={{ color: Colors.white, fontSize: 11 }}
 							>
 							Create open access invitation
@@ -150,7 +150,7 @@ const EditGroupUsers = ({
 								mode="outlined" 
 								onPress={() => onRemoveOpenInvitation()}
 								color={Colors.error}
-								labelStyle={{ color: Colors.error, fontSize: 11 }}
+								labelStyle={{ color: Colors.accent, fontSize: 11 }}
 							>
 								Delete open access invite
 							</Button>
@@ -167,7 +167,7 @@ const EditGroupUsers = ({
 				<Heading style={[{ 
 					textAlign: 'left', 
 					fontSize: 12, 
-					color: Colors.secondary, 
+					color: Colors.primary, 
 					textTransform: 'uppercase', 
 					marginTop: 60 
 				}]}>
@@ -212,8 +212,9 @@ const EditGroupUsers = ({
 						<Button 
 							mode="outlined" 
 							onPress={onLeaveGroup}
-							color={Colors.primary}
+							color={Colors.accent}
 							style={styles.doneButton}
+							labelStyle={{ fontSize: 12 }}
 						>
 						Leave this group
 						</Button>
@@ -226,7 +227,7 @@ const EditGroupUsers = ({
 						mode="contained" 
 						onPress={onDoneEditingGroup}
 						color={Colors.primary}
-						labelStyle={{ color: Colors.white }}
+						labelStyle={{ color: Colors.white, fontSize: 12 }}
 						style={styles.doneButton}
 					>
                         Done

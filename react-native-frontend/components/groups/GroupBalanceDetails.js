@@ -39,7 +39,7 @@ const GroupBalanceDetails = ({
 
 const styles = StyleSheet.create({
 	subtitle: {
-		color: Colors.secondary,
+		color: Colors.primary,
 		fontSize: 12,
 		fontWeight: 'bold',
 		marginBottom: 16,

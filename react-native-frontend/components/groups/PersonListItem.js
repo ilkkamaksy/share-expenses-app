@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 	balanceNegative: {
 		fontSize: 13,
 		marginBottom: 8,
-		color: Colors.primary
+		color: Colors.accent
 	}
 })
 

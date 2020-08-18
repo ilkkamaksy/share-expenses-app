@@ -50,7 +50,13 @@ const EditGroupPeople = ({
 			</Paragraph>
 			}
 			
-			<Heading style={[{ textAlign: 'left', fontSize: 12, color: Colors.secondary, textTransform: 'uppercase', paddingBottom: 5 }]}>
+			<Heading style={[{ 
+				textAlign: 'left', 
+				fontSize: 12, 
+				color: Colors.primary, 
+				textTransform: 'uppercase', 
+				paddingBottom: 5 
+			}]}>
 				Add a new person to this group
 			</Heading>
 
@@ -83,7 +89,7 @@ const EditGroupPeople = ({
 						disabled={currentPerson.length === 0 || fetching} 
 						mode="contained" 
 						onPress={() => onAddPerson()}
-						color={Colors.secondary}
+						color={Colors.primary}
 						labelStyle={{ color: Colors.white }}
 					>
                             Add to group
@@ -95,7 +101,13 @@ const EditGroupPeople = ({
 
 				</View>
 				
-				<Heading style={[{ textAlign: 'left', fontSize: 12, color: Colors.secondary, textTransform: 'uppercase', marginTop: 20 }]}>
+				<Heading style={[{ 
+					textAlign: 'left', 
+					fontSize: 12, 
+					color: Colors.primary, 
+					textTransform: 'uppercase', 
+					marginTop: 20 
+				}]}>
 					Names of people in this group
 				</Heading>
 
@@ -111,7 +123,7 @@ const EditGroupPeople = ({
 							</View>
 							<View style={styles.column}>
 								<Button 
-									labelStyle={{ color: Colors.primary, fontSize: 12 }}
+									labelStyle={{ color: Colors.accent, fontSize: 11 }}
 									compact={true} 
 									mode="text" 
 									uppercase={false} 

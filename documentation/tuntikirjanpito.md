@@ -33,4 +33,5 @@
 | 15.8. |   7  | React Nativen Linking & DeepLinking -opiskelua, group invites- toteutuksen aloitus |
 | 16.8. |   8  | Group invites- toteutuksen jatkoa, open access-linkki jakometodina |
 | 17.8. |   8  | Group invites- toteutuksen jatkoa, avoimen kutsun hyväksyminen, refaktorointi |
-| yht   | 210   | | 
+| 18.8. |   9  | Group invites-hyväksyminen ja hylkääminen, käyttäjän poistaminen ja lähtö ryhmästä, visuaalisen ilmeen hiomista, refaktorointi |
+| yht   | 219   | | 

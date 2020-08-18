@@ -60,9 +60,12 @@ const GroupDetailScreen = ({
 					<Heading style={[styles.header]}>
 						{group.title}
 					</Heading>
-					<Paragraph style={[styles.intro]}>
-						{group.location}
-					</Paragraph>
+					
+					{group.location && 
+						<Paragraph style={[styles.intro]}>
+							{group.location}
+						</Paragraph>
+					}
 
 					<View style={styles.actions}>
 						<View style={styles.row}>
@@ -106,7 +109,6 @@ const styles = StyleSheet.create({
 	header: {
 		color: Colors.white,
 		textAlign: 'left',
-		fontSize: 26
 	},
 	intro: {
 		textAlign: 'left',
@@ -124,14 +126,11 @@ const styles = StyleSheet.create({
 		width: '100%'
 	},
 	actions: {
-		position: 'absolute',
-		bottom: 12,
+		marginTop: 20,
+		marginBottom: -10,
 		width: '100%'
 	}, 
 	actionLinkContainer: {
-		backgroundColor: Colors.primary,
-		paddingVertical: 4,
-		borderRadius: 4,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},

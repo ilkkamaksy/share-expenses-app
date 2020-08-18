@@ -13,6 +13,7 @@ import {
 } from '../../store/actions/people'
 
 import Heading from '../UI/Heading'
+import Paragraph from '../UI/Paragraph'
 import TextInput from '../UI/TextInput'
 import Colors from '../../constants/Colors'
 
@@ -43,13 +44,19 @@ const EditGroupPeople = ({
 	return (
 		<ScrollView>
 
-			<View>
-				<Text>{error}</Text>
-			</View>
+			{error.length > 0 && 
+			<Paragraph style={[{ color: Colors.error }]}>
+				{error}
+			</Paragraph>
+			}
 			
 			<Heading style={[{ textAlign: 'left', fontSize: 12, color: Colors.secondary, textTransform: 'uppercase', paddingBottom: 5 }]}>
 				Add a new person to this group
 			</Heading>
+
+			<Paragraph style={[{ textAlign: 'left', fontSize: 13, marginBottom: 5, color: Colors.lightCoffee, lineHeight: 20 }]}>
+				Add names of people in this group. All the names you add here can be used in group expenses. 
+			</Paragraph>    
 
 			<View style={styles.form}>
 				<View style={styles.formControl}>
@@ -82,17 +89,25 @@ const EditGroupPeople = ({
                             Add to group
 					</Button>
 					
+					<Paragraph style={[{ textAlign: 'left', fontSize: 10, marginVertical: 10, color: Colors.lightCoffee, lineHeight: 20 }]}>
+						These are not invites to other users. Invite your friends to manage this group by editing group users. 
+					</Paragraph>
+
 				</View>
 				
 				<Heading style={[{ textAlign: 'left', fontSize: 12, color: Colors.secondary, textTransform: 'uppercase', marginTop: 20 }]}>
-					People in this group
+					Names of people in this group
 				</Heading>
 
 				<View style={styles.formControl}>
 					{groupToEdit.people.map(person => { return (
-						<View key={person.id} style={styles.row}>
+						<View key={person.id} style={[styles.row, { borderBottomColor: '#ddd', borderBottomWidth: StyleSheet.hairlineWidth }]}>
 							<View style={styles.column}>
-								<Text>{person.name}</Text>
+								<Text style={{ 
+									fontSize: 13, 
+									color: Colors.lightCoffee, 
+									paddingVertical: 14
+								}}>{person.name}</Text>
 							</View>
 							<View style={styles.column}>
 								<Button 

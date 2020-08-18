@@ -4,7 +4,6 @@ import { ScrollView, StyleSheet } from 'react-native'
 
 import Hero from '../../components/UI/Hero'
 import Heading from '../../components/UI/Heading'
-import Paragraph from '../../components/UI/Paragraph'
 import ContentContainer from '../../components/UI/ContentContainer'
 import Colors from '../../constants/Colors'
 
@@ -18,9 +17,6 @@ const CreateGroupScreen = ({ navigation }) => {
 				<Heading style={[styles.header]}>
 					Add a new group
 				</Heading>
-				<Paragraph style={[styles.intro]}>
-					Add a name and an optional location for your group.
-				</Paragraph>
 			</Hero>
 
 			<ContentContainer>
@@ -35,7 +31,6 @@ const styles = StyleSheet.create({
 	header: {
 		color: Colors.white,
 		textAlign: 'left',
-		fontSize: 26
 	},
 	intro: {
 		textAlign: 'left',

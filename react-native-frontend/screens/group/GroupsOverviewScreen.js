@@ -6,7 +6,6 @@ import { ScrollView, StyleSheet, View } from 'react-native'
 import GroupList from '../../components/groups/GroupList'
 import Hero from '../../components/UI/Hero'
 import Heading from '../../components/UI/Heading'
-import Paragraph from '../../components/UI/Paragraph'
 import ContentContainer from '../../components/UI/ContentContainer'
 import Colors from '../../constants/Colors'
 
@@ -26,14 +25,10 @@ const GroupsOverViewScreen = ({ navigation, setGroupToEdit }) => {
 		<View style={styles.container}>
 			<ScrollView style={styles.container}>
 				<Hero>
-
 					<Heading style={[styles.header]}>
-					My groups
+						My groups
 					</Heading>
-					<Paragraph style={[styles.intro]}>
-					Browse you groups.
-					</Paragraph>
-					
+
 					<PopupMenuTopRight />
 				</Hero>
 
@@ -53,7 +48,6 @@ const styles = StyleSheet.create({
 	header: {
 		color: Colors.white,
 		textAlign: 'left',
-		fontSize: 26
 	},
 	intro: {
 		textAlign: 'left',

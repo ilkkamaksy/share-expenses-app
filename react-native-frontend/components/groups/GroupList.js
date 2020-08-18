@@ -11,7 +11,6 @@ import Heading from '../UI/Heading'
 import GroupListItem from './GroupListItem'
 import FilterList from '../icons/FilterList'
 import Banner from '../UI/Banner'
-
 import Colors from '../../constants/Colors'
 	
 const GroupList = ({ 
@@ -35,7 +34,7 @@ const GroupList = ({
 
 	useEffect(() => {
 	
-		if (fetching) {
+		if (fetching && userGroups.length === 0) {
 			getGroups()
 		}
 
@@ -177,13 +176,13 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		marginBottom: 16,
-		paddingBottom: 10,
-		borderBottomColor: '#f2f2f2',
+		paddingBottom: 16,
+		borderBottomColor: '#ddd',
 		borderBottomWidth: StyleSheet.hairlineWidth,
 	},
 	selectedSortingText: {
-		color: Colors.coffee,
-		fontSize: 14,
+		color: Colors.lightCoffee,
+		fontSize: 13,
 	},
 	modalContent: {
 		flex: 1,

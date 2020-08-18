@@ -40,7 +40,7 @@ const Group = ({
 					<Text style={styles.columnTitle}>Balance</Text>
 				</View>
 
-				<View style={styles.personList}>
+				<View style={styles.list}>
 					{groupTotals.map(item => {
 						return (
 							<PersonListItem 
@@ -52,34 +52,37 @@ const Group = ({
 				</View>
 
 				<Button 
-					labelStyle={styles.summaryButton}
-					mode="text" 
+					labelStyle={styles.summaryButtonLabel}
+					mode="contained" 
 					color={Colors.primary}
+					style={styles.summaryButton}
 					onPress={() => navigation.navigate('GroupBalanceDetails', { group: group })}
 				>
-					View balance details
+					View details
 				</Button>
 
 			</View>
 
-			<View style={styles.section}>
+			<View style={[styles.section, { marginTop: 40 }]}>
 
 				{group.expenses.length > 0 && <Text style={styles.subtitle}>Most recent expense</Text>}
 			
-				{group.expenses.reverse().slice(0, 1).map(expense => {
-					return (
-						<ExpenseListItem 
-							key={expense.id}
-							people={group.people}
-							expense={expense} 
-							removeExpense={() => removeExpense(expense.id)}
-						/>
-					)
-				})}
-			
+				<View style={styles.list}>
+					{group.expenses.reverse().slice(0, 1).map(expense => {
+						return (
+							<ExpenseListItem 
+								key={expense.id}
+								people={group.people}
+								expense={expense} 
+								removeExpense={() => removeExpense(expense.id)}
+							/>
+						)
+					})}
+				</View>
 				<Button 
-					labelStyle={styles.summaryButton}
-					mode="text" 
+					labelStyle={styles.summaryButtonLabel}
+					style={[styles.summaryButton, { marginBottom: 20 }]}
+					mode="contained" 
 					color={Colors.primary}
 					onPress={() => navigation.navigate('GroupExpenses', { group: group })}
 				>
@@ -102,11 +105,8 @@ const styles = StyleSheet.create({
 		borderBottomColor: '#f2f2f2',
 		borderBottomWidth: StyleSheet.hairlineWidth,
 	},
-	personList: {
-		marginBottom: 20
-	},
 	list: {
-		marginBottom: 20
+		marginBottom: 30
 	},
 	columnTitle: {
 		fontSize: 13,
@@ -120,11 +120,16 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		marginBottom: 16,
 		paddingBottom: 10,
-		textTransform: 'uppercase'
+		textTransform: 'uppercase',
+		textAlign: 'center'
 	},
 	summaryButton: {
+		borderRadius: 8
+	},
+	summaryButtonLabel: {
 		fontSize: 11,
 		fontWeight: 'bold',
+		color: Colors.white,	
 	}
 })
 

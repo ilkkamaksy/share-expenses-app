@@ -19,7 +19,9 @@ const ToggleMenu = ({ toggleTopRightMenu }) => {
 
 const styles = StyleSheet.create({
 	toggleButton: {
-	
+		width: 40,
+		alignItems: 'center',
+		justifyContent: 'center',	
 	},
 })
 

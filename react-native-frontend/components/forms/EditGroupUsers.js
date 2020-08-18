@@ -85,9 +85,11 @@ const EditGroupUsers = ({
 	return (
 		<ScrollView>
 
-			<View>
-				<Text>{error}</Text>
-			</View>
+			{error.length > 0 && 
+			<Paragraph style={[{ color: Colors.error }]}>
+				{error}
+			</Paragraph>
+			}
 			
 			<Heading style={[{ 
 				textAlign: 'left', 
@@ -103,7 +105,7 @@ const EditGroupUsers = ({
 				
 				<View style={styles.formControl}>
 					<Paragraph style={[{ textAlign: 'left', fontSize: 13, color: Colors.lightCoffee }]}>
-						Invite friends to join in to manage this group by open access invitation. Note that anyone with the invitation can join this group.
+						Invite friends to join in to manage this group by open access invitation.
 					</Paragraph>    
 
 					<Button 
@@ -115,6 +117,10 @@ const EditGroupUsers = ({
 					>
 						Share open access invite
 					</Button>
+
+					<Paragraph style={[{ textAlign: 'center', fontSize: 10, marginTop: 5, color: Colors.lightCoffee }]}>
+						Anyone with the invitation can join this group.
+					</Paragraph>
 
 					{!openAccessInvitation ?
 			
@@ -136,8 +142,8 @@ const EditGroupUsers = ({
 						:
 			
 						<View style={{ marginTop: 20 }}>
-							<Paragraph style={[{ textAlign: 'left', fontSize: 11, color: Colors.lightCoffee, lineHeight: 20 }]}>
-								{`The open access invitation has been created on ${new Date(JSON.parse(openAccessInvitation.createdAt)).toLocaleDateString()} at ${new Date(JSON.parse(openAccessInvitation.createdAt)).toLocaleTimeString()} by ${openAccessInvitation.owner.email}. You can deactivate this invitation by clicking below, after which no one can join the group using it.`}
+							<Paragraph style={[{ textAlign: 'center', fontSize: 11, color: Colors.lightCoffee, lineHeight: 20 }]}>
+								{`Open access invitation has been created on ${new Date(JSON.parse(openAccessInvitation.createdAt)).toLocaleDateString()} at ${new Date(JSON.parse(openAccessInvitation.createdAt)).toLocaleTimeString()} by ${openAccessInvitation.owner.email}.`}
 							</Paragraph>    
 							<Button 
 								disabled={false} 
@@ -148,6 +154,10 @@ const EditGroupUsers = ({
 							>
 								Delete open access invite
 							</Button>
+
+							<Paragraph style={[{ textAlign: 'center', fontSize: 10, marginTop: 5, color: Colors.lightCoffee, lineHeight: 20 }]}>
+								When removed, no one can join the group using it.
+							</Paragraph>    
 						</View>
 					}
 					

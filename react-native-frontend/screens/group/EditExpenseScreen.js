@@ -7,7 +7,6 @@ import EditExpense from '../../components/forms/EditExpense'
 
 import Hero from '../../components/UI/Hero'
 import Heading from '../../components/UI/Heading'
-import Paragraph from '../../components/UI/Paragraph'
 import ContentContainer from '../../components/UI/ContentContainer'
 import Colors from '../../constants/Colors'
 
@@ -28,12 +27,9 @@ const EditExpenseScreen = ({ navigation, groupToEdit }) => {
 				
 				<Hero>
 					<Heading style={[styles.header]}>
-						Add a new expense
+						{`Add a new expense to group "${groupToEdit.title}"`}
 					</Heading>
-					<Paragraph style={[styles.intro]}>
-						{`Group "${groupToEdit.title}"`}
-					</Paragraph>
-
+					
 					<PopupMenuTopRight />
 
 				</Hero>
@@ -53,7 +49,6 @@ const styles = StyleSheet.create({
 	header: {
 		color: Colors.white,
 		textAlign: 'left',
-		fontSize: 26
 	},
 	intro: {
 		textAlign: 'left',

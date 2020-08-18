@@ -13,6 +13,7 @@ import {
 } from '../../store/actions/groups'
 
 import Heading from '../UI/Heading'
+import Paragraph from '../UI/Paragraph'
 import TextInput from '../UI/TextInput'
 import Modal from '../UI/Modal'
 import Colors from '../../constants/Colors'
@@ -74,9 +75,12 @@ const EditGroupInfo = ({
 	return (
 		<ScrollView>
 
-			<View>
-				<Text>{error}</Text>
-			</View>
+			{error.length > 0 && 
+			<Paragraph style={[{ color: Colors.error }]}>
+				{error}
+			</Paragraph>
+			}
+			
 			
 			{groupToEdit.id && groupToEdit.owner.id === user.id &&
 				<Modal visible={modalVisible}>
@@ -152,7 +156,20 @@ const EditGroupInfo = ({
 				</View>
 
 				{groupToEdit.id && groupToEdit.owner.id === user.id &&
-					<View style={styles.formControl}>
+					<View style={[styles.formControl, { marginVertical: 80 }]}>
+						<Heading style={[{ 
+							textAlign: 'left', 
+							fontSize: 12, 
+							color: Colors.secondary, 
+							textTransform: 'uppercase', 
+							paddingBottom: 5 
+						}]}>
+							Remove group
+						</Heading>
+						<Paragraph style={[{ textAlign: 'left', fontSize: 13, marginBottom: 15, color: Colors.lightCoffee, lineHeight: 20 }]}>
+							When you remove this group, all expenses and group data will be permanently lost from all users.
+						</Paragraph>    
+
 						<Button 
 							mode="outlined" 
 							onPress={toggleRemoveConfirmationModal}
@@ -185,7 +202,7 @@ const styles = StyleSheet.create({
 		marginTop: 10
 	},
 	removeButton: {
-		marginTop: 80
+		
 	},
 	centeredView: {
 		flex: 1,

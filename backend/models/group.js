@@ -52,4 +52,15 @@ schema.pre('findOneAndDelete', { document: true }, function(next) {
 	})
 })
 
+schema.pre('findOneAndDelete', { document: true }, function(next) {
+	let id = this.getQuery()['_id']
+	mongoose.model('Invitation').deleteMany({ group: id }, function(err) {
+		if (err) {
+			next(err)
+		} else {
+			next()
+		}
+	})
+})
+
 module.exports = mongoose.model('Group', schema)

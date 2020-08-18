@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
 		width: '50%'
 	},
 	title: {
-		fontSize: 15,
+		fontSize: 13,
 		marginBottom: 6,
 		color: Colors.coffee,
 		fontWeight: 'bold'
@@ -72,20 +72,19 @@ const styles = StyleSheet.create({
 		paddingBottom: 10,
 	},
 	description: {
-		fontSize: 13,
+		fontSize: 12,
 		marginBottom: 4,
 		color: Colors.coffee,
 	},
 	receivablesTitle: {
-		fontSize: 12,
-		textTransform: 'uppercase',
+		fontSize: 11,
 		marginBottom: 6,
-		letterSpacing: 0.5,
-		color: Colors.secondary,
+		textTransform: 'uppercase',
+		color: Colors.error,
 		fontWeight: 'bold'
 	},
 	receivablesItem: {
-		fontSize: 13,
+		fontSize: 12,
 		color: Colors.coffee
 	}
 })

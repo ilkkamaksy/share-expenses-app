@@ -7,7 +7,6 @@ import GroupBalanceDetails from '../../components/groups/GroupBalanceDetails'
 
 import Hero from '../../components/UI/Hero'
 import Heading from '../../components/UI/Heading'
-import Paragraph from '../../components/UI/Paragraph'
 import ContentContainer from '../../components/UI/ContentContainer'
 import Colors from '../../constants/Colors'
 
@@ -24,11 +23,8 @@ const GroupBalanceDetailScreen = ({ groupToEdit }) => {
 				
 				<Hero>
 					<Heading style={[styles.header]}>
-						Balance summary
+						{`Balance summary for group "${group.title}"`}
 					</Heading>
-					<Paragraph style={[styles.intro]}>
-						{`Group "${group.title}"`}
-					</Paragraph>
 
 					<PopupMenuTopRight />		
 				</Hero>
@@ -53,7 +49,6 @@ const styles = StyleSheet.create({
 	header: {
 		color: Colors.white,
 		textAlign: 'left',
-		fontSize: 26
 	},
 	intro: {
 		textAlign: 'left',

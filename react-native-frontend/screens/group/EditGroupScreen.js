@@ -5,7 +5,6 @@ import { ScrollView, StyleSheet, View, TouchableOpacity, Text } from 'react-nati
 
 import Hero from '../../components/UI/Hero'
 import Heading from '../../components/UI/Heading'
-import Paragraph from '../../components/UI/Paragraph'
 import ContentContainer from '../../components/UI/ContentContainer'
 import Colors from '../../constants/Colors'
 
@@ -19,7 +18,7 @@ const EditGroupScreen = ({ groupToEdit, navigation }) => {
 		navigation.navigate('GroupList')
 		return <></>
 	}
-	
+
 	const [tab, setTab] = useState('')
 
 	useEffect(() => {
@@ -42,30 +41,25 @@ const EditGroupScreen = ({ groupToEdit, navigation }) => {
 					Edit group
 				</Heading>
 
-				<Paragraph style={[styles.intro]}>
-					{`Group "${groupToEdit.title}"`}
-				</Paragraph>
-
-
 				<View style={styles.actions}>
 					<View style={styles.row}>
 						<TouchableOpacity 
 							onPress={() => setTab('details')} 
 							style={styles.actionLinkContainer}
 						>
-							<Text style={styles.actionLink}>Edit Details</Text>
+							<Text style={styles.actionLink}>General</Text>
 						</TouchableOpacity>
 						<TouchableOpacity 
 							onPress={() => setTab('people')} 
 							style={styles.actionLinkContainer}
 						>
-							<Text style={styles.actionLink}>Edit People</Text>
+							<Text style={styles.actionLink}>Edit people</Text>
 						</TouchableOpacity>
 						<TouchableOpacity 
 							onPress={() => setTab('users')} 
 							style={styles.actionLinkContainer}
 						>
-							<Text style={styles.actionLink}>Edit Users</Text>
+							<Text style={styles.actionLink}>Group Users</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
@@ -85,7 +79,7 @@ const styles = StyleSheet.create({
 	header: {
 		color: Colors.white,
 		textAlign: 'left',
-		fontSize: 26
+		fontSize: 22
 	},
 	intro: {
 		textAlign: 'left',
@@ -103,13 +97,12 @@ const styles = StyleSheet.create({
 		width: '100%'
 	},
 	actions: {
-		position: 'absolute',
-		bottom: 10,
+		marginTop: 20,
+		marginBottom: -10,
 		width: '100%'
 	}, 
 	actionLinkContainer: {
 		backgroundColor: Colors.primary,
-		paddingVertical: 4,
 	},
 	actionLink: {
 		textTransform: 'uppercase',

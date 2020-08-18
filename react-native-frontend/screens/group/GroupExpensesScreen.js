@@ -7,7 +7,6 @@ import { removeExpense } from '../../store/actions/expenses'
 
 import Hero from '../../components/UI/Hero'
 import Heading from '../../components/UI/Heading'
-import Paragraph from '../../components/UI/Paragraph'
 import Colors from '../../constants/Colors'
 
 import PopupMenuTopRight from '../../components/menus/PopupMenuTopRight'
@@ -34,12 +33,10 @@ const GroupExpensesScreen = ({
 				ListHeaderComponent={
 					<Hero style={[{ marginBottom: 30 }]}>
 						<Heading style={[styles.header]}>
-						All expenses
+							{`All expenses in group "${group.title}"`}
 						</Heading>
-						<Paragraph style={[styles.intro]}>
-							{`Group "${group.title}"`}
-						</Paragraph>
 						<PopupMenuTopRight />
+
 					</Hero>}
 			/>
 			
@@ -52,7 +49,6 @@ const styles = StyleSheet.create({
 	header: {
 		color: Colors.white,
 		textAlign: 'left',
-		fontSize: 26
 	},
 	intro: {
 		textAlign: 'left',

@@ -14,7 +14,7 @@ const GroupListItem = ({ item, onViewDetail }) => {
 		<TouchableOpacity onPress={onViewDetail} style={styles.item}>
 			<View style={styles.itemContainer}>
 				<View style={styles.itemContent}>
-					<Text style={styles.location}>{`${item.location}`}</Text>
+					
 					<Text style={styles.title}>{item.title}</Text>
 					<Text style={styles.lastUpdatedAt}>{`Last updated: ${formattedUpdatedAt}`}</Text>
 				</View>
@@ -26,7 +26,7 @@ const GroupListItem = ({ item, onViewDetail }) => {
 
 const styles = StyleSheet.create({
 	item: {
-		borderBottomColor: '#f2f2f2',
+		borderBottomColor: '#ddd',
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		flex: 1,
 		paddingTop: 14,

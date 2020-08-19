@@ -43,7 +43,7 @@ const GroupDetailScreen = ({
 			lastUpdatedAt: null,
 			createdAt: null,
 			description: '',
-			amount: Number(0).toFixed(2),
+			amount: 0,
 			people: [],
 			details: []
 		})
@@ -60,7 +60,7 @@ const GroupDetailScreen = ({
 					<Heading style={[styles.header]}>
 						{group.title}
 					</Heading>
-					
+
 					{group.location && 
 						<Paragraph style={[styles.intro]}>
 							{group.location}

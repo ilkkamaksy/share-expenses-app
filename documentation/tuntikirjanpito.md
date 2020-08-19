@@ -34,4 +34,5 @@
 | 16.8. |   8  | Group invites- toteutuksen jatkoa, open access-linkki jakometodina |
 | 17.8. |   8  | Group invites- toteutuksen jatkoa, avoimen kutsun hyväksyminen, refaktorointi |
 | 18.8. |   9  | Group invites-hyväksyminen ja hylkääminen, käyttäjän poistaminen ja lähtö ryhmästä, visuaalisen ilmeen hiomista, refaktorointi |
-| yht   | 219   | | 
+| 19.8. |   8  | Decimal inputin viimeistely, editExpense-formin UI:n kehitys |
+| yht   | 227   | | 

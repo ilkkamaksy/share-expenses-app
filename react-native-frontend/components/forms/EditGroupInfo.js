@@ -115,7 +115,7 @@ const EditGroupInfo = ({
 				textTransform: 'uppercase', 
 				paddingBottom: 5 
 			}]}>
-				Edit Group details
+				Group details
 			</Heading>
 
 			<View style={styles.form}>

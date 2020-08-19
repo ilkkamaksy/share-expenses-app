@@ -17,6 +17,7 @@ const CreateGroupScreen = ({ navigation }) => {
 				<Heading style={[styles.header]}>
 					Add a new group
 				</Heading>
+				<></>
 			</Hero>
 
 			<ContentContainer>

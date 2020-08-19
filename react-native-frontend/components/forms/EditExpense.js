@@ -45,20 +45,18 @@ const EditExpense = ({
 		})
 	}
 
-	const convertCurrencyValueToText = (value) => {
-		return value 
-			? Number(value / 100).toFixed(2).toString().replace('.', ',') 
-			: Number(0).toFixed(2).replace('.', ',') 
+	const setInitialAmount = (amount) => {
+		return amount ? Number(amount / 100).toFixed(2) : amount
 	}
 
 	const onChangeAmount = (value) => {
-		let val = value.nativeEvent.text.toString()
-
 		setExpenseToEdit({
 			...expenseToEdit,
-			amount: parseFloat(val.replace(',', ''))
+			amount: value * 100
 		})
 	}
+
+	console.log('expensetoedit', expenseToEdit)
 
 	const togglePerson = (person) => {
 		setExpenseToEdit({
@@ -84,8 +82,8 @@ const EditExpense = ({
 			details: expenseToEdit.details.map(item => item.personId === data.person.id 
 				? {
 					...item,
-					share: parseFloat(data.value.nativeEvent.text) * 100,
-					balance: item.paid - parseFloat(data.value.nativeEvent.text) * 100
+					share: data.value * 100,
+					balance: item.paid - data.value * 100
 				}
 				: item)
 		})
@@ -97,8 +95,8 @@ const EditExpense = ({
 			details: expenseToEdit.details.map(item => item.personId === data.person.id 
 				? {
 					...item,
-					paid: parseFloat(data.value.nativeEvent.text) * 100,
-					balance: parseFloat(data.value.nativeEvent.text) * 100 - item.share
+					paid: data.value * 100,
+					balance: data.value * 100 - item.share
 				}
 				: item)
 		})
@@ -161,13 +159,13 @@ const EditExpense = ({
 						label="Total amount" 
 						mode="outlined"
 						style={styles.input} 
-						value={convertCurrencyValueToText(expenseToEdit.amount)}
-						placeholder="0.00" 
+						initialValue={setInitialAmount(expenseToEdit.amount)}
+						placeholder="" 
 						onChange={text => onChangeAmount(text)}
 					/>
 				</View>
 				
-				<View style={styles.section}>
+				<View style={[styles.section, { marginTop: 20 }]}>
 					
 					<Heading style={[{ 
 						textAlign: 'left', 
@@ -180,53 +178,94 @@ const EditExpense = ({
 					</Heading>
 					{groupToEdit.people.map(person => {
 						return (
-							<View key={person.id} style={styles.formControl}>
+							<View key={`${person.id}-share-toggle`} style={styles.formControl}>
 								<Checkbox.Item 
-									label={person.name} 
+									label={<Text style={{ color: Colors.coffee }}>{person.name}</Text>} 
 									status={expenseToEdit.people.includes(person) ? 'checked' : 'unchecked'}
 									onPress={() => {
 										togglePerson(person)
 									}}
-									style={{ paddingLeft: 0 }}
+									style={{ paddingLeft: 0, borderBottomColor: '#ccc', borderBottomWidth: StyleSheet.hairlineWidth }}
+									color={Colors.primary}
 								/>
 							</View>
 						)
 					})}
 				</View>
 
-				<View style={styles.section}>
+				<View style={[styles.section, { marginVertical: 30, backgroundColor: '#f7f7f7', padding: 20, borderRadius: 8 }]}>
 					{expenseToEdit.people.map(person => {
 						return (
-							<View key={person.id} style={styles.row}>
-								<View  style={styles.formControl}>
+							<View key={`${person.id}-share-input`}>
+								<View style={styles.formControl}>
 									<Text>{`${person.name}'s share`}</Text>
 									<DecimalInput
+										accessibilityLabel="Share"
 										label="Share" 
+										mode="outlined"
 										style={styles.input} 
-										// value={person.name}
-										placeholder="0.00" 
-										type="text"
+										initialValue={setInitialAmount(expenseToEdit.details.find(item => item.personId === person.id).share)} 
 										onChange={value => setPersonShare({
 											person,
 											value
 										})}
-									/>
-								</View>
 
-								<View key={person.id} style={styles.formControl}>
-									<Text>{`${person.name} paid`}</Text>
-									<DecimalInput
-										label="Paid" 
-										style={styles.input} 
-										// value={person.name}
-										placeholder="0.00" 
-										type="text"
-										onChange={value => setPersonPaid({
-											person,
-											value
-										})}
 									/>
 								</View>
+							</View>
+						)
+					})}
+				</View>
+
+				<View style={styles.section}>
+					
+					<Heading style={[{ 
+						textAlign: 'left', 
+						fontSize: 12, 
+						color: Colors.primary, 
+						textTransform: 'uppercase', 
+						paddingBottom: 5 
+					}]}>
+						Who paid?
+					</Heading>
+					{expenseToEdit.details.map(detail => {
+						const person = expenseToEdit.people.find(person => person.id === detail.personId)
+						return (
+							<View key={`${person.id}-paid-toggle`} style={styles.formControl}>
+								<Checkbox.Item 
+									label={<Text style={{ color: Colors.coffee }}>{person.name}</Text>} 
+									status={expenseToEdit.people.includes(person) ? 'checked' : 'unchecked'}
+									onPress={() => {
+										togglePerson(person)
+									}}
+									style={{ paddingLeft: 0, borderBottomColor: '#ccc', borderBottomWidth: StyleSheet.hairlineWidth }}
+									color={Colors.primary}
+								/>
+							</View>
+						)
+					})}
+				</View>
+
+
+				<View style={[styles.section, { marginVertical: 30, backgroundColor: '#f7f7f7', padding: 20, borderRadius: 8 }]}>
+					{expenseToEdit.people.map(person => {
+						return (
+							<View key={`${person.id}-payee`} style={styles.formControl}>
+
+								<Text>{`${person.name} paid`}</Text>
+								<DecimalInput
+									label="Paid" 
+									accessibilityLabel="Paid"
+									mode="outlined"
+									style={styles.input} 
+									initialValue={setInitialAmount(expenseToEdit.details.find(item => item.personId === person.id).paid)} 
+									type="text"
+									onChange={value => setPersonPaid({
+										person,
+										value
+									})}
+								/>
+								
 							</View>
 						)
 					})}
@@ -243,9 +282,9 @@ const EditExpense = ({
 					}]}>
 						When was this?
 					</Heading>
-					<View style={styles.row}>
+					<View style={[styles.row, { marginBottom: 20 }]}>
 						<View style={[styles.column, { width: '70%'}]}>
-							<Text>{`${expenseToEdit.date.toLocaleDateString()}, at ${expenseToEdit.date.toLocaleTimeString()}`}</Text>
+							<Text style={{ color: Colors.lightCoffee, fontSize: 13 }}>{`${expenseToEdit.date.toLocaleDateString()}, at ${expenseToEdit.date.toLocaleTimeString()}`}</Text>
 						</View>
 						<View style={[styles.column], { width: '30%' }}>
 							<Button 

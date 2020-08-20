@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { ScrollView, View, Text, StyleSheet } from 'react-native'
 import { useNavigation  } from '@react-navigation/native'
 import { Button, Checkbox } from 'react-native-paper'
-import DateTimePicker from '@react-native-community/datetimepicker'
 
 import { 
 	setExpenseDate, 
@@ -17,6 +16,8 @@ import Paragraph from '../UI/Paragraph'
 import Colors from '../../constants/Colors'
 import TextInput from '../UI/TextInput'
 import DecimalInput from '../UI/DecimalInput'
+import TimePicker from '../UI/TimePicker'
+import ExpensePeopleShares from './ExpensePeopleShares'
 
 const EditExpense = ({ 
 	error,
@@ -29,13 +30,23 @@ const EditExpense = ({
    
 	const navigation = useNavigation()
 
+	const [creditors, setCreditors] = useState([])
+	const [showTimePicker, setShowTimePicker] = useState(false)
+
 	useEffect(() =>{
-		setExpenseDate(new Date(Date.now()))
+		if (!expenseToEdit.date) {
+			setExpenseDate(new Date(Date.now()))
+		}
 	}, [])
 
-	const onSaveExpense = () => {
-		addExpense(expenseToEdit)
-		navigation.navigate('GroupItem', { group: groupToEdit })
+	const onChangeTime = (selectedTime) => {
+		const currentTime = selectedTime || expenseToEdit.date
+		setShowTimePicker(false)
+		setExpenseDate(currentTime)
+	}
+
+	const showTimepicker = () => {
+		setShowTimePicker(true)
 	}
 
 	const onChangeDescription = (text) => {
@@ -52,14 +63,20 @@ const EditExpense = ({
 	const onChangeAmount = (value) => {
 		setExpenseToEdit({
 			...expenseToEdit,
-			amount: value * 100
+			amount: value * 100,
+			details: expenseToEdit.details.map(detail => {
+				return {
+					...detail,
+					share: value * 100 / expenseToEdit.people.length,
+					balance: -1 * (value * 100 / expenseToEdit.people.length)
+				}
+			})
 		})
 	}
 
-	console.log('expensetoedit', expenseToEdit)
-
-	const togglePerson = (person) => {
-		setExpenseToEdit({
+	const addPersonToExpense = (person) => {
+ 
+		let newExpenseToEdit = {
 			...expenseToEdit,
 			people: expenseToEdit.people.includes(person) 
 				? expenseToEdit.people.filter(p => p.id !== person.id)
@@ -73,20 +90,13 @@ const EditExpense = ({
 					paid: 0,
 					balance: 0
 				}) 
-		})
+		}
+
+		setExpenseToEdit(newExpenseToEdit)
 	}
 
-	const setPersonShare = (data) => {
-		setExpenseToEdit({
-			...expenseToEdit,
-			details: expenseToEdit.details.map(item => item.personId === data.person.id 
-				? {
-					...item,
-					share: data.value * 100,
-					balance: item.paid - data.value * 100
-				}
-				: item)
-		})
+	const addCreditorToExpense = (person) => {
+		setCreditors(creditors.includes(person) ? creditors.filter(p => p.id !== person.id) : creditors.concat(person))
 	}
 
 	const setPersonPaid = (data) => {
@@ -102,24 +112,9 @@ const EditExpense = ({
 		})
 	}
 
-	const [showDatePicker, setShowDatePicker] = useState(false)
-	const [showTimePicker, setShowTimePicker] = useState(false)
-
-	const onChangeDate = (event, selectedDate) => {
-		const currentDate = selectedDate || expenseToEdit.date
-		setShowDatePicker(false)
-		setExpenseDate(currentDate)
-		setShowTimePicker(true)
-	}
-
-	const onChangeTime = (event, selectedTime) => {
-		const currentTime = selectedTime || expenseToEdit.date
-		setShowTimePicker(false)
-		setExpenseDate(currentTime)
-	}
-
-	const showDatepicker = () => {
-		setShowDatePicker(true)
+	const onSaveExpense = () => {
+		addExpense(expenseToEdit)
+		navigation.navigate('GroupItem', { group: groupToEdit })
 	}
 
 	return (
@@ -141,7 +136,7 @@ const EditExpense = ({
 				Expense details
 			</Heading>
 
-			<View style={styles.form}>
+			<View style={styles.section}>
 				<View style={styles.formControl}>
 					<TextInput 
 						accessibilityLabel="Description"
@@ -164,8 +159,48 @@ const EditExpense = ({
 						onChange={text => onChangeAmount(text)}
 					/>
 				</View>
-				
-				<View style={[styles.section, { marginTop: 20 }]}>
+
+				<View style={[styles.formControl, { marginTop: 20 }]}>
+					
+					<Heading style={[{ 
+						textAlign: 'left', 
+						fontSize: 12, 
+						color: Colors.primary, 
+						textTransform: 'uppercase', 
+						paddingBottom: 5 
+					}]}>
+						When was this?
+					</Heading>
+
+					<View style={[styles.row, { marginBottom: 20 }]}>
+						<View style={[styles.column, { width: '70%'}]}>
+							<Text style={{ color: Colors.lightCoffee, fontSize: 13 }}>{`${expenseToEdit.date.toLocaleDateString()}, at ${expenseToEdit.date.toLocaleTimeString()}`}</Text>
+						</View>
+						<View style={[styles.column], { width: '30%' }}>
+							<Button 
+								style={styles.column} 
+								compact={true} 
+								mode="text" 
+								uppercase={false} 
+								onPress={showTimepicker}
+								labelStyle={{ color: Colors.primary, fontSize: 12 }}
+							>
+								Change
+							</Button> 
+						</View>
+					</View>
+					
+					{showTimePicker && (
+						<TimePicker
+							testID="dateTimePicker"
+							initialValue={expenseToEdit.date}
+							onChange={onChangeTime}
+							visibility={showTimePicker}
+						/>
+					)}
+				</View>
+
+				<View style={[styles.section, { marginVertical: 30, backgroundColor: '#f7f7f7', padding: 20, borderRadius: 8 }]}>
 					
 					<Heading style={[{ 
 						textAlign: 'left', 
@@ -176,6 +211,7 @@ const EditExpense = ({
 					}]}>
 						Who were in?
 					</Heading>
+
 					{groupToEdit.people.map(person => {
 						return (
 							<View key={`${person.id}-share-toggle`} style={styles.formControl}>
@@ -183,41 +219,22 @@ const EditExpense = ({
 									label={<Text style={{ color: Colors.coffee }}>{person.name}</Text>} 
 									status={expenseToEdit.people.includes(person) ? 'checked' : 'unchecked'}
 									onPress={() => {
-										togglePerson(person)
+										addPersonToExpense(person)
 									}}
-									style={{ paddingLeft: 0, borderBottomColor: '#ccc', borderBottomWidth: StyleSheet.hairlineWidth }}
+									style={{ paddingLeft: 0 }}
 									color={Colors.primary}
 								/>
 							</View>
 						)
 					})}
+
+					
 				</View>
 
+				<ExpensePeopleShares />
+
+				{expenseToEdit.people.length > 0 &&
 				<View style={[styles.section, { marginVertical: 30, backgroundColor: '#f7f7f7', padding: 20, borderRadius: 8 }]}>
-					{expenseToEdit.people.map(person => {
-						return (
-							<View key={`${person.id}-share-input`}>
-								<View style={styles.formControl}>
-									<Text>{`${person.name}'s share`}</Text>
-									<DecimalInput
-										accessibilityLabel="Share"
-										label="Share" 
-										mode="outlined"
-										style={styles.input} 
-										initialValue={setInitialAmount(expenseToEdit.details.find(item => item.personId === person.id).share)} 
-										onChange={value => setPersonShare({
-											person,
-											value
-										})}
-
-									/>
-								</View>
-							</View>
-						)
-					})}
-				</View>
-
-				<View style={styles.section}>
 					
 					<Heading style={[{ 
 						textAlign: 'left', 
@@ -226,33 +243,32 @@ const EditExpense = ({
 						textTransform: 'uppercase', 
 						paddingBottom: 5 
 					}]}>
-						Who paid?
+					Who paid?
 					</Heading>
-					{expenseToEdit.details.map(detail => {
-						const person = expenseToEdit.people.find(person => person.id === detail.personId)
+					{expenseToEdit.people.map(person => {
 						return (
-							<View key={`${person.id}-paid-toggle`} style={styles.formControl}>
+							<View key={`${person.id}-creditor-toggle`} style={styles.formControl}>
 								<Checkbox.Item 
 									label={<Text style={{ color: Colors.coffee }}>{person.name}</Text>} 
-									status={expenseToEdit.people.includes(person) ? 'checked' : 'unchecked'}
+									status={creditors.includes(person) ? 'checked' : 'unchecked'}
 									onPress={() => {
-										togglePerson(person)
+										addCreditorToExpense(person)
 									}}
-									style={{ paddingLeft: 0, borderBottomColor: '#ccc', borderBottomWidth: StyleSheet.hairlineWidth }}
+									style={{ paddingLeft: 0 }}
 									color={Colors.primary}
 								/>
 							</View>
 						)
 					})}
 				</View>
+				}
 
-
-				<View style={[styles.section, { marginVertical: 30, backgroundColor: '#f7f7f7', padding: 20, borderRadius: 8 }]}>
-					{expenseToEdit.people.map(person => {
+				<View style={styles.section}>
+					{creditors.map(person => {
 						return (
-							<View key={`${person.id}-payee`} style={styles.formControl}>
+							<View key={`${person.id}-creditor`} style={styles.formControl}>
 
-								<Text>{`${person.name} paid`}</Text>
+								<Text style={{ fontWeight: '700', fontSize: 12, marginTop: 15 }}>{`${person.name} paid`}</Text>
 								<DecimalInput
 									label="Paid" 
 									accessibilityLabel="Paid"
@@ -270,58 +286,6 @@ const EditExpense = ({
 						)
 					})}
 				</View>
-
-				<View style={styles.formControl}>
-					
-					<Heading style={[{ 
-						textAlign: 'left', 
-						fontSize: 12, 
-						color: Colors.primary, 
-						textTransform: 'uppercase', 
-						paddingBottom: 5 
-					}]}>
-						When was this?
-					</Heading>
-					<View style={[styles.row, { marginBottom: 20 }]}>
-						<View style={[styles.column, { width: '70%'}]}>
-							<Text style={{ color: Colors.lightCoffee, fontSize: 13 }}>{`${expenseToEdit.date.toLocaleDateString()}, at ${expenseToEdit.date.toLocaleTimeString()}`}</Text>
-						</View>
-						<View style={[styles.column], { width: '30%' }}>
-							<Button 
-								style={styles.column} 
-								compact={true} 
-								mode="text" 
-								uppercase={false} 
-								onPress={showDatepicker}
-								labelStyle={{ color: Colors.primary, fontSize: 12 }}
-							>
-								Change
-							</Button> 
-						</View>
-					</View>
-					
-					{showDatePicker && (
-						<DateTimePicker
-							testID="dateTimePicker"
-							value={expenseToEdit.date}
-							mode="date"
-							is24Hour={true}
-							display="default"
-							onChange={onChangeDate}
-						/>
-					)}
-					{showTimePicker && (
-						<DateTimePicker
-							testID="dateTimePicker"
-							value={expenseToEdit.date}
-							mode="time"
-							is24Hour={false}
-							display="default"
-							onChange={onChangeTime}
-						/>
-					)}
-				</View>
-
 
 				<View style={styles.formControl}>
 					<Button 

@@ -43,7 +43,7 @@ const GroupList = ({
 			await getInvitationByGroup(referrerUrl.queryParams.id)
 		}
 
-		if (!fetching && referrerUrl && referrerUrl.queryParams && !openAccessInvitation) {
+		if (!fetching && referrerUrl && referrerUrl.queryParams.id && !openAccessInvitation) {
 			getReferrerInvitation()
 		}
 

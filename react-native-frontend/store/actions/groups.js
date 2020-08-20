@@ -84,7 +84,7 @@ export const getGroups = (sort = { sortBy: 'lastUpdatedAt', order: -1 }) =>  {
 		})
 		
 		const response = await groupService.getGroups(sort)
-		
+
 		if (response.data.data.getGroups === null || response === null) {
 			return dispatch({
 				type: 'GET_GROUPS_FAIL',

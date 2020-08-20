@@ -35,4 +35,5 @@
 | 17.8. |   8  | Group invites- toteutuksen jatkoa, avoimen kutsun hyväksyminen, refaktorointi |
 | 18.8. |   9  | Group invites-hyväksyminen ja hylkääminen, käyttäjän poistaminen ja lähtö ryhmästä, visuaalisen ilmeen hiomista, refaktorointi |
 | 19.8. |   8  | Decimal inputin viimeistely, editExpense-formin UI:n kehitys |
-| yht   | 227   | | 
+| 20.8. |   8  | DatePicker omaksi komponentiksi, EditExpense-kompontentin UI:n kehitystä |
+| yht   | 235   | | 

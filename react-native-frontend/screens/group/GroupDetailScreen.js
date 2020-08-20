@@ -44,8 +44,15 @@ const GroupDetailScreen = ({
 			createdAt: null,
 			description: '',
 			amount: 0,
-			people: [],
-			details: []
+			people: groupToEdit.people,
+			details: groupToEdit.people.map(person => {
+				return {
+					personId: person.id,
+					share: 0,
+					paid: 0,
+					balance: 0
+				}
+			})
 		})
 		
 		navigation.navigate('EditExpense')

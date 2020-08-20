@@ -53,6 +53,7 @@ export const getInvitationsByCurrentUser = () => {
 		})
 
 		const response = await inviteService.getInvitationsByCurrentUser()
+	
 		
 		if (!response || response.data.errors) {
 			return dispatch({

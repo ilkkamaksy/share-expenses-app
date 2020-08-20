@@ -4,13 +4,14 @@ import { View, StyleSheet, Text } from 'react-native'
 import { TextInput as Input } from 'react-native-paper'
 import Colors from '../../constants/Colors'
 
-const DecimalInput = ({ errorText, initialValue = '', onChange, ...props }) => {
+const DecimalInput = ({ errorText, initialValue, onChange, ...props }) => {
 	
-	const [value, setValue] = useState(initialValue ? initialValue.toString() : initialValue)
+	const [value, setValue] = useState(initialValue ? initialValue.toString().replace('.', ',') : initialValue)
 
+	console.log('decimal', value, initialValue)
 	const validate = (value) => {
 		// allow only digits, one comma (,) and 2 digits after comma
-		var rgx = /^\d+(,\d{0,2})?$/
+		var rgx = /^\d+(.\d{0,2})?$/
 		return rgx.test(value)
 	}
 
@@ -20,7 +21,7 @@ const DecimalInput = ({ errorText, initialValue = '', onChange, ...props }) => {
 
 		if (val.length === 0) {
 			setValue('')
-			onChange('')
+			onChange(0)
 			return
 		}
 
@@ -40,8 +41,11 @@ const DecimalInput = ({ errorText, initialValue = '', onChange, ...props }) => {
 			<Input
 				style={styles.input}
 				selectionColor={Colors.primary}
+				initialValue={initialValue}
 				value={value.length > 0 ? value.toString() : value}
 				onChange={text => onChangeValue(text)}
+				onBlur={() => setValue(initialValue)}
+				keyboardType={'decimal-pad'}
 				{...props}
 			/>
 			{errorText ? <Text style={styles.error}>{errorText}</Text> : null}

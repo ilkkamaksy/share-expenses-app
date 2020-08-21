@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { View, StyleSheet, Text } from 'react-native'
 import { TextInput as Input } from 'react-native-paper'
@@ -6,9 +6,13 @@ import Colors from '../../constants/Colors'
 
 const DecimalInput = ({ errorText, initialValue, onChange, ...props }) => {
 	
-	const [value, setValue] = useState(initialValue ? initialValue.toString().replace('.', ',') : initialValue)
+	const [value, setValue] = useState('')
 
-	console.log('decimal', value, initialValue)
+	useEffect(() => {
+		setValue(initialValue ? initialValue.toString() : '')
+	}, [])
+
+	
 	const validate = (value) => {
 		// allow only digits, one comma (,) and 2 digits after comma
 		var rgx = /^\d+(.\d{0,2})?$/
@@ -21,7 +25,6 @@ const DecimalInput = ({ errorText, initialValue, onChange, ...props }) => {
 
 		if (val.length === 0) {
 			setValue('')
-			onChange(0)
 			return
 		}
 
@@ -33,18 +36,23 @@ const DecimalInput = ({ errorText, initialValue, onChange, ...props }) => {
 		val = val.replace(/^0*/g,'0').replace(/^0*(\d)/g, '$1') 
 		
 		setValue(val)
-		onChange(parseFloat(val.replace(',','.')))
+		
 	}
 
+	
+	const callBackOnBlur = () => {
+		onChange(parseFloat(value))
+	}
+	
 	return (
 		<View style={styles.container}>
 			<Input
 				style={styles.input}
 				selectionColor={Colors.primary}
 				initialValue={initialValue}
-				value={value.length > 0 ? value.toString() : value}
+				value={value}
+				onBlur={callBackOnBlur}
 				onChange={text => onChangeValue(text)}
-				onBlur={() => setValue(initialValue)}
 				keyboardType={'decimal-pad'}
 				{...props}
 			/>

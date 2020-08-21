@@ -17,7 +17,7 @@ import Colors from '../../constants/Colors'
 import TextInput from '../UI/TextInput'
 import DecimalInput from '../UI/DecimalInput'
 import TimePicker from '../UI/TimePicker'
-import ExpensePeopleShares from './ExpensePeopleShares'
+import ExpensePersonShare from './ExpensePersonShare'
 
 const EditExpense = ({ 
 	error,
@@ -56,25 +56,26 @@ const EditExpense = ({
 		})
 	}
 
-	const setInitialAmount = (amount) => {
-		return amount ? Number(amount / 100).toFixed(2) : amount
+	const setAmountNumeric = (amount) => {
+		return amount ? Number(amount / 100).toFixed(2) : 0
 	}
 
 	const onChangeAmount = (value) => {
-		setExpenseToEdit({
+
+		let newExpenseToEdit = {
 			...expenseToEdit,
 			amount: value * 100,
-			details: expenseToEdit.details.map(detail => {
-				return {
-					...detail,
-					share: value * 100 / expenseToEdit.people.length,
-					balance: -1 * (value * 100 / expenseToEdit.people.length)
-				}
-			})
-		})
+		}
+
+		newExpenseToEdit = calculateEqualShares(newExpenseToEdit)
+		setExpenseToEdit(newExpenseToEdit)
 	}
 
-	const addPersonToExpense = (person) => {
+	const togglePerson = (person) => {
+
+		if (expenseToEdit.people.includes(person) && creditors.includes(person)) {
+			toggleCreditor(person)
+		}
  
 		let newExpenseToEdit = {
 			...expenseToEdit,
@@ -92,14 +93,50 @@ const EditExpense = ({
 				}) 
 		}
 
+		newExpenseToEdit = calculateEqualShares(newExpenseToEdit)
+
 		setExpenseToEdit(newExpenseToEdit)
 	}
 
-	const addCreditorToExpense = (person) => {
-		setCreditors(creditors.includes(person) ? creditors.filter(p => p.id !== person.id) : creditors.concat(person))
+	const calculateEqualShares = (expenseToEdit) => {
+		return {
+			...expenseToEdit,
+			details: expenseToEdit.details.map(detail => {
+				return {
+					...detail,
+					share: expenseToEdit.amount / expenseToEdit.people.length,
+					balance: -1 * (expenseToEdit.amount / expenseToEdit.people.length)
+				}
+			})
+		}
 	}
 
-	const setPersonPaid = (data) => {
+	const toggleCreditor = (person) => {
+		let newCreditors
+		if (creditors.includes(person)) {
+			newCreditors = creditors.filter(p => p.id !== person.id)
+			resetPersonPaidAmount(expenseToEdit.details.find(detail => detail.personId === person.id))
+		} else {
+			newCreditors = creditors.concat(person)
+		}
+		
+		setCreditors(newCreditors)
+	}
+
+	const resetPersonPaidAmount = (data) => {
+		if (data.paid > 0) {
+			setExpenseToEdit({
+				...expenseToEdit,
+				details: expenseToEdit.details.map(detail => detail.personId === data.personId ? {
+					...detail,
+					paid: 0,
+					balance: -1 * detail.share
+				} : detail)
+			})
+		}
+	}
+
+	const setPersonPaidAmount = (data) => {
 		setExpenseToEdit({
 			...expenseToEdit,
 			details: expenseToEdit.details.map(item => item.personId === data.person.id 
@@ -110,6 +147,32 @@ const EditExpense = ({
 				}
 				: item)
 		})
+	}
+
+	const validate = () => {
+
+		if (
+			expenseToEdit.description.length === 0 ||
+			expenseToEdit.amount === 0 ||
+			expenseToEdit.people.length === 0 ||
+			expenseToEdit.details.length === 0
+		) {
+			return true
+		}
+
+		let hasAtLeastOneCreditor = false
+		
+		expenseToEdit.details.forEach(detail => {
+			if (detail.paid > 0) {
+				hasAtLeastOneCreditor = true
+			}
+		})
+
+		if (!hasAtLeastOneCreditor) {
+			return true
+		}
+
+		return false
 	}
 
 	const onSaveExpense = () => {
@@ -154,13 +217,12 @@ const EditExpense = ({
 						label="Total amount" 
 						mode="outlined"
 						style={styles.input} 
-						initialValue={setInitialAmount(expenseToEdit.amount)}
-						placeholder="" 
+						initialValue={setAmountNumeric(expenseToEdit.amount)}
 						onChange={text => onChangeAmount(text)}
 					/>
 				</View>
 
-				<View style={[styles.formControl, { marginTop: 20 }]}>
+				<View style={[styles.formControl, { marginTop: 20, marginBottom: 20, borderBottomColor: '#ccc', borderBottomWidth: StyleSheet.hairlineWidth }]}>
 					
 					<Heading style={[{ 
 						textAlign: 'left', 
@@ -200,7 +262,7 @@ const EditExpense = ({
 					)}
 				</View>
 
-				<View style={[styles.section, { marginVertical: 30, backgroundColor: '#f7f7f7', padding: 20, borderRadius: 8 }]}>
+				<View style={[styles.section, { marginBottom: 20, paddingBottom: 20, borderBottomColor: '#ccc', borderBottomWidth: StyleSheet.hairlineWidth }]}>
 					
 					<Heading style={[{ 
 						textAlign: 'left', 
@@ -216,10 +278,10 @@ const EditExpense = ({
 						return (
 							<View key={`${person.id}-share-toggle`} style={styles.formControl}>
 								<Checkbox.Item 
-									label={<Text style={{ color: Colors.coffee }}>{person.name}</Text>} 
+									label={<Text style={{ color: Colors.coffee, fontSize: 14 }}>{person.name}</Text>} 
 									status={expenseToEdit.people.includes(person) ? 'checked' : 'unchecked'}
 									onPress={() => {
-										addPersonToExpense(person)
+										togglePerson(person)
 									}}
 									style={{ paddingLeft: 0 }}
 									color={Colors.primary}
@@ -231,10 +293,36 @@ const EditExpense = ({
 					
 				</View>
 
-				<ExpensePeopleShares />
-
+				<View style={styles.section}>
+					<Heading style={[{ 
+						textAlign: 'left', 
+						fontSize: 12, 
+						color: Colors.primary, 
+						textTransform: 'uppercase', 
+						paddingBottom: 5 
+					}]}>
+				Costs per person
+					</Heading>
+			
+					{expenseToEdit.amount === 0 || !expenseToEdit.amount ?
+						<Text style={{ fontSize: 13, color: Colors.lightCoffee, marginTop: 10 }}>Set the total amount to enable.</Text>
+						:
+						expenseToEdit.people.map(person => {
+							return (
+								<ExpensePersonShare 
+									key={`${person.id}-share-input`} 
+									person={person}
+									setAmountNumeric={setAmountNumeric}
+								/>
+						
+							)
+						})
+					}
+					
+				</View>
+				
 				{expenseToEdit.people.length > 0 &&
-				<View style={[styles.section, { marginVertical: 30, backgroundColor: '#f7f7f7', padding: 20, borderRadius: 8 }]}>
+				<View style={[styles.section, { marginTop: 30, marginBottom: 10, paddingBottom: 10, borderBottomColor: '#ccc', borderBottomWidth: StyleSheet.hairlineWidth }]}>
 					
 					<Heading style={[{ 
 						textAlign: 'left', 
@@ -245,53 +333,63 @@ const EditExpense = ({
 					}]}>
 					Who paid?
 					</Heading>
-					{expenseToEdit.people.map(person => {
-						return (
-							<View key={`${person.id}-creditor-toggle`} style={styles.formControl}>
-								<Checkbox.Item 
-									label={<Text style={{ color: Colors.coffee }}>{person.name}</Text>} 
-									status={creditors.includes(person) ? 'checked' : 'unchecked'}
-									onPress={() => {
-										addCreditorToExpense(person)
-									}}
-									style={{ paddingLeft: 0 }}
-									color={Colors.primary}
-								/>
-							</View>
-						)
-					})}
+					{expenseToEdit.amount === 0 || !expenseToEdit.amount ?
+						<Text style={{ fontSize: 13, color: Colors.lightCoffee, marginTop: 10 }}>Set the total amount to enable.</Text>
+						:
+						expenseToEdit.people.map(person => {
+							return (
+								<View key={`${person.id}-creditor-toggle`} style={styles.formControl}>
+									<Checkbox.Item 
+										label={<Text style={{ color: Colors.coffee, fontSize: 14 }}>{person.name}</Text>} 
+										status={creditors.includes(person) ? 'checked' : 'unchecked'}
+										onPress={() => {
+											toggleCreditor(person)
+										}}
+										style={{ paddingLeft: 0 }}
+										color={Colors.primary}
+									/>
+								</View>
+							)
+						})
+					}
+					
 				</View>
 				}
 
-				<View style={styles.section}>
-					{creditors.map(person => {
-						return (
-							<View key={`${person.id}-creditor`} style={styles.formControl}>
+				{expenseToEdit.amount === 0 || !expenseToEdit.amount ?
+					<></>
+					:
+					<View style={styles.section, { marginBottom: 30 }}>
+						{creditors.map(person => {
+							return (
+								<View key={`${person.id}-creditor`} style={styles.formControl}>
 
-								<Text style={{ fontWeight: '700', fontSize: 12, marginTop: 15 }}>{`${person.name} paid`}</Text>
-								<DecimalInput
-									label="Paid" 
-									accessibilityLabel="Paid"
-									mode="outlined"
-									style={styles.input} 
-									initialValue={setInitialAmount(expenseToEdit.details.find(item => item.personId === person.id).paid)} 
-									type="text"
-									onChange={value => setPersonPaid({
-										person,
-										value
-									})}
-								/>
+									<Text style={{ fontWeight: '700', fontSize: 12, marginTop: 15 }}>{`Amount ${person.name} paid`}</Text>
+									<DecimalInput
+										label="Amount" 
+										accessibilityLabel="Amount paid"
+										mode="outlined"
+										style={styles.input} 
+										initialValue={setAmountNumeric(expenseToEdit.details.find(item => item.personId === person.id).paid)} 
+										type="text"
+										onChange={value => setPersonPaidAmount({
+											person,
+											value
+										})}
+									/>
 								
-							</View>
-						)
-					})}
-				</View>
-
+								</View>
+							)
+						})}
+					</View>
+				}
+				
 				<View style={styles.formControl}>
 					<Button 
-						disabled={expenseToEdit.description.length > 0 ? false : true} 
+						disabled={validate()} 
 						mode="contained" 
 						color={Colors.primary}
+						labelStyle={{ color: Colors.white }}
 						onPress={onSaveExpense}
 					>
                         Save

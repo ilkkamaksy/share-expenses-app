@@ -96,16 +96,16 @@ const EditGroupUsers = ({
 				fontSize: 12, 
 				color: Colors.primary, 
 				textTransform: 'uppercase', 
-				paddingBottom: 5 
+				paddingBottom: 3 
 			}]}>
-				Invite friends to manage this group
+				Invite friends
 			</Heading>
 
 			<View style={styles.form}>
 				
 				<View style={styles.formControl}>
 					<Paragraph style={[{ textAlign: 'left', fontSize: 13, color: Colors.lightCoffee }]}>
-						Invite friends to join in to manage this group by open access invitation.
+						Invite friends to join in to manage this group.
 					</Paragraph>    
 
 					<Button 
@@ -115,7 +115,7 @@ const EditGroupUsers = ({
 						color={Colors.primary}
 						labelStyle={{ color: Colors.white, fontSize: 11 }}
 					>
-						Share open access invite
+						Share open invite
 					</Button>
 
 					<Paragraph style={[{ textAlign: 'center', fontSize: 10, marginTop: 5, color: Colors.lightCoffee }]}>
@@ -126,7 +126,7 @@ const EditGroupUsers = ({
 			
 						<View>
 							<Paragraph style={[{ textAlign: 'left', fontSize: 11, color: Colors.lightCoffee, lineHeight: 20, marginTop: 20 }]}>
-								Create open access invitation and share it with your friends. 
+								Create open invitation and share it with your friends. 
 							</Paragraph>  
 							<Button 
 								disabled={false} 
@@ -135,7 +135,7 @@ const EditGroupUsers = ({
 								color={Colors.primary}
 								labelStyle={{ color: Colors.white, fontSize: 11 }}
 							>
-							Create open access invitation
+							Create open invitation
 							</Button>
 						</View>
 						
@@ -143,7 +143,7 @@ const EditGroupUsers = ({
 			
 						<View style={{ marginTop: 20 }}>
 							<Paragraph style={[{ textAlign: 'center', fontSize: 11, color: Colors.lightCoffee, lineHeight: 20 }]}>
-								{`Open access invitation has been created on ${new Date(JSON.parse(openAccessInvitation.createdAt)).toLocaleDateString()} at ${new Date(JSON.parse(openAccessInvitation.createdAt)).toLocaleTimeString()} by ${openAccessInvitation.owner.email}.`}
+								{`Open invitation has been created on ${new Date(JSON.parse(openAccessInvitation.createdAt)).toLocaleDateString()} at ${new Date(JSON.parse(openAccessInvitation.createdAt)).toLocaleTimeString()} by ${openAccessInvitation.owner.email}.`}
 							</Paragraph>    
 							<Button 
 								disabled={false} 
@@ -152,7 +152,7 @@ const EditGroupUsers = ({
 								color={Colors.error}
 								labelStyle={{ color: Colors.accent, fontSize: 11 }}
 							>
-								Delete open access invite
+								Delete open invite
 							</Button>
 
 							<Paragraph style={[{ textAlign: 'center', fontSize: 10, marginTop: 5, color: Colors.lightCoffee, lineHeight: 20 }]}>

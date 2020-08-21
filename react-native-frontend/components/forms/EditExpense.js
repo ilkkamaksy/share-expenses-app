@@ -8,7 +8,8 @@ import { Button, Checkbox } from 'react-native-paper'
 import { 
 	setExpenseDate, 
 	setExpenseToEdit, 
-	addExpense 
+	addExpense,
+	updateExpense 
 } from '../../store/actions/expenses'
 
 import Heading from '../UI/Heading'
@@ -25,6 +26,7 @@ const EditExpense = ({
 	setExpenseDate,
 	setExpenseToEdit,
 	addExpense,
+	updateExpense,
 	groupToEdit
 }) => {
    
@@ -34,13 +36,20 @@ const EditExpense = ({
 	const [showTimePicker, setShowTimePicker] = useState(false)
 
 	useEffect(() =>{
-		if (!expenseToEdit.date) {
+		if (!expenseToEdit.dateTime) {
 			setExpenseDate(new Date(Date.now()))
+		}
+		if (expenseToEdit.id) {
+			const detailsWithPaidAmount = expenseToEdit.details.filter(detail => detail.paid > 0)
+			const existingCreditors = detailsWithPaidAmount.map(detail => {
+				return expenseToEdit.people.find(person => person.id === detail.person)
+			})
+			setCreditors(existingCreditors)
 		}
 	}, [])
 
 	const onChangeTime = (selectedTime) => {
-		const currentTime = selectedTime || expenseToEdit.date
+		const currentTime = selectedTime || expenseToEdit.dateTime
 		setShowTimePicker(false)
 		setExpenseDate(currentTime)
 	}
@@ -57,7 +66,7 @@ const EditExpense = ({
 	}
 
 	const setAmountNumeric = (amount) => {
-		return amount ? Number(amount / 100).toFixed(2) : 0
+		return !amount || amount.length === 0 ? 0 : parseFloat(amount) / 100
 	}
 
 	const onChangeAmount = (value) => {
@@ -84,9 +93,9 @@ const EditExpense = ({
 				: expenseToEdit.people.concat(person)
 			,
 			details: expenseToEdit.people.includes(person) 
-				? expenseToEdit.details.filter(item => item.personId !== person.id)
+				? expenseToEdit.details.filter(item => item.person !== person.id)
 				: expenseToEdit.details.concat({
-					personId: person.id,
+					person: person.id,
 					share: 0,
 					paid: 0,
 					balance: 0
@@ -115,7 +124,7 @@ const EditExpense = ({
 		let newCreditors
 		if (creditors.includes(person)) {
 			newCreditors = creditors.filter(p => p.id !== person.id)
-			resetPersonPaidAmount(expenseToEdit.details.find(detail => detail.personId === person.id))
+			resetPersonPaidAmount(expenseToEdit.details.find(detail => detail.person === person.id))
 		} else {
 			newCreditors = creditors.concat(person)
 		}
@@ -127,7 +136,7 @@ const EditExpense = ({
 		if (data.paid > 0) {
 			setExpenseToEdit({
 				...expenseToEdit,
-				details: expenseToEdit.details.map(detail => detail.personId === data.personId ? {
+				details: expenseToEdit.details.map(detail => detail.person === data.person ? {
 					...detail,
 					paid: 0,
 					balance: -1 * detail.share
@@ -139,7 +148,7 @@ const EditExpense = ({
 	const setPersonPaidAmount = (data) => {
 		setExpenseToEdit({
 			...expenseToEdit,
-			details: expenseToEdit.details.map(item => item.personId === data.person.id 
+			details: expenseToEdit.details.map(item => item.person === data.person.id 
 				? {
 					...item,
 					paid: data.value * 100,
@@ -176,7 +185,11 @@ const EditExpense = ({
 	}
 
 	const onSaveExpense = () => {
-		addExpense(expenseToEdit)
+		if (expenseToEdit.id) {
+			updateExpense(expenseToEdit)
+		} else {
+			addExpense(expenseToEdit)
+		}
 		navigation.navigate('GroupItem', { group: groupToEdit })
 	}
 
@@ -236,7 +249,7 @@ const EditExpense = ({
 
 					<View style={[styles.row, { marginBottom: 20 }]}>
 						<View style={[styles.column, { width: '70%'}]}>
-							<Text style={{ color: Colors.lightCoffee, fontSize: 13 }}>{`${expenseToEdit.date.toLocaleDateString()}, at ${expenseToEdit.date.toLocaleTimeString()}`}</Text>
+							<Text style={{ color: Colors.lightCoffee, fontSize: 13 }}>{`${expenseToEdit.dateTime.toLocaleDateString()}, at ${expenseToEdit.dateTime.toLocaleTimeString()}`}</Text>
 						</View>
 						<View style={[styles.column], { width: '30%' }}>
 							<Button 
@@ -255,7 +268,7 @@ const EditExpense = ({
 					{showTimePicker && (
 						<TimePicker
 							testID="dateTimePicker"
-							initialValue={expenseToEdit.date}
+							initialValue={expenseToEdit.dateTime}
 							onChange={onChangeTime}
 							visibility={showTimePicker}
 						/>
@@ -301,7 +314,7 @@ const EditExpense = ({
 						textTransform: 'uppercase', 
 						paddingBottom: 5 
 					}]}>
-				Costs per person
+						Costs per person
 					</Heading>
 			
 					{expenseToEdit.amount === 0 || !expenseToEdit.amount ?
@@ -331,7 +344,7 @@ const EditExpense = ({
 						textTransform: 'uppercase', 
 						paddingBottom: 5 
 					}]}>
-					Who paid?
+						Who paid?
 					</Heading>
 					{expenseToEdit.amount === 0 || !expenseToEdit.amount ?
 						<Text style={{ fontSize: 13, color: Colors.lightCoffee, marginTop: 10 }}>Set the total amount to enable.</Text>
@@ -370,7 +383,7 @@ const EditExpense = ({
 										accessibilityLabel="Amount paid"
 										mode="outlined"
 										style={styles.input} 
-										initialValue={setAmountNumeric(expenseToEdit.details.find(item => item.personId === person.id).paid)} 
+										initialValue={setAmountNumeric(expenseToEdit.details.find(item => item.person === person.id).paid)} 
 										type="text"
 										onChange={value => setPersonPaidAmount({
 											person,
@@ -423,7 +436,8 @@ EditExpense.propTypes = {
 	groupToEdit: PropTypes.object,
 	setExpenseToEdit: PropTypes.func,
 	setExpenseDate: PropTypes.func,
-	addExpense: PropTypes.func
+	addExpense: PropTypes.func,
+	updateExpense: PropTypes.func
 }
 
 const mapStateToProps = (state) => {
@@ -441,7 +455,8 @@ const ConnectedEditExpense = connect(
 	{
 		setExpenseToEdit,
 		setExpenseDate,
-		addExpense
+		addExpense,
+		updateExpense
 	}
 )(EditExpense)
 

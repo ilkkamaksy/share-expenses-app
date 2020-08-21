@@ -35,6 +35,7 @@ const CREATE_GROUP = `
 			}
 			expenses {
 				id
+				group
 				dateTime
 				amount
 				description
@@ -84,6 +85,7 @@ const UPDATE_GROUP = `
 			}
 			expenses {
 				id
+				group
 				dateTime
 				amount
 				description
@@ -119,6 +121,7 @@ const GET_GROUPS = `
 			}
 			expenses {
 				id
+				group
 				dateTime
 				amount
 				description
@@ -301,7 +304,7 @@ export const removeGroupUser = async (userid, groupid) => {
 	}
 
 	console.log('variables', variables)
-	
+
 	const data = {
 		query: REMOVE_GROUP_USER,
 		variables: variables

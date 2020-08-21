@@ -20,8 +20,8 @@ const ExpensePersonShare = ({
 
 	const [inputVisible, setInputVisible] = useState(false)
 
-	const amountInCents = Number(expenseToEdit.details.find(d => d.personId === person.id).share)
-	const amount = Number(expenseToEdit.details.find(d => d.personId === person.id).share / 100).toFixed(2)
+	const amountInCents = Number(expenseToEdit.details.find(d => d.person === person.id).share)
+	const amount = Number(expenseToEdit.details.find(d => d.person === person.id).share / 100).toFixed(2)
 	const share = amountInCents === 0 ? '0' : Number(((amount * 100) / expenseToEdit.amount) * 100).toFixed(2)
 
 	useEffect(() => {
@@ -31,7 +31,7 @@ const ExpensePersonShare = ({
 	const setPersonShare = (data) => {
 		setExpenseToEdit({
 			...expenseToEdit,
-			details: expenseToEdit.details.map(item => item.personId === data.person.id 
+			details: expenseToEdit.details.map(item => item.person === data.person.id 
 				? {
 					...item,
 					share: data.value * 100,

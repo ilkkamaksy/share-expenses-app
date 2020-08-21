@@ -1,11 +1,23 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { View, Text, StyleSheet } from 'react-native'
+import { useNavigation  } from '@react-navigation/native'
 import { Button } from 'react-native-paper'
+
+import { removeExpense, setExpenseToEdit } from '../../store/actions/expenses'
 
 import Colors from '../../constants/Colors'
 
-const ExpenseListItem = ({ people, expense, removeExpense }) => {
+const ExpenseListItem = ({ 
+	people, 
+	expense, 
+	groupToEdit, 
+	removeExpense, 
+	setExpenseToEdit 
+}) => {
+
+	const navigation = useNavigation()
 
 	const getPersonName = (person) => {
 		return people.find(p => p.id === person).name
@@ -14,6 +26,18 @@ const ExpenseListItem = ({ people, expense, removeExpense }) => {
 	const formatDate = (date) => {
 		const dateObj = new Date(JSON.parse(date))
 		return `${dateObj.toLocaleDateString()} at ${dateObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`
+	}
+
+	const onEditExpense = () => {
+		setExpenseToEdit({
+			...expense,
+			groupid: expense.group,
+			dateTime: new Date(JSON.parse(expense.dateTime)),
+			people: expense.details.map(detail => {
+				return groupToEdit.people.find(person => person.id === detail.person)
+			}),
+		})
+		navigation.navigate('EditExpense')
 	}
 
 	return (
@@ -38,12 +62,20 @@ const ExpenseListItem = ({ people, expense, removeExpense }) => {
 				)
 			})}
 			<Button 
-				onPress={removeExpense} 
+				onPress={() => removeExpense(expense.id)} 
 				mode="text"
 				color={Colors.primary}
 				labelStyle={{ fontSize: 10 }}
 			>
-				Remove expense
+				Delete
+			</Button>
+			<Button 
+				onPress={() => onEditExpense()} 
+				mode="text"
+				color={Colors.primary}
+				labelStyle={{ fontSize: 10 }}
+			>
+				Edit
 			</Button>
 		</View>
 	)
@@ -118,8 +150,20 @@ const styles = StyleSheet.create({
 
 ExpenseListItem.propTypes = {
 	expense: PropTypes.object,
+	groupToEdit: PropTypes.object,
 	people: PropTypes.array,
-	removeExpense: PropTypes.func
+	removeExpense: PropTypes.func,
+	setExpenseToEdit: PropTypes.func
 }
 
-export default ExpenseListItem
+const mapStateToProps = state => {
+	return {
+		groupToEdit: state.groups.groupToEdit
+	}
+}
+const ConnectedExpenseListItem = connect(mapStateToProps, {
+	removeExpense,
+	setExpenseToEdit
+})(ExpenseListItem)
+
+export default ConnectedExpenseListItem

@@ -19,7 +19,7 @@ export const addPerson = ({ name, groupid }) =>  {
 
 		const response = await personService.addPerson({ name, groupid })
 		
-		if (response.data.data.addPersonToGroup === null || response === null) {
+		if (!response || response.data.errors) {
 			return dispatch({
 				type: 'UPDATE_GROUP_FAIL',
 				response: response.data.errors[0].message
@@ -42,7 +42,7 @@ export const removePerson = id => {
 
 		const response = await personService.removePerson(id)
 		
-		if (response.data.data.removePerson === null || response === null) {
+		if (!response || response.data.errors) {
 			return dispatch({
 				type: 'UPDATE_GROUP_FAIL',
 				response: response.data.errors[0].message

@@ -7,6 +7,7 @@ import { useNavigation  } from '@react-navigation/native'
 
 import { setGroupTotals, setGroupBalanceData } from '../../store/actions/groups'
 import { removeExpense } from '../../store/actions/expenses'
+import { compareDateDescending } from '../../utils/sort'
 
 import Colors from '../../constants/Colors'
 
@@ -28,6 +29,8 @@ const Group = ({
 		setGroupBalanceData(group)
 	}, [group])
 
+
+	const expenses = group.expenses.sort(compareDateDescending)
 
 	return (
 		<View style={styles.container}>
@@ -77,7 +80,7 @@ const Group = ({
 					<Text style={styles.subtitle}>Most recent expense</Text>
 		
 					<View style={styles.list}>
-						{group.expenses.reverse().slice(0, 1).map(expense => {
+						{expenses.slice(0, 1).map(expense => {
 							return (
 								<ExpenseListItem 
 									key={expense.id}

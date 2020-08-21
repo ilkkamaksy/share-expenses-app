@@ -36,4 +36,5 @@
 | 18.8. |   9  | Group invites-hyväksyminen ja hylkääminen, käyttäjän poistaminen ja lähtö ryhmästä, visuaalisen ilmeen hiomista, refaktorointi |
 | 19.8. |   8  | Decimal inputin viimeistely, editExpense-formin UI:n kehitys |
 | 20.8. |   8  | DatePicker omaksi komponentiksi, EditExpense-kompontentin UI:n kehitystä |
-| yht   | 235   | | 
+| 21.8. |   9  | Expensen muokkaus UI vaatimusten mukaiseksi, Expense-itemien päivitys, ryhmän expense-listan sorttaus |
+| yht   | 244   | | 

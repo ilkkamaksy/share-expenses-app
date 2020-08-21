@@ -149,7 +149,7 @@ const GroupList = ({
 					<Heading style={[styles.modalHeading]}>Sort groups</Heading>
 
 					<Checkbox.Item 
-						label="Most recently updated first"
+						label={<Text style={{ fontSize: 14, color: Colors.coffee }}>Most recently updated first</Text>}
 						status={sortBy === 'lastUpdatedAt' ? 'checked' : 'unchecked'}
 						onPress={() => {
 							onSetSortingOption({ sortBy: 'lastUpdatedAt', order: -1 })
@@ -158,7 +158,7 @@ const GroupList = ({
 					/>
 
 					<Checkbox.Item 
-						label="Most recently created first"
+						label={<Text style={{ fontSize: 14, color: Colors.coffee }}>Most recently created first</Text>}
 						status={sortBy === 'createdAt' ? 'checked' : 'unchecked'}
 						onPress={() => {
 							onSetSortingOption({ sortBy: 'createdAt', order: -1 })
@@ -167,7 +167,7 @@ const GroupList = ({
 					/>
 					
 					<Checkbox.Item 
-						label="Sort by title From A to Z"
+						label={<Text style={{ fontSize: 14, color: Colors.coffee }}>Sort by title From A to Z</Text>}
 						status={sortBy === 'title' ? 'checked' : 'unchecked'}
 						onPress={() => {
 							onSetSortingOption({ sortBy: 'title', order: 1 })
@@ -239,10 +239,11 @@ const styles = StyleSheet.create({
 		elevation: 5,
 	},
 	modalHeading: {
-		fontSize: 18,
+		fontSize: 14,
+		textTransform: 'uppercase',
 		textAlign: 'left',
 		marginBottom: 5,
-		paddingBottom: 15,
+		paddingBottom: 20,
 		color: Colors.primary,
 		borderBottomColor: '#ddd',
 		borderBottomWidth: StyleSheet.hairlineWidth

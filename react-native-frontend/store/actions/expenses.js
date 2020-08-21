@@ -31,7 +31,7 @@ export const addExpense = expenseData =>  {
 
 		let response = await expenseService.addExpense(data)
 		
-		if (response.data.data.addExpense === null || response === null) {
+		if (!response || response.data.errors) {
 			return dispatch({
 				type: 'CREATE_EXPENSE_FAIL',
 				response: response.data.errors[0].message
@@ -40,10 +40,34 @@ export const addExpense = expenseData =>  {
 
 		dispatch({
 			type: 'CREATE_EXPENSE_SUCCESS',
-			group: response.data.data.addExpense
+			expense: response.data.data.addExpense
 		})
 	}
 }
+
+export const updateExpense = expenseData =>  {
+	return async dispatch => {
+
+		dispatch({
+			type: 'INIT_UPDATE_EXPENSE',
+		})
+
+		let response = await expenseService.updateExpense(expenseData)
+		
+		if (!response || response.data.errors) {
+			return dispatch({
+				type: 'UPDATE_EXPENSE_FAIL',
+				response: response.data.errors[0].message
+			})
+		}
+
+		dispatch({
+			type: 'UPDATE_EXPENSE_SUCCESS',
+			expense: response.data.data.updateExpense
+		})
+	}
+}
+
 
 export const removeExpense = id =>  {
 	return async dispatch => {
@@ -53,7 +77,7 @@ export const removeExpense = id =>  {
 
 		const response = await expenseService.removeExpense(id)
 	
-		if (response.data.data.removeExpense === null || response === null) {
+		if (!response || response.data.errors) {
 			return dispatch({
 				type: 'REMOVE_EXPENSE_FAIL',
 				response: response.data.errors[0].message

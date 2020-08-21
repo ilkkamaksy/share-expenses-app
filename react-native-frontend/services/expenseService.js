@@ -19,32 +19,47 @@ const ADD_EXPENSE = `
 			details: $details
 		) {
 			id
-			lastUpdatedAt
-			createdAt
-			title
-			location
-			owner {
-				id
+			group
+			dateTime
+			amount
+			description
+			details {
+				person
+				share
+				paid
+				balance
 			}
-			users {
-				id
-				email
-			}
-			people {
-				id
-				name
-			}
-			expenses {
-				id
-				dateTime
-				amount
-				description
-				details {
-					person
-					share
-					paid
-					balance
-				}
+		}
+	}
+`
+
+const UPDATE_EXPENSE = `
+	mutation updateExpense(
+		$id: String!
+		$groupid: String!
+		$description: String
+		$amount: Float
+		$dateTime: String
+		$details: [ExpenseDetails]
+	) {
+		updateExpense(
+			id: $id
+			groupid: $groupid
+			description: $description
+			amount: $amount
+			dateTime: $dateTime
+			details: $details
+		) {
+			id
+			group
+			dateTime
+			amount
+			description
+			details {
+				person
+				share
+				paid
+				balance
 			}
 		}
 	}
@@ -68,10 +83,10 @@ export const addExpense = async (args) => {
 		groupid: args.groupid,
 		description: args.description,
 		amount: args.amount,
-		dateTime: args.date,
+		dateTime: args.dateTime,
 		details: args.details.map(item => { 
 			return {
-				personId: item.personId,
+				person: item.person,
 				share: item.share,
 				paid: item.paid,
 				balance: item.balance,
@@ -81,6 +96,38 @@ export const addExpense = async (args) => {
 
 	const data = {
 		query: ADD_EXPENSE,
+		variables: variables
+	}
+
+	const config = {
+		headers: {
+			'Authorization': auth.token
+		}
+	}
+
+	return await axios.post(apiUrl, data, config)
+}
+
+export const updateExpense = async (args) => {
+	
+	const variables = { 
+		id: args.id,
+		groupid: args.groupid,
+		description: args.description,
+		amount: args.amount,
+		dateTime: args.dateTime,
+		details: args.details.map(item => { 
+			return {
+				person: item.person,
+				share: item.share,
+				paid: item.paid,
+				balance: item.balance,
+			}
+		})
+	}
+
+	const data = {
+		query: UPDATE_EXPENSE,
 		variables: variables
 	}
 

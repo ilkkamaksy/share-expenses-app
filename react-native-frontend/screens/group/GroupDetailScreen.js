@@ -39,7 +39,7 @@ const GroupDetailScreen = ({
 		setExpenseToEdit({
 			id: null,
 			groupid: group.id,
-			date: new Date(Date.now()),
+			dateTime: new Date(Date.now()),
 			lastUpdatedAt: null,
 			createdAt: null,
 			description: '',
@@ -47,7 +47,7 @@ const GroupDetailScreen = ({
 			people: groupToEdit.people,
 			details: groupToEdit.people.map(person => {
 				return {
-					personId: person.id,
+					person: person.id,
 					share: 0,
 					paid: 0,
 					balance: 0

@@ -92,7 +92,7 @@ const resolvers = {
 		// id: String!
 		// firstname: String
 		// lastname: String
-		editUser: async (root, args) => {
+		updateUser: async (root, args) => {
 			try {
 
 				let userToUpdate = {

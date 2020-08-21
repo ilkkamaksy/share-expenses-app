@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import PropTypes from 'prop-types'
@@ -12,11 +12,13 @@ import Colors from '../../constants/Colors'
 
 import PopupMenuTopRight from '../../components/menus/PopupMenuTopRight'
 
-const EditExpenseScreen = ({ navigation, groupToEdit }) => {
-		
+const EditExpenseScreen = ({ navigation, groupToEdit, expenseToEdit }) => {
+	
+	const [title, setTitle] = useState(`Add a new expense to group "${groupToEdit.title}"`)
+
 	useEffect(() => {
-		if (groupToEdit.id) {
-			navigation.setOptions({title: 'Edit expense'})
+		if (expenseToEdit.id) {
+			setTitle('Edit expense')
 		}
 	}, [])
 	
@@ -27,7 +29,7 @@ const EditExpenseScreen = ({ navigation, groupToEdit }) => {
 				
 				<Hero>
 					<Heading style={[styles.header]}>
-						{`Add a new expense to group "${groupToEdit.title}"`}
+						{title}
 					</Heading>
 					
 					<PopupMenuTopRight />
@@ -89,12 +91,14 @@ const styles = StyleSheet.create({
 
 EditExpenseScreen.propTypes = {
 	navigation: PropTypes.object,
-	groupToEdit: PropTypes.object
+	groupToEdit: PropTypes.object,
+	expenseToEdit: PropTypes.object
 }
 
 const mapStateToProps = state => {
 	return {
-		groupToEdit: state.groups.groupToEdit
+		groupToEdit: state.groups.groupToEdit,
+		expenseToEdit: state.groups.expenseToEdit
 	}
 }
 

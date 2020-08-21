@@ -15,7 +15,7 @@ export const registerUser = (credentials = null) =>  {
 
 		const response = await userService.register(credentials)
         
-		if (response.data.data === null) {
+		if (!response || response.data.errors) {
 			return dispatch({
 				type: 'REGISTER_FAIL',
 				response: response.data.errors[0].message
@@ -42,7 +42,7 @@ export const loginUser = (credentials = null) =>  {
 
 		const response = await userService.login(credentials)
 
-		if (response.data.data === null) {
+		if (!response || response.data.errors) {
 			return dispatch({
 				type: 'LOGIN_FAIL',
 				response: response.data.errors[0].message

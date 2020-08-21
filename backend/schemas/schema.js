@@ -19,7 +19,7 @@ const Query = `
     `
 const Mutation = `
         input ExpenseDetails {
-            personId: String!
+            person: String!
             share: Float!
             paid: Float!
             balance: Float!
@@ -43,7 +43,7 @@ const Mutation = `
                 email: String!
                 password: String!
             ): LoginResponse!
-            editUser (
+            updateUser (
                 id: String!
                 firstname: String
                 lastname: String
@@ -81,7 +81,7 @@ const Mutation = `
                 name: String!
                 groupid: String!
             ): Person
-            editPerson(
+            updatePerson(
                 id: String!
                 name: String
             ): Person
@@ -94,7 +94,15 @@ const Mutation = `
                 amount: Float!
                 dateTime: String
                 details: [ExpenseDetails!]
-            ): Group
+            ): Expense
+            updateExpense(
+                id: String!
+                groupid: String!
+                description: String
+                amount: Float
+                dateTime: String
+                details: [ExpenseDetails]
+            ): Expense
             removeExpense(
                 id: String!
             ): Expense

@@ -64,7 +64,7 @@ const resolvers = {
 		// args:
 		// id: String!
 		// name: String
-		editPerson: async (root, args, context) => {
+		updatePerson: async (root, args, context) => {
 
 			const currentUser = context.currentUser
 			

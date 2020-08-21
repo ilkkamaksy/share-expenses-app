@@ -39,7 +39,7 @@ export const updateGroup = (group) =>  {
 
 		const response = await groupService.updateGroup(group)
 		
-		if (response.data.data.updateGroup === null || response === null) {
+		if (!response || response.data.errors) {
 			return dispatch({
 				type: 'UPDATE_GROUP_FAIL',
 				response: response.data.errors[0].message
@@ -62,7 +62,7 @@ export const createGroup = (group) =>  {
 
 		const response = await groupService.createGroup(group)
 		
-		if (response.data.data.createGroup === null || response === null) {
+		if (!response || response.data.errors) {
 			return dispatch({
 				type: 'CREATE_GROUP_FAIL',
 				response: response.data.errors[0].message
@@ -85,7 +85,7 @@ export const getGroups = (sort = { sortBy: 'lastUpdatedAt', order: -1 }) =>  {
 		
 		const response = await groupService.getGroups(sort)
 
-		if (response.data.data.getGroups === null || response === null) {
+		if (!response || response.data.errors) {
 			return dispatch({
 				type: 'GET_GROUPS_FAIL',
 				response: response.data.errors[0].message
@@ -108,7 +108,7 @@ export const removeGroup = id =>  {
 
 		const response = await groupService.removeGroup(id)
 		
-		if (response.data.data.removeGroup === null || response === null) {
+		if (!response || response.data.errors) {
 			return dispatch({
 				type: 'REMOVE_GROUP_FAIL',
 				response: response.data.errors[0].message

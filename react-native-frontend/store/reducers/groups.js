@@ -13,7 +13,7 @@ const initialState = {
 	expenseToEdit: {
 		id: null,
 		groupid: null,
-		date: null,
+		dateTime: null,
 		lastUpdatedAt: null,
 		createdAt: null,
 		description: '',
@@ -64,7 +64,7 @@ const groupReducer = (state = initialState, action) => {
 	case 'SET_EXPENSE_DATE' : 
 		return {
 			...state,
-			expenseToEdit: {...state.expenseToEdit, date: action.date}
+			expenseToEdit: {...state.expenseToEdit, dateTime: action.date}
 		}
 	case 'INIT_CREATE_GROUP' :
 		return {
@@ -196,10 +196,45 @@ const groupReducer = (state = initialState, action) => {
 			saveGroupFail: false,
 			error: '',
 			fetching: false,
-			userGroups: state.userGroups.map(group => group.id === action.group.id ? action.group : group),
-			groupToEdit: action.group
+			userGroups: state.userGroups.map(group => group.id === action.expense.group ? {
+				...group,
+				expenses: [action.expense, ...group.expenses]
+			} : group),
+			groupToEdit: {
+				...state.groupToEdit,
+				expenses: [action.expense, ...state.groupToEdit.expenses]
+			}
 		}
 	case 'CREATE_EXPENSE_FAIL' :
+		return {
+			...state,
+			saveGroupFail: true,
+			error: action.response,
+			fetching: false
+		}
+	case 'INIT_UPDATE_EXPENSE' :
+		return {
+			...state,
+			fetching: true,
+			saveGroupFail: false,
+			error: '',
+		}
+	case 'UPDATE_EXPENSE_SUCCESS' :
+		return {
+			...state,
+			saveGroupFail: false,
+			error: '',
+			fetching: false,
+			userGroups: state.userGroups.map(group => group.id === action.expense.group ? {
+				...group,
+				expenses: group.expenses.map(expense => expense.id === action.expense.id ? action.expense : expense)
+			} : group),
+			groupToEdit: {
+				...state.groupToEdit,
+				expenses: state.groupToEdit.expenses.map(expense => expense.id === action.expense.id ? action.expense : expense)
+			}
+		}
+	case 'UPDATE_EXPENSE_FAIL' :
 		return {
 			...state,
 			saveGroupFail: true,

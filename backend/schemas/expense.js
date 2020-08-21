@@ -5,6 +5,7 @@ const Expense = require('../models/expense')
 const typeDef = `
     type Expense {
 		id: ID!
+		group: String! 
         description: String!
 		amount: Float!
 		details: [Detail]
@@ -45,7 +46,7 @@ const resolvers = {
 					dateTime: args.dateTime,
 					details: args.details.map(item => { 
 						return {
-							person: item.personId,
+							person: item.person,
 							share: item.share,
 							paid: item.paid,
 							balance: item.balance,
@@ -55,16 +56,52 @@ const resolvers = {
 
 				let newExpense = await expense.save()
 				
-				return await Group.findByIdAndUpdate(
+				await Group.findByIdAndUpdate(
 					args.groupid, 
 					{ $addToSet: { expenses: newExpense._id }}, 
 					{ new: true }
 				)
-					.populate('owner', { email: 1, firstname: 1, lastname: 1 })
-					.populate('users')
-					.populate('people')
-					.populate('expenses')
+				
+				return newExpense
                     
+			} catch (error) {
+				throw new UserInputError(error.message, {
+					invalidArgs: args
+				})
+			}
+		},
+		// args:
+		// id: String!
+		// groupid: String!
+		// description: String
+		// amount: Float
+		// details: [ExpenseDetails]
+		// dateTime: String
+		updateExpense: async (root, args, context) => {
+
+			const currentUser = context.currentUser
+			
+			if (!currentUser) {
+				throw new AuthenticationError('not authenticated')
+			}
+			
+			const groupInDB = await Group.findById(args.groupid)
+
+			if (!groupInDB.users.includes(currentUser._id)) {
+				throw new ForbiddenError('not authorized')
+			}
+
+			try {
+
+				let expenseToUpdate = {
+					...args
+				}
+
+				delete expenseToUpdate.id
+
+				return await Expense
+					.findByIdAndUpdate(args.id, expenseToUpdate, { new: true })
+
 			} catch (error) {
 				throw new UserInputError(error.message, {
 					invalidArgs: args

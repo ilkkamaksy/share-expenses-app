@@ -15,7 +15,7 @@ jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper')
 
 jest.mock('react-native-vector-icons')
 
-describe('Testing CreateGroupScreen', () => {
+describe('Testing AddGroupPeopleScreen', () => {
 
 	let initialState
 	let store
@@ -82,11 +82,9 @@ describe('Testing CreateGroupScreen', () => {
 	test('screen contains form to add a new person to the group and a list of added people', async () => {
 
 		const { findByText } = render(component)
-		const title = await findByText('Add people to your new group')
 		const formLabel = await findByText('Add a new person to this group')
-		const listLabel = await findByText('People in this group')
+		const listLabel = await findByText('Names of people in this group')
 
-		expect(title).toBeTruthy()
 		expect(formLabel).toBeTruthy()
 		expect(listLabel).toBeTruthy()
 

@@ -66,7 +66,7 @@ const Group = ({
 						mode="contained" 
 						color={Colors.primary}
 						style={styles.summaryButton}
-						onPress={() => navigation.navigate('GroupBalanceDetails', { group: group })}
+						onPress={() => navigation.navigate('GroupBalanceDetails')}
 					>
 						View details
 					</Button>
@@ -96,7 +96,7 @@ const Group = ({
 						style={[styles.summaryButton, { marginBottom: 20 }]}
 						mode="contained" 
 						color={Colors.primary}
-						onPress={() => navigation.navigate('GroupExpenses', { group: group })}
+						onPress={() => navigation.navigate('GroupExpenses')}
 					>
 						View all expenses
 					</Button>

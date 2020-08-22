@@ -8,7 +8,8 @@ import LoginForm from './LoginForm'
 
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
- 
+
+
 describe('test LoginForm dispatch actions', () => {
     
 	let store

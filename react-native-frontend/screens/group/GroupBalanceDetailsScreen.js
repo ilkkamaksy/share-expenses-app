@@ -23,7 +23,7 @@ const GroupBalanceDetailScreen = ({ groupToEdit }) => {
 				
 				<Hero>
 					<Heading style={[styles.header]}>
-						{`Balance summary for group "${group.title}"`}
+						Balance summary
 					</Heading>
 
 					<PopupMenuTopRight />		

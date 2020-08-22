@@ -109,7 +109,7 @@ describe('Testing GroupExpensesScreen', () => {
  
 		const { getAllByText, findByText } = render(component)
 		const title = await findByText('All expenses')
-		const expenses = await getAllByText('Remove expense')
+		const expenses = await getAllByText('desc')
 		
 		expect(expenses.length).toEqual(1)
 		expect(title).toBeTruthy()	

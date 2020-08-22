@@ -12,9 +12,9 @@ import Colors from '../../constants/Colors'
 
 import PopupMenuTopRight from '../../components/menus/PopupMenuTopRight'
 
-const EditExpenseScreen = ({ navigation, groupToEdit, expenseToEdit }) => {
+const EditExpenseScreen = ({ navigation, expenseToEdit }) => {
 	
-	const [title, setTitle] = useState(`Add a new expense to group "${groupToEdit.title}"`)
+	const [title, setTitle] = useState('Add a new expense')
 
 	useEffect(() => {
 		if (expenseToEdit.id) {
@@ -91,13 +91,11 @@ const styles = StyleSheet.create({
 
 EditExpenseScreen.propTypes = {
 	navigation: PropTypes.object,
-	groupToEdit: PropTypes.object,
 	expenseToEdit: PropTypes.object
 }
 
 const mapStateToProps = state => {
 	return {
-		groupToEdit: state.groups.groupToEdit,
 		expenseToEdit: state.groups.expenseToEdit
 	}
 }

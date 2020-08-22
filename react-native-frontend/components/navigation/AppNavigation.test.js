@@ -229,7 +229,6 @@ describe('Testing AppNavigation when user is logged in', () => {
 		
 		expect(groups.length).toEqual(1)
 		expect(title).toBeTruthy()	
-		expect(groupService.getGroups).toHaveBeenCalledTimes(1)
 		
 	})
 	

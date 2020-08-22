@@ -40,10 +40,6 @@ function GroupNavigation({ activeScreen = 'GroupList' }) {
 			<GroupStack.Screen
 				name="GroupList"
 				component={GroupsOverViewScreen}
-				options={{
-					title: 'My Groups',	
-				}}
-                
 			/>
 
 			<GroupStack.Screen
@@ -54,49 +50,31 @@ function GroupNavigation({ activeScreen = 'GroupList' }) {
 			<GroupStack.Screen
 				name="GroupExpenses"
 				component={GroupExpensesScreen}
-				options={{
-					navigation: ({route}) => ({ group: route.params.group }),
-				}}
 			/>
 
 			<GroupStack.Screen
 				name="CreateGroup"
 				component={CreateGroupScreen}
-				options={{
-					title: 'Add a new group',
-				}}				
 			/>
 
 			<GroupStack.Screen
 				name="AddGroupPeople"
 				component={AddGroupPeopleScreen}
-				options={{
-					title: 'Add people to your new group',
-				}}				
 			/>
 
 			<GroupStack.Screen
 				name="EditGroup"
 				component={EditGroupScreen}
-				options={{
-					title: 'Edit group',
-				}}				
 			/>
 
 			<GroupStack.Screen
 				name="EditExpense"
 				component={EditExpenseScreen}
-				options={{
-					title: 'Edit expense',
-				}}
 			/>
 
 			<GroupStack.Screen
 				name="GroupBalanceDetails"
 				component={GroupBalanceDetailsScreen}
-				options={{
-					navigation: ({route}) => ({ group: route.params.group }),
-				}}
 			/>
             
 		</GroupStack.Navigator>

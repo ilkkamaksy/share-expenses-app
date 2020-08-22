@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { connect, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { ScrollView, StyleSheet, View, TouchableOpacity, Text } from 'react-native'
@@ -8,7 +8,6 @@ import { setExpenseToEdit } from '../../store/actions/expenses'
 import Group from '../../components/groups/Group'
 import Hero from '../../components/UI/Hero'
 import Heading from '../../components/UI/Heading'
-import Paragraph from '../../components/UI/Paragraph'
 import ContentContainer from '../../components/UI/ContentContainer'
 import Colors from '../../constants/Colors'
 
@@ -30,10 +29,6 @@ const GroupDetailScreen = ({
 	}
 
 	const group = useSelector(state => state.groups.userGroups.find(group => group.id === groupToEdit.id))
-
-	useEffect(() => {
-		navigation.setOptions({ title: group.title })
-	}, [group])
 
 	const createNewExpense = () => {
 		setExpenseToEdit({
@@ -67,12 +62,6 @@ const GroupDetailScreen = ({
 					<Heading style={[styles.header]}>
 						{group.title}
 					</Heading>
-
-					{group.location && 
-						<Paragraph style={[styles.intro]}>
-							{group.location}
-						</Paragraph>
-					}
 
 					<View style={styles.actions}>
 						<View style={styles.row}>

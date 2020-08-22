@@ -111,7 +111,7 @@ describe('Testing GroupBalanceDetailsScreen', () => {
 	test('screen contains balance summaries for group members', async () => {
 
 		const { findByText } = render(component)
-		const title = await findByText('Balance summary')
+		const title = await findByText('Balance details')
 		const p1 = await findByText('person 1')
 		const p2 = await findByText('person 2')
 		const p3 = await findByText('person 3')

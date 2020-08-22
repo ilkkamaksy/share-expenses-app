@@ -8,7 +8,11 @@ const User = require('./models/user')
 const mongoose = require('mongoose')
 mongoose.set('useFindAndModify', false)
 
-mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true })
+mongoose.connect(config.MONGODB_URI, { 
+	useNewUrlParser: true,
+	useUnifiedTopology: true, 
+	useCreateIndex: true
+})
 	.then(() => {
 		console.log('connected to MongoDb')
 	})

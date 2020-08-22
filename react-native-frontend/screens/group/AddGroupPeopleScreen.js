@@ -16,6 +16,7 @@ const AddGroupPeopleScreen = ({ navigation }) => {
 				<Heading style={[styles.header]}>
 					Add people to group
 				</Heading>
+				<></>
 			</Hero>
 
 			<ContentContainer>

@@ -6,6 +6,7 @@ import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import GroupNavigation from '../../navigation/GroupNavigation'
+import { act } from 'react-test-renderer'
 
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
@@ -89,10 +90,10 @@ describe('Testing EditGroupScreen', () => {
 	test('screen contains initially form for editing group details and tabs for editing group details, people and users', async () => {
 
 		const { findByText } = render(component)
-		const editDetailsLabel = await findByText('Edit Group details')
-		const editDetailsTab = await findByText('Edit Details')
-		const editPeopleTab = await findByText('Edit People')
-		const editUsersTab = await findByText('Edit Users')
+		const editDetailsLabel = await findByText('Group details')
+		const editDetailsTab = await findByText('General')
+		const editPeopleTab = await findByText('Edit people')
+		const editUsersTab = await findByText('Group Users')
 
 		expect(editDetailsLabel).toBeTruthy()
 		expect(editDetailsTab).toBeTruthy()
@@ -101,45 +102,51 @@ describe('Testing EditGroupScreen', () => {
 		
 	})
 
-	test('clicking Edit People changes tab to Editing People', async () => {
+	test('clicking Edit people changes tab to Editing People', async () => {
 
 		const { findByText } = render(component)
-		const toClick = await findByText('Edit People')
+		const toClick = await findByText('Edit people')
 
-		await fireEvent(toClick, 'press')
+		await act(async () => {
+			await fireEvent(toClick, 'press')
+		})
 		
 		const formLabel = await findByText('Add a new person to this group')
-		const listLabel = await findByText('People in this group')
 		
 		expect(formLabel).toBeTruthy()
-		expect(listLabel).toBeTruthy()
 
 	})
 
-	test('clicking Edit Users changes tab to Editing Users', async () => {
+	test('clicking Group Users changes tab to Editing Users', async () => {
 
 		const { findByText } = render(component)
-		const toClick = await findByText('Edit Users')
+		const toClick = await findByText('Group Users')
 
-		await fireEvent(toClick, 'press')
+		await act(async () => {
+			await fireEvent(toClick, 'press')
+		})
 		
-		const formLabel = await findByText('Invite friends to manage this group')
-		const listLabel = await findByText('Users in this group')
+		const formLabel = await findByText('Invite friends')
 		
 		expect(formLabel).toBeTruthy()
-		expect(listLabel).toBeTruthy()
 
 	})
 
-	test('clicking Edit Details changes tab to Editing Details', async () => {
+	test('clicking General changes tab to Editing Details', async () => {
 
 		const { findByText } = render(component)
-		const toClickA = await findByText('Edit Users')
-		const toClickB = await findByText('Edit Details')
-		await fireEvent(toClickA, 'press')
-		await fireEvent(toClickB, 'press')
-		
-		const formLabel = await findByText('Edit Group details')
+		const toClickA = await findByText('Group Users')
+		const toClickB = await findByText('General')
+
+		await act(async () => {
+			await fireEvent(toClickA, 'press')
+		})
+
+		await act(async () => {
+			await fireEvent(toClickB, 'press')
+		})
+
+		const formLabel = await findByText('Group details')
 		
 		expect(formLabel).toBeTruthy()
 

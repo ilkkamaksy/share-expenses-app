@@ -8,6 +8,7 @@ import thunk from 'redux-thunk'
 import calculateTotals from '../../utils/calculateTotals'
 
 import GroupNavigation from '../../navigation/GroupNavigation'
+import { act } from 'react-test-renderer'
 
 const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
@@ -86,17 +87,16 @@ describe('Testing GroupDetailsScreen', () => {
 				getGroupsFail: false,
 				expenseToEdit: {
 					id: null,
-					amount: Number(0).toFixed(2),
+					amount: 0,
 					groupid: null,
-					date: date,
-					dateTime: JSON.stringify(date),
+					dateTime: date,
 					lastUpdatedAt: date,
 					createdAt: date,
 					description: 'desc',
 					people: [],
 					details: []
 				},
-				groupTotals: [calculateTotals(group)]
+				groupTotals: calculateTotals(group)
 			},
 			navigation: {
 				topRightMenuVisible: false
@@ -170,8 +170,10 @@ describe('Testing GroupDetailsScreen', () => {
 		const { getByA11yLabel, findByText } = render(component)
 		const toClick = await getByA11yLabel('Add a new expense')
 
-		await fireEvent(toClick, 'press')
-		
+		await act(async () => {
+			await fireEvent(toClick, 'press')
+		})
+
 		const title = await findByText('Add a new expense')
 		const expenseDetailsTitle = await findByText('Expense details')
 		const participantsTitle = await findByText('Who were in?')
@@ -191,9 +193,9 @@ describe('Testing GroupDetailsScreen', () => {
 
 		await fireEvent(toClick, 'press')
 		
-		const editDetailsTab = await findByText('Edit Details')
-		const editPeopleTab = await findByText('Edit People')
-		const editUsersTab = await findByText('Edit Users')
+		const editDetailsTab = await findByText('General')
+		const editPeopleTab = await findByText('Edit people')
+		const editUsersTab = await findByText('Group Users')
 
 		expect(editDetailsTab).toBeTruthy()
 		expect(editPeopleTab).toBeTruthy()

@@ -1,7 +1,6 @@
 import reducer from './user'
-import * as actions from '../actions/user'
 
-describe('test group reducer', () => {
+describe('test user reducer', () => {
 
 	let initialState
     

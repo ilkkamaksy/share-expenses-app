@@ -5,7 +5,6 @@ const User = require('../models/user')
 const Person = require('../models/person')
 const Expense = require('../models/expense')
 const { mongoose } = require('../index')
-const bcrypt = require('bcryptjs')
 
 const ADD_EXPENSE_TO_GROUP = `
 	mutation addExpense(
@@ -23,32 +22,15 @@ const ADD_EXPENSE_TO_GROUP = `
 			details: $details
 		) {
 			id
-			lastUpdatedAt
-			createdAt
-			title
-			location
-			owner {
-				id
-			}
-			users {
-				id
-				email
-			}
-			people {
-				id
-				name
-			}
-			expenses {
-				id
-				dateTime
-				amount
-				description
-				details {
-					person
-					share
-					paid
-					balance
-				}
+			group
+			dateTime
+			amount
+			description
+			details {
+				person
+				share
+				paid
+				balance
 			}
 		}
 	}
@@ -139,7 +121,7 @@ describe('Expense mutations', () => {
 			amount: 1000,
 			dateTime: new Date(Date.now()).toLocaleDateString(),
 			details: [{
-				personId: testPerson.id,
+				person: testPerson.id,
 				share: 1000,
 				paid: 1000,
 				balance: 0
@@ -171,7 +153,7 @@ describe('Expense mutations', () => {
 			amount: 1000,
 			dateTime: new Date(Date.now()).toLocaleDateString(),
 			details: [{
-				personId: testPerson.id,
+				person: testPerson.id,
 				share: 1000,
 				paid: 1000,
 				balance: 0
@@ -183,7 +165,7 @@ describe('Expense mutations', () => {
 			variables
 		})
 		
-		expect(res.data.addExpense.expenses[1].amount).toEqual(1000)
+		expect(res.data.addExpense.amount).toEqual(1000)
 	})
 
 	it('A user without a group membership can not add a new expense to group', async () => {
@@ -202,7 +184,7 @@ describe('Expense mutations', () => {
 			amount: 1000,
 			dateTime: new Date(Date.now()).toLocaleDateString(),
 			details: [{
-				personId: testPerson.id,
+				person: testPerson.id,
 				share: 1000,
 				paid: 1000,
 				balance: 0
@@ -213,6 +195,8 @@ describe('Expense mutations', () => {
 			mutation: ADD_EXPENSE_TO_GROUP,
 			variables
 		})
+
+		
 		
 		expect(res.data.addExpense).toEqual(null)
 		expect(res.errors[0].message).toEqual('not authorized')

@@ -22,11 +22,11 @@ const ADD_PERSON_TO_GROUP = `
 `
 
 const UPDATE_PERSON = `
-	mutation editPerson(
+	mutation updatePerson(
 		$id: String!
 		$name: String!
 	) {
-		editPerson(
+		updatePerson(
 			id: $id
 			name: $name
 		) {
@@ -126,7 +126,7 @@ describe('Person mutations', () => {
 			variables
 		})
 		
-		expect(res.data.editPerson).toEqual(null)
+		expect(res.data.updatePerson).toEqual(null)
 		expect(res.errors[0].message).toEqual('not authenticated')
 	})
 
@@ -151,7 +151,7 @@ describe('Person mutations', () => {
 			variables
 		})
 		
-		expect(res.data.editPerson).toEqual(null)
+		expect(res.data.updatePerson).toEqual(null)
 		expect(res.errors[0].message).toEqual('not authorized')
 	})
 
@@ -175,7 +175,7 @@ describe('Person mutations', () => {
 			variables
 		})
 		
-		expect(res.data.editPerson.name).toEqual('changed name')
+		expect(res.data.updatePerson.name).toEqual('changed name')
 
 	})
 

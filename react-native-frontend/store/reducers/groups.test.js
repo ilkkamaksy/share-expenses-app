@@ -20,7 +20,7 @@ describe('test group reducer', () => {
 			expenseToEdit: {
 				id: null,
 				groupid: null,
-				date: null,
+				dateTime: null,
 				lastUpdatedAt: null,
 				createdAt: null,
 				description: '',
@@ -530,7 +530,7 @@ describe('test group reducer', () => {
 				...initialState,
 				expenseToEdit: {
 					...initialState.expenseToEdit,
-					date
+					dateTime: date
 				},
 			}
 		)		
@@ -541,20 +541,10 @@ describe('test group reducer', () => {
 		const expense = {
 			id: 'e1',
 			groupid: 'g1',
-			date: null,
-			lastUpdatedAt: null,
-			createdAt: null,
-			description: 'desc',
-			amount: 0,
-			people: ['p1', 'p2'],
-			details: []
 		}
 
 		let modifiedGroup = {
 			title: 'group title',
-			location: 'new location',
-			people: ['p1', 'p2', 'p3'],
-			users: ['u1', 'u2'],
 			id: 'g1',
 			expenses: []
 		}
@@ -573,7 +563,7 @@ describe('test group reducer', () => {
 		expect(
 			reducer(initialState, {
 				type: 'CREATE_EXPENSE_SUCCESS',
-				group: modifiedGroup
+				expense
 			})
 		).toEqual(
 			{
@@ -581,7 +571,6 @@ describe('test group reducer', () => {
 				saveGroupFail: false,
 				error: '',
 				fetching: false,
-				userGroups: initialState.userGroups.map(group => group.id === modifiedGroup.id ? modifiedGroup : group),
 				groupToEdit: modifiedGroup
 			}
 		)		

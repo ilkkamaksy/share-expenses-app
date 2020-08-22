@@ -79,11 +79,9 @@ describe('Testing CreateGroupScreen', () => {
 
 		const { findByText } = render(component)
 		const title = await findByText('Add a new group')
-		const introText = await findByText('Add a name and an optional location for your group.')
-		const formLabel = await findByText('Edit Group details')
+		const formLabel = await findByText('Group details')
 
 		expect(title).toBeTruthy()
-		expect(introText).toBeTruthy()
 		expect(formLabel).toBeTruthy()
 
 

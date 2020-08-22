@@ -54,7 +54,7 @@ const GroupExpensesScreen = ({
 					<View>
 						<Hero style={[{ marginBottom: 30 }]}>
 							<Heading style={[styles.header]}>
-								{`All expenses in group "${group.title}"`}
+								All expenses
 							</Heading>
 							<PopupMenuTopRight />
 

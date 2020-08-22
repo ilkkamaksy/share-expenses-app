@@ -37,4 +37,5 @@
 | 19.8. |   8  | Decimal inputin viimeistely, editExpense-formin UI:n kehitys |
 | 20.8. |   8  | DatePicker omaksi komponentiksi, EditExpense-kompontentin UI:n kehitystä |
 | 21.8. |   9  | Expensen muokkaus UI vaatimusten mukaiseksi, Expense-itemien päivitys, ryhmän expense-listan sorttaus |
-| yht   | 244   | | 
+| 22.8. |   6  | Invite friends omaksi komponentiksi, InviteScreenin luominen, yksikkötestien korjaus ja siirtyminen expo-jestiin |
+| yht   | 250   | | 

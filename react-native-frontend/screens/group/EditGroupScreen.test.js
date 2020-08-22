@@ -69,6 +69,7 @@ describe('Testing EditGroupScreen', () => {
 				ownedInvitations: [],
 				openAccessInvitation: null,
 				fetching: false,
+				error: ''
 			},
 			navigation: {
 				topRightMenuVisible: false

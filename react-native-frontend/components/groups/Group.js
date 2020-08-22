@@ -38,7 +38,7 @@ const Group = ({
 			<View style={[styles.section, { 
 				backgroundColor: '#fbfbfb', 
 				paddingTop: 30,
-				paddingBottom: 40, 
+				paddingBottom: group.expenses.length === 0 ? 10 : 40, 
 				paddingHorizontal: 20, 
 				borderRadius: 10 
 			}]}>

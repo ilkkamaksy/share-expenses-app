@@ -38,7 +38,7 @@ const GroupsOverViewScreen = ({ navigation, setGroupToEdit }) => {
 			
 			</ScrollView>
 
-			<FloatingActionButton onPress={createNewGroup} labelText="Add a new group" />
+			<FloatingActionButton onPress={createNewGroup} labelText="Add group" />
 
 		</View>
 	) 

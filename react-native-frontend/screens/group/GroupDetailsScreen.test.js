@@ -168,7 +168,7 @@ describe('Testing GroupDetailsScreen', () => {
 	test('clicking create expense FAB takes you to the EditExpenseScreen', async () => {
 
 		const { getByA11yLabel, findByText } = render(component)
-		const toClick = await getByA11yLabel('Add a new expense')
+		const toClick = await getByA11yLabel('Add expense')
 
 		await act(async () => {
 			await fireEvent(toClick, 'press')

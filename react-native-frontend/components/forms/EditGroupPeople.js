@@ -61,7 +61,7 @@ const EditGroupPeople = ({
 			</Heading>
 
 			<Paragraph style={[{ textAlign: 'left', fontSize: 13, marginBottom: 5, color: Colors.lightCoffee, lineHeight: 20 }]}>
-				Add names of people in this group. All the names you add here can be used in group expenses. 
+				Add names of people that you want to use in group expenses. 
 			</Paragraph>    
 
 			<View style={styles.form}>
@@ -70,7 +70,6 @@ const EditGroupPeople = ({
 					<TextInput 
 						accessibilityLabel="Name"
 						label="Name" 
-						placeholder="John Doe"
 						value={currentPerson}
 						onChangeText={text => setCurrentPerson(text)}
 						error={false}
@@ -94,10 +93,6 @@ const EditGroupPeople = ({
 					>
                             Add to group
 					</Button>
-					
-					<Paragraph style={[{ textAlign: 'left', fontSize: 10, marginVertical: 10, color: Colors.lightCoffee, lineHeight: 20 }]}>
-						These are not invites to other users. Invite your friends to manage this group by editing group users. 
-					</Paragraph>
 
 				</View>
 				
@@ -111,33 +106,44 @@ const EditGroupPeople = ({
 					Names of people in this group
 				</Heading>
 
-				<View style={styles.formControl}>
-					{groupToEdit.people.map(person => { return (
-						<View key={person.id} style={[styles.row, { borderBottomColor: '#ddd', borderBottomWidth: StyleSheet.hairlineWidth }]}>
-							<View style={styles.column}>
-								<Text style={{ 
-									fontSize: 13, 
-									color: Colors.lightCoffee, 
-									paddingVertical: 14
-								}}>{person.name}</Text>
-							</View>
-							<View style={styles.column}>
-								<Button 
-									labelStyle={{ color: Colors.accent, fontSize: 11 }}
-									compact={true} 
-									mode="text" 
-									uppercase={false} 
-									onPress={() => removePerson(person.id)}>
+				{groupToEdit.people.length === 0 ?
+					<Text style={{ 
+						fontSize: 13, 
+						color: Colors.lightCoffee, 
+						marginBottom: 10,
+						marginTop: 5
+					}}>None added yet.</Text>
+			
+					:
+					<View style={styles.formControl}>
+						{groupToEdit.people.map(person => { return (
+							<View key={person.id} style={[styles.row, { borderBottomColor: '#ddd', borderBottomWidth: StyleSheet.hairlineWidth }]}>
+								<View style={styles.column}>
+									<Text style={{ 
+										fontSize: 13, 
+										color: Colors.lightCoffee, 
+										paddingVertical: 14
+									}}>{person.name}</Text>
+								</View>
+								<View style={styles.column}>
+									<Button 
+										labelStyle={{ color: Colors.accent, fontSize: 11 }}
+										compact={true} 
+										mode="text" 
+										uppercase={false} 
+										onPress={() => removePerson(person.id)}>
 								Remove
-								</Button> 
+									</Button> 
+								</View>
 							</View>
-						</View>
-					)})}
-				</View>
+						)})}
+					</View>
+				}
 
 				<View style={styles.formControl}>
 					<Button 
-						mode="contained" 
+						mode="contained"
+						disabled={groupToEdit.people.length === 0} 
 						onPress={onDoneEditingGroup}
 						color={Colors.primary}
 						labelStyle={{ color: Colors.white }}
@@ -145,6 +151,14 @@ const EditGroupPeople = ({
 					>
                         Done
 					</Button>
+					{groupToEdit.people.length === 0 && 
+						<Text style={{ 
+							fontSize: 11, 
+							color: Colors.lightCoffee, 
+							marginVertical: 10,
+							textAlign: 'center'
+						}}>Add some people to this group to continue.</Text>
+					}
 				</View>
                 
 			</View>

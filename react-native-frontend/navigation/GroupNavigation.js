@@ -12,6 +12,7 @@ import GroupBalanceDetailsScreen from '../screens/group/GroupBalanceDetailsScree
 import CreateGroupScreen from '../screens/group/CreateGroupScreen'
 import AddGroupPeopleScreen from '../screens/group/AddGroupPeopleScreen'
 import EditGroupScreen from '../screens/group/EditGroupScreen'
+import InviteScreen from '../screens/group/InviteScreen'
 import EditExpenseScreen from '../screens/group/EditExpenseScreen'
 import GroupExpensesScreen from '../screens/group/GroupExpensesScreen'
 
@@ -65,6 +66,11 @@ function GroupNavigation({ activeScreen = 'GroupList' }) {
 			<GroupStack.Screen
 				name="EditGroup"
 				component={EditGroupScreen}
+			/>
+
+			<GroupStack.Screen
+				name="InviteScreen"
+				component={InviteScreen}
 			/>
 
 			<GroupStack.Screen

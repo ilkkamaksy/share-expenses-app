@@ -1,71 +1,27 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { ScrollView, View, Text, StyleSheet, Share } from 'react-native'
-import * as Linking from 'expo-linking'
+import { ScrollView, View, Text, StyleSheet } from 'react-native'
 import { Button } from 'react-native-paper'
 
 import { doneEditing, removeGroupUser, setGroupToEdit, leaveGroup } from '../../store/actions/groups'
-
-import { 
-	addInvitation,
-	removeInvitation, 
-	getInvitationByGroup
-} from '../../store/actions/invitations'
 
 import Heading from '../UI/Heading'
 import Paragraph from '../UI/Paragraph'
 import Colors from '../../constants/Colors'
 
+import Invite from './Invite'
+
 const EditGroupUsers = ({ 
 	userdata,
 	error, 
 	groupToEdit, 
-	openAccessInvitation,
 	doneEditing,
-	addInvitation,
-	removeInvitation,
-	getInvitationByGroup,
 	removeGroupUser,
 	leaveGroup,
 	setGroupToEdit,
 	navigation 
 }) => {
-
-	const [appUrl, setAppUrl] = useState(null)
-
-	useEffect(() => {
-		const getAppUrl = async () => {
-			const initialUrl = await Linking.makeUrl('groups/', {
-				id: groupToEdit.id
-			})
-			setAppUrl(initialUrl)
-		}
-		getAppUrl()
-		getInvitationByGroup(groupToEdit.id)
-	}, [])
-
-	const onCreateOpenInvitation = async () => {
-		await addInvitation(groupToEdit.id)
-		await getInvitationByGroup(groupToEdit.id)
-	}
-
-	const onRemoveOpenInvitation = async () => {
-		await removeInvitation(openAccessInvitation.id)
-		await getInvitationByGroup(groupToEdit.id)
-	}
-
-	const onShareInvitation = async () => {
-		try {
-			await Share.share({
-				message: `Join my group "${groupToEdit.title}" to track our shared expenses on ShareExpenses App: https://suuntastudios.com/shareapp/?to=${encodeURIComponent(appUrl)}`,
-				subject: 'Invitation to manage a group in ShareExpenses App',
-				title: 'Invitation to manage a group in ShareExpenses App'
-			})
-		} catch (error) {
-			console.log(error.message)
-		}
-	}
 
 	const onLeaveGroup = async () => {
 		navigation.navigate('GroupList')
@@ -79,7 +35,7 @@ const EditGroupUsers = ({
 
 	const onDoneEditingGroup = () => {
 		doneEditing(groupToEdit)
-		navigation.navigate('GroupItem', { group: groupToEdit })
+		navigation.navigate('GroupItem')
 	}
 
 	return (
@@ -91,79 +47,10 @@ const EditGroupUsers = ({
 			</Paragraph>
 			}
 			
-			<Heading style={[{ 
-				textAlign: 'left', 
-				fontSize: 12, 
-				color: Colors.primary, 
-				textTransform: 'uppercase', 
-				paddingBottom: 3 
-			}]}>
-				Invite friends
-			</Heading>
+			<Invite />
 
 			<View style={styles.form}>
-				
-				<View style={styles.formControl}>
-					<Paragraph style={[{ textAlign: 'left', fontSize: 13, color: Colors.lightCoffee }]}>
-						Invite friends to join in to manage this group.
-					</Paragraph>    
-
-					<Button 
-						disabled={openAccessInvitation ? false : true} 
-						mode="contained" 
-						onPress={() => onShareInvitation()}
-						color={Colors.primary}
-						labelStyle={{ color: Colors.white, fontSize: 11 }}
-					>
-						Share open invite
-					</Button>
-
-					<Paragraph style={[{ textAlign: 'center', fontSize: 10, marginTop: 5, color: Colors.lightCoffee }]}>
-						Anyone with the invitation can join this group.
-					</Paragraph>
-
-					{!openAccessInvitation ?
-			
-						<View>
-							<Paragraph style={[{ textAlign: 'left', fontSize: 11, color: Colors.lightCoffee, lineHeight: 20, marginTop: 20 }]}>
-								Create open invitation and share it with your friends. 
-							</Paragraph>  
-							<Button 
-								disabled={false} 
-								mode="contained" 
-								onPress={() => onCreateOpenInvitation()}
-								color={Colors.primary}
-								labelStyle={{ color: Colors.white, fontSize: 11 }}
-							>
-							Create open invitation
-							</Button>
-						</View>
-						
-						:
-			
-						<View style={{ marginTop: 20 }}>
-							<Paragraph style={[{ textAlign: 'center', fontSize: 11, color: Colors.lightCoffee, lineHeight: 20 }]}>
-								{`Open invitation has been created on ${new Date(JSON.parse(openAccessInvitation.createdAt)).toLocaleDateString()} at ${new Date(JSON.parse(openAccessInvitation.createdAt)).toLocaleTimeString()} by ${openAccessInvitation.owner.email}.`}
-							</Paragraph>    
-							<Button 
-								disabled={false} 
-								mode="outlined" 
-								onPress={() => onRemoveOpenInvitation()}
-								color={Colors.error}
-								labelStyle={{ color: Colors.accent, fontSize: 11 }}
-							>
-								Delete open invite
-							</Button>
-
-							<Paragraph style={[{ textAlign: 'center', fontSize: 10, marginTop: 5, color: Colors.lightCoffee, lineHeight: 20 }]}>
-								When removed, no one can join the group using it.
-							</Paragraph>    
-						</View>
-					}
-					
-					
-				</View>
-				
+	
 				<Heading style={[{ 
 					textAlign: 'left', 
 					fontSize: 12, 
@@ -260,11 +147,7 @@ EditGroupUsers.propTypes = {
 	userdata: PropTypes.object,
 	error: PropTypes.string,
 	groupToEdit: PropTypes.object,
-	openAccessInvitation: PropTypes.object,
 	doneEditing: PropTypes.func,
-	addInvitation: PropTypes.func,
-	removeInvitation: PropTypes.func,
-	getInvitationByGroup: PropTypes.func,
 	removeGroupUser: PropTypes.func,
 	leaveGroup: PropTypes.func,
 	setGroupToEdit: PropTypes.func
@@ -275,7 +158,6 @@ const mapStateToProps = (state) => {
 		userdata: state.user.userdata,
 		error: state.groups.error,
 		groupToEdit: state.groups.groupToEdit,
-		openAccessInvitation: state.invitations.openAccessInvitation
 	}
 }
 
@@ -283,9 +165,6 @@ const connectedEditGroupUsers = connect(
 	mapStateToProps,
 	{
 		doneEditing,
-		addInvitation,
-		removeInvitation,
-		getInvitationByGroup,
 		removeGroupUser,
 		leaveGroup,
 		setGroupToEdit

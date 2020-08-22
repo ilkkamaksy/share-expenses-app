@@ -34,13 +34,10 @@ const PopupMenuTopRight = ({ topRightMenuVisible, toggleTopRightMenu, logoutUser
 				<View style={styles.modalView}>
 			
 					<List.Item
-						title="My Groups"
-						onPress={() => onNavigate('GroupList')}
-					/>
-					<List.Item
 						title="My Account"
-						onPress={() => console.log('pressed')}	
+						onPress={() => onNavigate('EditAccount')}	
 					/>
+
 					<List.Item
 						title="Logout"
 						onPress={logoutUser}	

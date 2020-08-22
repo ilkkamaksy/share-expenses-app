@@ -102,7 +102,7 @@ describe('Testing GroupsOverviewScreen', () => {
 	test('clicking "create new group" FAB takes you to the CreateGroupScreen', async () => {
 
 		const { getByA11yLabel, findByText } = render(component)
-		const toClick = await getByA11yLabel('Add a new group')
+		const toClick = await getByA11yLabel('Add group')
 
 		await fireEvent(toClick, 'press')
 		

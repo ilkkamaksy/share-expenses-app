@@ -71,7 +71,6 @@ const inviteReducer = (state = initialState, action) => {
 			error: ''
 		}
 	case 'GET_OPEN_INVITATION_SUCCESS' :
-		console.log('invitation reducer success ----', action.invitation)
 		return {
 			...state,
 			error: '',
@@ -79,7 +78,6 @@ const inviteReducer = (state = initialState, action) => {
 			openAccessInvitation: action.invitation
 		}
 	case 'GET_OPEN_INVITATION_FAIL' :
-		console.log('invitation reducer fail ----', action.response)
 		return {
 			...state,
 			error: action.response,

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { ScrollView, View, Text, StyleSheet, TouchableHighlight } from 'react-native'
+import { ScrollView, View, StyleSheet } from 'react-native'
 import { Button, ActivityIndicator } from 'react-native-paper'
 
 import { 
 	setGroupTitle, 
-	setGroupLocation, 
 	createGroup, 
 	updateGroup,
 	removeGroup 
@@ -24,7 +23,6 @@ const EditGroupInfo = ({
 	fetching,
 	groupToEdit, 
 	setGroupTitle, 
-	setGroupLocation, 
 	createGroup, 
 	updateGroup,
 	removeGroup,
@@ -84,25 +82,36 @@ const EditGroupInfo = ({
 			
 			{groupToEdit.id && groupToEdit.owner.id === user.id &&
 				<Modal visible={modalVisible}>
-					<Heading style={styles.modalText}>{`Permanently remove group "${groupToEdit.title}"?`}</Heading>
+					<Heading style={[styles.modalText, { fontSize: 18 }]}>{`Permanently remove group "${groupToEdit.title}"?`}</Heading>
 
-					<TouchableHighlight
-						style={{ ...styles.openButton, backgroundColor: '#2196F3' }}
-						onPress={() => {
-							onConfirmRemoveGroup()
-						}}
-					>
-						<Text style={styles.textStyle}>Confirm</Text>
-					</TouchableHighlight>
+					<Paragraph style={[{ textAlign: 'center', fontSize: 13, marginTop: 10, color: Colors.lightCoffee, lineHeight: 20 }]}>
+							All group data will be permanently lost from all users.
+					</Paragraph>
+					<View style={[styles.row, { marginTop: 20 }]}>
 
-					<TouchableHighlight
-						style={{ ...styles.openButton, backgroundColor: '#2196F3' }}
-						onPress={() => {
-							setModalVisible(!modalVisible)
-						}}
-					>
-						<Text style={styles.textStyle}>Cancel</Text>
-					</TouchableHighlight>
+						<Button 
+							mode="outlined" 
+							onPress={() => setModalVisible(!modalVisible)}
+							color={Colors.primary}
+							labelStyle={{ color: Colors.primary, fontSize: 12 }}
+							style={{ marginRight: 10 }}
+						>
+								Cancel
+						</Button>
+
+						<Button 
+							mode="contained" 
+							onPress={onConfirmRemoveGroup}
+							color={Colors.primary}
+							labelStyle={{ color: Colors.white, fontSize: 12 }}
+							style={{ marginLeft: 10 }}
+						>
+								Confirm
+						</Button>
+						
+						
+					</View>
+					
 				
 				</Modal>
 			}
@@ -132,19 +141,6 @@ const EditGroupInfo = ({
 					/>
 				</View>
 				
-				<View style={styles.formControl}>
-					<TextInput 
-						accessibilityLabel="Location"
-						label="Location (optional)" 
-						value={groupToEdit.location}
-						onChangeText={text => setGroupLocation(text)}
-						error={false}
-						errorText=""
-						returnKeyType="next"
-						mode="outlined"
-					/>
-				</View>
-			
 				<View style={[styles.formControl, { position: 'relative' }]}>
 					
 					{fetching && <ActivityIndicator animating={true} color={Colors.primary} style={{ position: 'absolute', top: 20, width: '100%' }} />}
@@ -166,7 +162,7 @@ const EditGroupInfo = ({
 						<Heading style={[{ 
 							textAlign: 'left', 
 							fontSize: 12, 
-							color: Colors.secondary, 
+							color: Colors.primary, 
 							textTransform: 'uppercase', 
 							paddingBottom: 5 
 						}]}>
@@ -199,10 +195,10 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		flexDirection: 'row',
 		flexWrap: 'nowrap',
-		justifyContent: 'space-between'
+		justifyContent: 'space-between',
 	}, 
 	rowItem: {
-		flex: 0
+		flex: 1
 	},
 	button: {
 		marginTop: 10
@@ -240,7 +236,6 @@ EditGroupInfo.propTypes = {
 	error: PropTypes.string,
 	groupToEdit: PropTypes.object,
 	setGroupTitle: PropTypes.func,
-	setGroupLocation: PropTypes.func,
 	createGroup: PropTypes.func,
 	updateGroup: PropTypes.func,
 	setGroupToEdit: PropTypes.func,
@@ -260,7 +255,6 @@ const connectedEditGroupInfo = connect(
 	mapStateToProps,
 	{
 		setGroupTitle,
-		setGroupLocation,
 		createGroup,
 		updateGroup,
 		removeGroup

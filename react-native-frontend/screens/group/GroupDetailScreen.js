@@ -73,7 +73,7 @@ const GroupDetailScreen = ({
 								<Text style={styles.actionLink}>Edit Group</Text>
 							</TouchableOpacity>
 							<TouchableOpacity 
-								onPress={() => navigation.navigate('EditGroup')} 
+								onPress={() => navigation.navigate('InviteScreen')} 
 								style={styles.actionLinkContainer}
 							>
 								<Share size={14} color={Colors.white} />
@@ -96,7 +96,7 @@ const GroupDetailScreen = ({
 			</ScrollView>
 
 			
-			<FloatingActionButton onPress={createNewExpense} labelText="Add a new expense" />
+			<FloatingActionButton onPress={createNewExpense} labelText="Add expense" />
 		</View>
 	)
 }

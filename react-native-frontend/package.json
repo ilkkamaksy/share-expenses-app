@@ -7,7 +7,7 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "test": "jest .",
-    "citest": "eslint . && jest --verbose --runInBand --collectCoverage && codecov",
+    "citest": "eslint . && jest . && codecov",
     "lint": "eslint ."
   },
   "dependencies": {

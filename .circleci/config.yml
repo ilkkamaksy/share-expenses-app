@@ -11,7 +11,7 @@ jobs:
           steps:
             - run: cd backend && npm install && npm install --save-dev codecov
             - run: cd backend && npm run citest
-            - run: cd react-native-frontend && npm install && npm install --save-dev codecov
+            - run: cd react-native-frontend && npm install && npm install --save-dev codecov jest@26.4.1
             - run: cd react-native-frontend && npm run citest
 workflows:
     build-and-test:

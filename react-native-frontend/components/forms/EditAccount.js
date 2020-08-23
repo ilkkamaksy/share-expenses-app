@@ -48,18 +48,6 @@ const EditAccount = ({
 		})
 	}
 
-	const validateForm = () => {
-	
-		if (
-			!userdata.id || 
-			email.length < 4 ||
-			name.length < 1
-		) {
-			return true
-		}
-
-		return false
-	}
 
 	return (
 		<ScrollView>

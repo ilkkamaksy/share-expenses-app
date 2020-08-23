@@ -8,7 +8,11 @@ import { useNavigation  } from '@react-navigation/native'
 import { toggleTopRightMenu } from '../../store/actions/nav'
 import { logoutUser } from '../../store/actions/user'
 
-const PopupMenuTopRight = ({ topRightMenuVisible, toggleTopRightMenu, logoutUser }) => {
+const PopupMenuTopRight = ({ 
+	topRightMenuVisible, 
+	toggleTopRightMenu, 
+	logoutUser 
+}) => {
 
 	if (!topRightMenuVisible) {
 		return <></>
@@ -35,7 +39,7 @@ const PopupMenuTopRight = ({ topRightMenuVisible, toggleTopRightMenu, logoutUser
 			
 					<List.Item
 						title="My Account"
-						onPress={() => onNavigate('EditAccount')}	
+						onPress={() => onNavigate('EditAccountScreen')}	
 					/>
 
 					<List.Item
@@ -81,7 +85,7 @@ const styles = StyleSheet.create({
 PopupMenuTopRight.propTypes = {
 	topRightMenuVisible: PropTypes.bool,
 	toggleTopRightMenu: PropTypes.func,
-	logoutUser: PropTypes.func
+	logoutUser: PropTypes.func,
 }
 
 const mapStateToProps = state => {

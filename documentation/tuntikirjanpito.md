@@ -38,4 +38,5 @@
 | 20.8. |   8  | DatePicker omaksi komponentiksi, EditExpense-kompontentin UI:n kehitystä |
 | 21.8. |   9  | Expensen muokkaus UI vaatimusten mukaiseksi, Expense-itemien päivitys, ryhmän expense-listan sorttaus |
 | 22.8. |   6  | Invite friends omaksi komponentiksi, InviteScreenin luominen, yksikkötestien korjaus ja siirtyminen expo-jestiin |
-| yht   | 250   | | 
+| 23.8. |   7  | Edit user account-näkymän ja käyttäjämuokkausfeaturen rakennusta |
+| yht   | 257   | | 

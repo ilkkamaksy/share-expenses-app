@@ -6,10 +6,9 @@ const config = require('../utils/config')
 
 const typeDef = `
     type User {
-        firstname: String
-		lastname: String
+		id: ID!
+        name: String
 		email: String!
-        id: ID!
 	}
 `
 
@@ -90,19 +89,37 @@ const resolvers = {
 		},
 		// args:
 		// id: String!
-		// firstname: String
-		// lastname: String
-		updateUser: async (root, args) => {
+		// name: String
+		// email: String
+		// password: String
+		updateUser: async (root, args, context) => {
+
+			const currentUser = context.currentUser
+
+			if (!currentUser) {
+				throw new AuthenticationError('not authenticated')
+			}
+
 			try {
 
 				let userToUpdate = {
-					...args
+					...args,
 				}
-				
+
+				if (args.password) {
+					
+					const hashedPassword = await bcrypt.hash(args.password, 10)
+
+					userToUpdate = {
+						...userToUpdate,
+						password: hashedPassword
+					}
+				}
+
 				delete userToUpdate.id
-				const savedUser = await User.findByIdAndUpdate(args.id, userToUpdate, { new: true }) 
-						
-				return savedUser
+
+				return await User.findByIdAndUpdate(currentUser._id, userToUpdate, { new: true }) 
+
 			} catch (error) {
 				throw new UserInputError(error.message, {
 					invalidArgs: args
@@ -110,10 +127,17 @@ const resolvers = {
 			}
 		},
 		// args:
-		// id: String!
-		removeUser: async (root, args) => {
+		removeUser: async (root, args, context) => {
+
+			const currentUser = context.currentUser
+
+			if (!currentUser) {
+				throw new AuthenticationError('not authenticated')
+			}
+
 			try {
-				return await User.findByIdAndDelete(args.id)
+
+				return await User.findByIdAndDelete(currentUser._id)
 				
 			} catch (error) {
 				throw new UserInputError(error.message, {

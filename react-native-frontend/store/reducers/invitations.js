@@ -2,7 +2,8 @@ const initialState = {
 	ownedInvitations: [],
 	openAccessInvitation: null,
 	referrerUrl: null,
-	fetching: false,	
+	fetching: false,
+	error: ''	
 }
 
 const inviteReducer = (state = initialState, action) => {

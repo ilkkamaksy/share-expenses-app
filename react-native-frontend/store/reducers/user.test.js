@@ -7,13 +7,16 @@ describe('test user reducer', () => {
 	beforeEach(() => {
 		initialState = {
 			email: '',
+			name: '',
 			password: '',
 			userdata: null,
 			fetching: true,
+			initialFetchDone: false,
 			loginout: false,
 			error: '',
 			loginFail: false,
-			registerFail: false
+			registerFail: false,
+			updateUserFail: false
 		}
 	})
 
@@ -23,13 +26,13 @@ describe('test user reducer', () => {
 		)
 	})
 
-	it('should handle SET_USERNAME', () => {
+	it('should handle SET_EMAIL', () => {
 
 		const email = 'a@a.a'
 
 		expect(
 			reducer(initialState, {
-				type: 'SET_USERNAME',
+				type: 'SET_EMAIL',
 				email
 			})
 		).toEqual(

@@ -14,8 +14,11 @@ import PopupMenuTopRight from '../../components/menus/PopupMenuTopRight'
 
 import { setGroupToEdit } from '../../store/actions/groups'
 
-const GroupsOverViewScreen = ({ navigation, setGroupToEdit }) => {
-	
+const GroupsOverViewScreen = ({ 
+	navigation, 
+	setGroupToEdit
+}) => {
+
 	const createNewGroup = () => {
 		setGroupToEdit(null)
 		navigation.navigate('CreateGroup')
@@ -64,17 +67,17 @@ const styles = StyleSheet.create({
 GroupsOverViewScreen.propTypes = {
 	navigation: PropTypes.object,
 	setGroupToEdit: PropTypes.func,
-	groupToEdit: PropTypes.object
+	groupToEdit: PropTypes.object,
 }
 
 const mapStateToProps = state => {
 	return {
-		groupToEdit: state.groups.groupToEdit
+		groupToEdit: state.groups.groupToEdit,
 	}
 }
 
 const ConnectedGroupsOverViewScreen = connect(mapStateToProps, {
-	setGroupToEdit
+	setGroupToEdit,
 })(GroupsOverViewScreen)
 
 export default ConnectedGroupsOverViewScreen

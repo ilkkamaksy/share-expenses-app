@@ -45,13 +45,11 @@ const Mutation = `
             ): LoginResponse!
             updateUser (
                 id: String!
-                firstname: String
-                lastname: String
+                name: String
                 email: String
+                password: String
             ): User
-            removeUser (
-                id: String!
-            ): User
+            removeUser: User
             createGroup(
                 title: String!
                 location: String

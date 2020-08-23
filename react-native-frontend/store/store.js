@@ -21,7 +21,26 @@ const rootReducer = (state, action) => {
 			navigation: undefined
 		}
 	}
-  
+	if (action.type === 'REMOVE_USER_SUCCESS') {
+		state = {
+			...state,
+			user: {
+				email: '',
+				name: '',
+				password: '',
+				userdata: null,
+				fetching: true,
+				initialFetchDone: false,
+				loginout: false,
+				error: '',
+				loginFail: false,
+				registerFail: false,
+				updateUserFail: false
+			},
+			navigation: undefined,
+			groups: undefined,
+		}
+	} 
 	return appReducer(state, action)
 }
 

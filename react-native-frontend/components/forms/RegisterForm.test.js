@@ -49,7 +49,7 @@ describe('test RegisterForm dispatch actions', () => {
 
 	})
     
-	it('should dispatch SET_USERNAME and SET_PASSWORD on input value change', async () => {
+	it('should dispatch SET_EMAIL and SET_PASSWORD on input value change', async () => {
 
 		const { getByA11yLabel } = render(component)
 		const emailInput = await getByA11yLabel('Email')
@@ -61,7 +61,7 @@ describe('test RegisterForm dispatch actions', () => {
 		fireEvent.changeText(passwordInput, 'testPassword')
         
 		const expectedActions = [
-			{ type: 'SET_USERNAME', email: 'test@email.com' },
+			{ type: 'SET_EMAIL', email: 'test@email.com' },
 			{ type: 'SET_PASSWORD', password: 'testPassword' }
 		]
         
@@ -71,7 +71,7 @@ describe('test RegisterForm dispatch actions', () => {
 		
 	})
     
-	it('should dispatch SET_USERNAME, SET_PASSWORD and INIT_REGISTER on submit', async () => {
+	it('should dispatch SET_EMAIL, SET_PASSWORD and INIT_REGISTER on submit', async () => {
 
 		const { getByA11yLabel, findByText } = render(component)
 		const emailInput = await getByA11yLabel('Email')
@@ -86,7 +86,7 @@ describe('test RegisterForm dispatch actions', () => {
 		fireEvent(toClick, 'press')
         
 		const expectedActions = [
-			{ type: 'SET_USERNAME', email: 'test@email.com' },
+			{ type: 'SET_EMAIL', email: 'test@email.com' },
 			{ type: 'SET_PASSWORD', password: 'testPassword' },
 			{ type: 'INIT_REGISTER' }
 		]

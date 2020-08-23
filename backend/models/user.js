@@ -2,10 +2,7 @@ const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 
 const schema = new mongoose.Schema({
-	firstname: {
-		type: String
-	},
-	lastname: {
+	name: {
 		type: String
 	},
 	email: {
@@ -27,12 +24,37 @@ const schema = new mongoose.Schema({
 
 schema.plugin(uniqueValidator)
 
-schema.virtual('fullName')
-	.get(function() { return `${this.firstName} ${this.lastName}` })
-	.set(function(v) {
-		const firstName = v.substring(0, v.indexOf(' '))
-		const lastName = v.substring(v.indexOf(' ') + 1)
-		this.set({ firstName, lastName })
+schema.pre('findOneAndDelete', { document: true }, function(next) {
+	let id = this.getQuery()['_id']
+	mongoose.model('Group').update({ users: id }, { $pull: { users: id } }, function(err) {
+		if (err) {
+			next(err)
+		} else {
+			next()
+		}
 	})
+})
+
+schema.pre('findOneAndDelete', { document: true }, function(next) {
+	let id = this.getQuery()['_id']
+	mongoose.model('Group').deleteMany({ owner: id }, function(err) {
+		if (err) {
+			next(err)
+		} else {
+			next()
+		}
+	})
+})
+
+schema.pre('findOneAndDelete', { document: true }, function(next) {
+	let id = this.getQuery()['_id']
+	mongoose.model('Invitation').deleteMany({ owner: id }, function(err) {
+		if (err) {
+			next(err)
+		} else {
+			next()
+		}
+	})
+})
 
 module.exports = mongoose.model('User', schema)

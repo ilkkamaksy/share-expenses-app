@@ -40,13 +40,43 @@ const LOGIN = `
 const ME = `
 	query {
 		me {
-			email
 			id
+			email
+			name
 		}
   	}
 `
 
-const register = async credentials => {
+const UPDATE_USER = `
+	mutation updateUser(
+		$id: String!
+		$name: String
+		$email: String
+		$password: String
+  ) {
+	  updateUser(
+		id: $id
+		name: $name
+    	email: $email,
+		password: $password
+	) {
+		id
+		name
+		email
+	}
+  }
+`
+
+const REMOVE_USER = `
+	mutation {
+		removeUser {
+			id
+			email
+		}
+	} 
+`
+
+export const register = async credentials => {
 	const variables = { email: credentials.email, password: credentials.password }
 	const response = await axios.post(apiUrl, {
 		query: REGISTER,
@@ -59,7 +89,7 @@ const register = async credentials => {
 	return response
 }
 
-const login = async credentials => {
+export const login = async credentials => {
 	const variables = { email: credentials.email, password: credentials.password }
 	const response = await axios.post(apiUrl, {
 		query: LOGIN,
@@ -72,7 +102,7 @@ const login = async credentials => {
 	return response
 }
 
-const me = async () => {
+export const me = async () => {
 
 	const config = {
 		headers: {
@@ -84,4 +114,40 @@ const me = async () => {
 	return response
 }
 
-export default { login, register, me }
+export const updateUser = async userdata => {
+
+	const variables = { 
+		id: userdata.id,
+		name: userdata.name,
+		email: userdata.email, 
+		password: userdata.password 
+	}
+
+	const data = {
+		query: UPDATE_USER,
+		variables: variables
+	}
+
+	const config = {
+		headers: {
+			'Authorization': auth.token
+		}
+	}
+
+	return await axios.post(apiUrl, data, config)
+}
+
+export const removeUser = async () => {
+	
+	const data = {
+		query: REMOVE_USER
+	}
+
+	const config = {
+		headers: {
+			'Authorization': auth.token
+		}
+	}
+
+	return await axios.post(apiUrl, data, config)
+}

@@ -34,7 +34,7 @@ const GroupList = ({
 	const [bannerTextContent, setBannerTextContent] = useState('')
 
 	useEffect(() => {
-	
+
 		if (fetching && userGroups.length === 0) {
 			getGroups()
 		}

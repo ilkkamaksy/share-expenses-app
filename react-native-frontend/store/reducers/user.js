@@ -1,17 +1,20 @@
 const initialState = {
 	email: '',
+	name: '',
 	password: '',
 	userdata: null,
 	fetching: true,
+	initialFetchDone: false,
 	loginout: false,
 	error: '',
 	loginFail: false,
-	registerFail: false
+	registerFail: false,
+	updateUserFail: false
 }
 
 const userReducer = (state = initialState, action) => {
 	switch (action.type) {
-	case 'SET_USERNAME' :
+	case 'SET_EMAIL' :
 		return {
 			...state,
 			email: action.email
@@ -20,6 +23,11 @@ const userReducer = (state = initialState, action) => {
 		return {
 			...state,
 			password: action.password
+		}
+	case 'SET_NAME' :
+		return {
+			...state,
+			name: action.name
 		}
 	case 'INIT_REGISTER' :
 		return {
@@ -36,7 +44,8 @@ const userReducer = (state = initialState, action) => {
 			error: '',
 			fetching: false,
 			password: '',
-			email: ''
+			email: '',
+			name: ''
 		}
 	case 'REGISTER_FAIL' :
 		return {
@@ -51,7 +60,6 @@ const userReducer = (state = initialState, action) => {
 			fetching: true,
 			loginFail: false,
 			error: ''
-            
 		}
 	case 'LOGIN_SUCCESS' :
 		return {
@@ -61,7 +69,6 @@ const userReducer = (state = initialState, action) => {
 			error: '',
 			fetching: false,
 			password: '',
-			email: ''
 		}
 	case 'LOGIN_FAIL' :
 		return {
@@ -85,7 +92,62 @@ const userReducer = (state = initialState, action) => {
 		return {
 			...state,
 			userdata: null,
-			loginout: true
+			loginout: true,
+			email: '',
+			password: '',
+			name: ''
+		}
+	case 'INIT_UPDATE_USER' :
+		return {
+			...state,
+			fetching: true,
+			updateUserFail: false,
+			error: ''
+		}
+	case 'UPDATE_USER_SUCCESS' :
+		return {
+			...state,
+			userdata: {
+				...state.userdata,
+				user: {
+					...state.userdata.user,
+					email: action.userdata.email
+				}
+			},
+			updateUserFail: false,
+			error: '',
+			fetching: false,
+			password: '',
+		}
+	case 'UPDATE_USER_FAIL' :
+		return {
+			...state,
+			updateUserFail: true,
+			error: action.response,
+			fetching: false,
+			password: '',
+		}
+	case 'INIT_GET_CURRENT_USER' :
+		return {
+			...state,
+			fetching: true,
+			error: ''
+		}
+	case 'GET_CURRENT_USER_SUCCESS' :
+		return {
+			...state,
+			error: '',
+			fetching: false,
+			initialFetchDone: true,
+			email: action.user.email ? action.user.email : '',
+			name: action.user.name ? action.user.name : ''
+		}
+	case 'GET_CURRENT_USER_FAIL' :
+		return {
+			...state,
+			error: action.response,
+			fetching: false,
+			initialFetchDone: true
 		}
 	default: return state
 	}

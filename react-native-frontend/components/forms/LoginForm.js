@@ -17,7 +17,7 @@ const LoginForm = ({
 	loginUser, 
 	setEmail, 
 	setPassword, 
-	error, 
+	loginError, 
 	navigation 
 }) => {
 
@@ -25,12 +25,18 @@ const LoginForm = ({
 		loginUser({email, password})
 	}
 
+	const onNavigation = () => {
+		setEmail('')
+		setPassword('')
+		navigation.navigate('Register')
+	}
+
 	return (
 		<View>
 
-			{error.length > 0 && 
-			<Paragraph style={[{ color: Colors.error }]}>
-				{error}
+			{loginError.length > 0 && 
+			<Paragraph style={[{ color: Colors.error, fontSize: 13, marginBottom: 0, lineHeight: 16 }]}>
+				{loginError}
 			</Paragraph>
 			}
 
@@ -68,19 +74,13 @@ const LoginForm = ({
 						mode="outlined"
 					/>
 				</View>
-				<View style={styles.forgotPassword}>
-					<TouchableOpacity
-						onPress={() => console.log('pressed')}
-					>
-						<Text style={styles.label}>Forgot your password?</Text>
-					</TouchableOpacity>
-				</View>
 				<View style={styles.formControl}>
 					<Button 
 						mode="contained" 
 						onPress={submitHandler} 
 						color={Colors.primary}
 						labelStyle={{color: Colors.white}}
+						style={styles.button}
 					>
                         Login
 					</Button>
@@ -88,7 +88,7 @@ const LoginForm = ({
 
 				<View style={styles.row}>
 					<Text style={styles.label}>Don’t have an account? </Text>
-					<TouchableOpacity onPress={() => navigation.navigate('Register')}>
+					<TouchableOpacity onPress={onNavigation}>
 						<Text style={styles.link}>Sign up!</Text>
 					</TouchableOpacity>
 				</View>
@@ -117,7 +117,11 @@ const styles = StyleSheet.create({
 	},
 	errorNotice: {
 		color: Colors.error
-	}
+	},
+	button: {
+		marginTop: 16,
+		display: 'flex'
+	},
 })
 
 LoginForm.propTypes = {
@@ -125,7 +129,7 @@ LoginForm.propTypes = {
 	email: PropTypes.string,
 	password: PropTypes.string,
 	fetching: PropTypes.bool,
-	error: PropTypes.string,
+	loginError: PropTypes.string,
 	loginFail: PropTypes.bool,
 	loginUser: PropTypes.func,
 	setEmail: PropTypes.func,
@@ -137,7 +141,7 @@ const mapStateToProps = (state) => {
 	return {
 		user: state.user.user,
 		fetching: state.user.fetching,
-		error: state.user.error,
+		loginError: state.user.loginError,
 		loginFail: state.user.loginFail,
 		email: state.user.email,
 		password: state.user.password,

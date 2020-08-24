@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "react-native-frontend",
-    "slug": "react-native-frontend",
+    "name": "Share expenses app",
+    "slug": "share-expenses-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "splash": {

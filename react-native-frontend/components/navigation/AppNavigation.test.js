@@ -32,6 +32,8 @@ describe('Testing AppNavigation when user not logged in', () => {
 				fetching: false,
 				loginout: false,
 				error: '',
+				loginError: '',
+				registerError: '',
 				loginFail: false,
 				registerFail: false
 			},
@@ -94,7 +96,8 @@ describe('Testing AppNavigation when user not logged in', () => {
 				userdata: null,
 				fetching: false,
 				loginout: false,
-				error: 'Error message',
+				loginError: 'Error message',
+				registerError: '',
 				loginFail: true,
 				registerFail: false
 			},
@@ -126,7 +129,8 @@ describe('Testing AppNavigation when user not logged in', () => {
 				userdata: null,
 				fetching: false,
 				loginout: false,
-				error: 'Error message',
+				loginError: '',
+				registerError: 'Error message',
 				loginFail: false,
 				registerFail: true
 			},
@@ -171,6 +175,8 @@ describe('Testing AppNavigation when user is logged in', () => {
 				fetching: false,
 				loginout: false,
 				error: '',
+				loginError: '',
+				registerError: '',
 				loginFail: false,
 				registerFail: false
 			},

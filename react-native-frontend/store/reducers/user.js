@@ -7,6 +7,8 @@ const initialState = {
 	initialFetchDone: false,
 	loginout: false,
 	error: '',
+	loginError: '',
+	registerError: '',
 	loginFail: false,
 	registerFail: false,
 	updateUserFail: false
@@ -34,14 +36,18 @@ const userReducer = (state = initialState, action) => {
 			...state,
 			fetching: true,
 			registerFail: false,
-			error: ''
+			loginFail: false,
+			registerError: '',
+			loginError: ''
 		}
 	case 'REGISTER_SUCCESS' :
 		return {
 			...state,
 			userdata: action.userdata,
+			loginFail: false,
+			loginError: '',
 			registerFail: false,
-			error: '',
+			registerError: '',
 			fetching: false,
 			password: '',
 			email: '',
@@ -51,7 +57,9 @@ const userReducer = (state = initialState, action) => {
 		return {
 			...state,
 			registerFail: true,
-			error: action.response,
+			loginFail: false,
+			registerError: action.response,
+			loginError: '',
 			fetching: false
 		}
 	case 'INIT_LOGIN' :
@@ -59,14 +67,18 @@ const userReducer = (state = initialState, action) => {
 			...state,
 			fetching: true,
 			loginFail: false,
-			error: ''
+			registerFail: false,
+			registerError: '',
+			loginError: ''
 		}
 	case 'LOGIN_SUCCESS' :
 		return {
 			...state,
 			userdata: action.userdata,
 			loginFail: false,
-			error: '',
+			registerFail: false,
+			loginError: '',
+			registerError: '',
 			fetching: false,
 			password: '',
 		}
@@ -74,7 +86,9 @@ const userReducer = (state = initialState, action) => {
 		return {
 			...state,
 			loginFail: true,
-			error: action.response,
+			loginError: action.response,
+			registerFail: false,
+			registerError: '',
 			fetching: false
 		}
 	case 'CHECK_IF_ALREADY_AUTHENTICATED' :

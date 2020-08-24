@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.white,
 	},
 	error: {
-		fontSize: 14,
+		fontSize: 12,
 		color: Colors.error,
 		paddingHorizontal: 4,
 		paddingTop: 4,

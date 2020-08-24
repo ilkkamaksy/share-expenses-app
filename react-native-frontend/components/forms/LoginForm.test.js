@@ -24,6 +24,7 @@ describe('test LoginForm dispatch actions', () => {
 				fetching: true,
 				loginout: false,
 				error: '',
+				loginError: '',
 				loginFail: false,
 				registerFail: false
 			}
@@ -111,7 +112,7 @@ describe('test LoginForm error handling', () => {
 				userdata: null,
 				fetching: false,
 				loginout: false,
-				error: 'Error message',
+				loginError: 'Error message',
 				loginFail: true,
 				registerFail: false
 			}

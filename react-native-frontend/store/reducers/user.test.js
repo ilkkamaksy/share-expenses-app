@@ -14,6 +14,8 @@ describe('test user reducer', () => {
 			initialFetchDone: false,
 			loginout: false,
 			error: '',
+			loginError: '',
+			registerError: '',
 			loginFail: false,
 			registerFail: false,
 			updateUserFail: false
@@ -71,7 +73,9 @@ describe('test user reducer', () => {
 				...initialState,
 				fetching: true,
 				registerFail: false,
-				error: ''
+				error: '',
+				loginError: '',
+				registerError: '',
 			}
 		)		
 	})
@@ -87,7 +91,9 @@ describe('test user reducer', () => {
 				...initialState,
 				fetching: true,
 				registerFail: false,
-				error: ''
+				error: '',
+				loginError: '',
+				registerError: '',
 			}
 		)		
 	})
@@ -110,6 +116,8 @@ describe('test user reducer', () => {
 				userdata,
 				registerFail: false,
 				error: '',
+				loginError: '',
+				registerError: '',
 				fetching: false,
 				password: '',
 				email: ''
@@ -130,7 +138,8 @@ describe('test user reducer', () => {
 			{
 				...initialState,
 				registerFail: true,
-				error,
+				loginError: '',
+				registerError: 'fail',
 				fetching: false
 			}
 		)		
@@ -147,7 +156,9 @@ describe('test user reducer', () => {
 				...initialState,
 				fetching: true,
 				loginFail: false,
-				error: ''
+				error: '',
+				loginError: '',
+				registerError: '',
 			}
 		)		
 	})
@@ -170,6 +181,8 @@ describe('test user reducer', () => {
 				userdata,
 				loginFail: false,
 				error: '',
+				loginError: '',
+				registerError: '',
 				fetching: false,
 				password: '',
 				email: ''
@@ -190,7 +203,9 @@ describe('test user reducer', () => {
 			{
 				...initialState,
 				loginFail: true,
-				error,
+				error: '',
+				loginError: 'fail',
+				registerError: '',
 				fetching: false
 			}
 		)		

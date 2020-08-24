@@ -22,15 +22,17 @@ const AppNavigation = ({
 }) => {
 
 	useEffect(() => {
+
 		authenticationCheck()
 
 		const getReferrerUrlAsync = async () => {
 			const initialUrlObj = await Linking.parseInitialURLAsync()
 			setReferrerUrl(initialUrlObj)
 		}
-		
-		getReferrerUrlAsync()	
 			
+		getReferrerUrlAsync()		
+		
+
 	}, [])
 
 	if (loading) {

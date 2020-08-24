@@ -8,6 +8,8 @@
     "eject": "expo eject",
     "test": "jest .",
     "citest": "eslint . && jest . && codecov",
+    "cypress:open": "cypress open",
+    "citest:cypress": "cd ../backend && npm run dev && cd ../react-native-frontend && npm run dev && npm run cypress:open",
     "lint": "eslint ."
   },
   "dependencies": {

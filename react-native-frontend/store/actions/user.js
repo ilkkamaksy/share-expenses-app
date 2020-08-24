@@ -1,10 +1,8 @@
 
 import * as SecureStore from 'expo-secure-store'
-
 import * as userService from '../../services/userService'
 import auth from '../../utils/auth'
 import '../reducers/user'
-// import { emailValidator, passwordValidator } from '../../utils/validate'
 
 export const registerUser = (credentials = null) =>  {
 	return async dispatch => {

@@ -23,6 +23,8 @@ describe('test RegisterForm dispatch actions', () => {
 				fetching: true,
 				loginout: false,
 				error: '',
+				registerError: '',
+				loginError: '',
 				loginFail: false,
 				registerFail: false
 			}
@@ -110,7 +112,7 @@ describe('test RegisterForm error handling', () => {
 				userdata: null,
 				fetching: false,
 				loginout: false,
-				error: 'Error message',
+				registerError: 'Error message',
 				loginFail: false,
 				registerFail: true
 			}

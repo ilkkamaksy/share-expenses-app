@@ -1,29 +1,53 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Button } from 'react-native-paper'
 import { connect } from 'react-redux'
 
 import { registerUser, setEmail, setPassword } from '../../store/actions/user'
+import { emailValidator, passwordValidator } from '../../utils/validate'
 
 import Colors from '../../constants/Colors'
 import TextInput from '../UI/TextInput'
 import Paragraph from '../UI/Paragraph'
 
-const RegisterForm = props => {
+const RegisterForm = ({ 
+	email, 
+	password, 
+	setEmail, 
+	setPassword, 
+	registerUser, 
+	registerError, 
+	navigation 
+}) => {
 
-	const { email, password, setEmail, setPassword, registerUser, error, navigation } = props
-	
+	const [emailError, setEmailError] = useState('')
+	const [passwordError, setPasswordError] = useState('')
+
 	const submitHandler = () => {
 		registerUser({email, password})
+	}
+
+	const validateEmail = () => {
+		setEmailError(emailValidator(email) ? '' : 'Oops! We need a valid email.')
+	}
+
+	const validatePassword = () => {
+		setPasswordError(passwordValidator(password) ? '' : 'Password has to be at least 4 characters.')
+	}
+
+	const onNavigation = () => {
+		setEmail('')
+		setPassword('')
+		navigation.navigate('Login')
 	}
 
 	return (
 		<View>
 
-			{error.length > 0 && 
-			<Paragraph style={[{ color: Colors.error }]}>
-				{error}
+			{registerError.length > 0 && 
+			<Paragraph style={[{ color: Colors.error, fontSize: 13, marginBottom: 0, lineHeight: 16 }]}>
+				{registerError}
 			</Paragraph>
 			}
 
@@ -36,8 +60,8 @@ const RegisterForm = props => {
 						value={email}
 						onChangeText={text => setEmail(text)}
 						returnKeyType="next"
-						error={!!email.error}
-						errorText=""
+						onBlur={validateEmail}
+						errorText={emailError}
 						autoCapitalize="none"
 						autoCompleteType="email"
 						textContentType="emailAddress"
@@ -50,13 +74,13 @@ const RegisterForm = props => {
 					<TextInput 
 						returnKeyType="done"
 						accessibilityLabel="Password"
-						label="password" 
+						label="Password" 
 						secureTextEntry={true}
 						style={styles.input} 
 						value={password}
 						onChangeText={text => setPassword(text)}
-						error={!!password.error}
-						errorText=""
+						onBlur={validatePassword}
+						errorText={passwordError}
 						underlineColor="transparent"
 						mode="outlined"
 					/>
@@ -75,7 +99,7 @@ const RegisterForm = props => {
                 
 				<View style={styles.row}>
 					<Text style={styles.label}>Already have an account? </Text>
-					<TouchableOpacity onPress={() => navigation.navigate('Login')}>
+					<TouchableOpacity onPress={onNavigation}>
 						<Text style={styles.link}>Login</Text>
 					</TouchableOpacity>
 				</View>
@@ -107,7 +131,7 @@ RegisterForm.propTypes = {
 	email: PropTypes.string,
 	password: PropTypes.string,
 	fetching: PropTypes.bool,
-	error: PropTypes.string,
+	registerError: PropTypes.string,
 	registerFail: PropTypes.bool,
 	registerUser: PropTypes.func,
 	setEmail: PropTypes.func,
@@ -119,7 +143,7 @@ const mapStateToProps = (state) => {
 	return {
 		user: state.user.user,
 		fetching: state.user.fetching,
-		error: state.user.error,
+		registerError: state.user.registerError,
 		email: state.user.email,
 		password: state.user.password
 	}

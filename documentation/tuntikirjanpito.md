@@ -39,4 +39,5 @@
 | 21.8. |   9  | Expensen muokkaus UI vaatimusten mukaiseksi, Expense-itemien päivitys, ryhmän expense-listan sorttaus |
 | 22.8. |   6  | Invite friends omaksi komponentiksi, InviteScreenin luominen, yksikkötestien korjaus ja siirtyminen expo-jestiin |
 | 23.8. |   7  | Edit user account-näkymän ja käyttäjämuokkausfeaturen rakennusta |
-| yht   | 257   | | 
+| 24.8. |   7  | Detox-frameworkin testaus e2e -testejä varten, cypress-testaus ja hylkäys, rekisteröintilomakkeen validaatio |
+| yht   | 264   | | 

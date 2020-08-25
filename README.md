@@ -7,7 +7,7 @@ Keep track of shared expenses with your friends and family. Create a group of pe
 
 ## Project in expo
 
-Start up the app with expo client on [the project's expo page](https://expo.io/@ilkkamakinen/share-expenses-app).
+Start up the app with your expo client on [the project's expo page](https://expo.io/@ilkkamakinen/share-expenses-app).
 
 ## Documentation
 

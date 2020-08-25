@@ -1,6 +1,5 @@
 import axios from 'axios'
-const apiUrl = 'http://192.168.1.17:4000/graphql'
-
+import APIURL from '../utils/config'
 import auth from '../utils/auth' 
 
 const ADD_PERSON = `
@@ -63,7 +62,7 @@ export const addPerson = async (args) => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const updatePerson = async (args) => {
@@ -83,7 +82,7 @@ export const updatePerson = async (args) => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const removePerson = async id => {
@@ -102,5 +101,5 @@ export const removePerson = async id => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }

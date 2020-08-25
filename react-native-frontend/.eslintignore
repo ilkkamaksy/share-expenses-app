@@ -2,5 +2,6 @@
 *.test.js
 .eslintrc.js
 *.config.js
+config.js
 web-build/*
 

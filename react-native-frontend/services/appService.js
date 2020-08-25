@@ -1,6 +1,5 @@
 import axios from 'axios'
-const apiUrl = 'http://192.168.1.17:4000/graphql'
-
+import APIURL from '../utils/config'
 import auth from '../utils/auth' 
 
 const CREATE_GROUP = `
@@ -361,7 +360,7 @@ export const saveGroup = async (group) => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const updateGroup = async (group) => {
@@ -386,7 +385,7 @@ export const updateGroup = async (group) => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const getGroups = async (args) => {
@@ -407,7 +406,7 @@ export const getGroups = async (args) => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const removeGroup = async id => {
@@ -426,7 +425,7 @@ export const removeGroup = async id => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 
@@ -447,7 +446,7 @@ export const addPersonToGroup = async (args) => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const updatePerson = async (args) => {
@@ -467,7 +466,7 @@ export const updatePerson = async (args) => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const removePerson = async id => {
@@ -486,7 +485,7 @@ export const removePerson = async id => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const addExpense = async (args) => {
@@ -517,7 +516,7 @@ export const addExpense = async (args) => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const removeExpense = async id => {
@@ -537,7 +536,7 @@ export const removeExpense = async id => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const addInvitation = async groupid => {
@@ -557,7 +556,7 @@ export const addInvitation = async groupid => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const removeInvitation = async id => {
@@ -577,7 +576,7 @@ export const removeInvitation = async id => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const getInvitationByGroup = async (groupid) => {
@@ -597,7 +596,7 @@ export const getInvitationByGroup = async (groupid) => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const getInvitationsByCurrentUser = async () => {
@@ -612,5 +611,5 @@ export const getInvitationsByCurrentUser = async () => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }

@@ -1,6 +1,5 @@
 import axios from 'axios'
-const apiUrl = 'http://192.168.1.17:4000/graphql'
-
+import APIURL from '../utils/config'
 import auth from '../utils/auth' 
 
 const CREATE_GROUP = `
@@ -229,7 +228,7 @@ export const createGroup = async (group) => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const updateGroup = async (group) => {
@@ -254,7 +253,7 @@ export const updateGroup = async (group) => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const getGroups = async (args) => {
@@ -275,7 +274,7 @@ export const getGroups = async (args) => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const removeGroup = async id => {
@@ -294,7 +293,7 @@ export const removeGroup = async id => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const removeGroupUser = async (userid, groupid) => {
@@ -316,5 +315,5 @@ export const removeGroupUser = async (userid, groupid) => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }

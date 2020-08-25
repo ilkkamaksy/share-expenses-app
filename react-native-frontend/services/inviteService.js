@@ -1,6 +1,5 @@
 import axios from 'axios'
-const apiUrl = 'http://192.168.1.17:4000/graphql'
-
+import APIURL from '../utils/config'
 import auth from '../utils/auth' 
 
 const CREATE_INVITATION = `
@@ -133,7 +132,7 @@ export const createInvitation = async groupid => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const removeInvitation = async id => {
@@ -153,7 +152,7 @@ export const removeInvitation = async id => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const getInvitationByGroup = async (groupid) => {
@@ -173,7 +172,7 @@ export const getInvitationByGroup = async (groupid) => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const getInvitationsByCurrentUser = async () => {
@@ -188,7 +187,7 @@ export const getInvitationsByCurrentUser = async () => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const acceptGroupInvite = async (inviteid) => {
@@ -208,5 +207,5 @@ export const acceptGroupInvite = async (inviteid) => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }

@@ -1,6 +1,5 @@
 import axios from 'axios'
-const apiUrl = 'http://192.168.1.17:4000/graphql'
-
+import APIURL from '../utils/config'
 import auth from '../utils/auth' 
 
 const ADD_EXPENSE = `
@@ -105,7 +104,7 @@ export const addExpense = async (args) => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const updateExpense = async (args) => {
@@ -137,7 +136,7 @@ export const updateExpense = async (args) => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const removeExpense = async id => {
@@ -157,5 +156,5 @@ export const removeExpense = async id => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }

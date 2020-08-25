@@ -1,6 +1,5 @@
 import axios from 'axios'
-const apiUrl = 'http://192.168.1.17:4000/graphql'
-
+import APIURL from '../utils/config'
 import auth from '../utils/auth' 
 
 const REGISTER = `
@@ -78,7 +77,8 @@ const REMOVE_USER = `
 
 export const register = async credentials => {
 	const variables = { email: credentials.email, password: credentials.password }
-	const response = await axios.post(apiUrl, {
+
+	const response = await axios.post(APIURL, {
 		query: REGISTER,
 		variables: variables,
 		headers: {
@@ -91,7 +91,7 @@ export const register = async credentials => {
 
 export const login = async credentials => {
 	const variables = { email: credentials.email, password: credentials.password }
-	const response = await axios.post(apiUrl, {
+	const response = await axios.post(APIURL, {
 		query: LOGIN,
 		variables: variables,
 		headers: {
@@ -109,7 +109,7 @@ export const me = async () => {
 			'Authorization': auth.token
 		}
 	}
-	const response = await axios.post(apiUrl, { query: ME }, config)
+	const response = await axios.post(APIURL, { query: ME }, config)
 
 	return response
 }
@@ -134,7 +134,7 @@ export const updateUser = async userdata => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }
 
 export const removeUser = async () => {
@@ -149,5 +149,5 @@ export const removeUser = async () => {
 		}
 	}
 
-	return await axios.post(apiUrl, data, config)
+	return await axios.post(APIURL, data, config)
 }

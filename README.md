@@ -3,7 +3,7 @@
 
 # Track Shared Expenses Application
 
-Keep track of shared expenses with your friends and family. Create a group of people and start adding expenses with the amount paid and how much each person contributed. The app will keep track of everything for you, so you don't have to. 
+Keep track of shared expenses with your friends and family. Create groups, add names people and start adding expenses with the amount paid and how much each person contributed. The app will keep track of everything for you, so you don't have to. Invite friends to manage the group with you.
 
 ## Project in expo
 

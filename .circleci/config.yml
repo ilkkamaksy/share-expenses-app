@@ -17,3 +17,10 @@ workflows:
     build-and-test:
       jobs:
         - build-and-test
+
+deployment:
+  master:
+    branch: master
+    commands:
+      - echo 'deploying'
+      - ssh -v $DROPLET_USER@$DROPLET_IP "cd ~; ./deploy_project.sh"

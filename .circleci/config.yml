@@ -13,16 +13,8 @@ jobs:
             - run: cd backend && npm run citest
             - run: cd react-native-frontend && npm install && npm install --save-dev codecov jest@26.4.1
             - run: cd react-native-frontend && npm run citest
-  deployment:
-    master:
-      branch: master
-      commands:
-        - echo 'deploying'
-        - ssh -v $DROPLET_USER@$DROPLET_IP "cd ~; ./deploy_project.sh"
+            - run: ssh -v $DROPLET_USER@$DROPLET_IP "./deploy_project.sh"
 workflows:
     build-and-test:
       jobs:
         - build-and-test
-    deployment:
-      jobs: 
-        - deployment

@@ -40,4 +40,5 @@
 | 22.8. |   6  | Invite friends omaksi komponentiksi, InviteScreenin luominen, yksikkötestien korjaus ja siirtyminen expo-jestiin |
 | 23.8. |   7  | Edit user account-näkymän ja käyttäjämuokkausfeaturen rakennusta |
 | 24.8. |   7  | Detox-frameworkin testaus e2e -testejä varten, cypress-testaus ja hylkäys, rekisteröintilomakkeen validaatio |
-| yht   | 264   | | 
+| 25.8. |   7  | Digital Ocean droplet backend-asennus, CI-deployment -pipeline kuntoon |
+| yht   | 271   | | 

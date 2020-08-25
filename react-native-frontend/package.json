@@ -3,9 +3,9 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production expo start",
     "dev": "cross-env NODE_ENV=dev expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
+    "android": "cross-env NODE_ENV=production expo start --android",
+    "ios": "cross-env NODE_ENV=production expo start --ios",
+    "web": "cross-env NODE_ENV=production expo start --web",
     "eject": "expo eject",
     "test": "jest .",
     "citest": "eslint . && jest . && codecov",

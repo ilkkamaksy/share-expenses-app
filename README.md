@@ -9,11 +9,6 @@ Keep track of shared expenses with your friends and family. Create groups, add n
 
 Start up the app with your expo client on [the project's expo page](https://expo.io/@ilkkamakinen/share-expenses-app).
 
-## Documentation
-
-- [Requirements specification](/documentation/requirements-spec.md)
-- [Tuntikirjanpito](/documentation/tuntikirjanpito.md)
-
 ## Installation
 
 - For backend, go to `backend/`
